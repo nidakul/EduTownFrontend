@@ -3,7 +3,9 @@ import SidebarMenu, {
   SidebarMenuHeader,
 } from "react-bootstrap-sidebar-menu";
 import "./sidebar.css";
+import { assignmentsIcon, attendanceIcon, calendar, examResultIcon, onlineLessonIcon, userIcon } from "../../utilities/Constants/iconsList";
 import { Container } from "react-bootstrap";
+import IconTemp from "../../utilities/Helpers/iconTemp";
 
 const Sidebar = () => {
   return (
@@ -17,52 +19,18 @@ const Sidebar = () => {
               src="https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"
               className="img-fluid rounded-circle"
             />
-            <h5 className="mt-2 mb-0">isim soyisim</h5>
-            <SidebarMenu.Nav.Title>Okul adı</SidebarMenu.Nav.Title>
+            <SidebarMenu.Nav.Title>İsim soyisim</SidebarMenu.Nav.Title>
+            <SidebarMenu.Nav.Title>OkulAdı</SidebarMenu.Nav.Title>
           </div>
           <Container>
           <SidebarMenu.Nav>
-            <SidebarMenu.Nav.Link>
-              <SidebarMenu.Nav.Icon>
-                {/* <img className="sidebar-menu-toggle-icon2" src= /> */}
-              </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title>Bilgilerim</SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
-
-            <SidebarMenu.Nav.Link>
-              <SidebarMenu.Nav.Icon>
-                {/* <img className="sidebar-menu-toggle-icon2" src= /> */}
-              </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title>Canlı Dersler</SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
-
-            <SidebarMenu.Nav.Link>
-              <SidebarMenu.Nav.Icon>
-                {/* <img className="sidebar-menu-toggle-icon2" src= /> */}
-              </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title>Ödevler</SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
-
-            <SidebarMenu.Nav.Link>
-              <SidebarMenu.Nav.Icon>
-                {/* <img className="sidebar-menu-toggle-icon2" src= /> */}
-              </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title>Sayfam</SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
-
-            <SidebarMenu.Nav.Link>
-              <SidebarMenu.Nav.Icon>
-                {/* <img className="sidebar-menu-toggle-icon2" src= /> */}
-              </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title>Sayfam</SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
-
-            <SidebarMenu.Nav.Link>
-              <SidebarMenu.Nav.Icon>
-                {/* <img className="sidebar-menu-toggle-icon2" src= /> */}
-              </SidebarMenu.Nav.Icon>
-              <SidebarMenu.Nav.Title>Sayfam</SidebarMenu.Nav.Title>
-            </SidebarMenu.Nav.Link>
+              <IconTemp {...userIcon} pathName=""></IconTemp> 
+              <IconTemp {...onlineLessonIcon}></IconTemp>
+              <IconTemp {...assignmentsIcon}></IconTemp>
+              <IconTemp {...examResultIcon}></IconTemp>
+              <IconTemp {...attendanceIcon}></IconTemp>
+              <IconTemp {...calendar}></IconTemp>
+              {/* Sınav Tarihleri ekle */}
           </SidebarMenu.Nav>
           </Container>
       </SidebarMenuBody>

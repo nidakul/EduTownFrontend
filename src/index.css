@@ -1,0 +1,19 @@
+.sg-icon{
+    display: inline-block;
+    vertical-align: middle;
+    font-style: normal;
+    width: 18px;
+    height: 18px;
+    margin-right: 15px;
+    margin-bottom: 2px;
+    font-size: large;
+  }
+
+  /* iconTemp */
+  .iconHeader {
+    color: rgb(13, 78, 135);
+    padding-right: 1rem;
+    margin-bottom: 0.65rem;
+    text-decoration: none;
+  }
+  /* iconTemp */

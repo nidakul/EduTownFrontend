@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.2",
+    "react-bootstrap-sidebar-menu": "^2.0.3",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

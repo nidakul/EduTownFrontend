@@ -1,13 +1,15 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
-import PlatformOffcanvas from "../../components/Offcanvas/PlatformOffcanvas";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import Navigation from "../../components/Navbar/Navigation";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import UserInformation from "../UserInformation/UserInformation";
 
 const Home = () => {
   return (
     <>
       <Navigation />
-      <Sidebar />
+      <div className="d-flex">
+        <Sidebar />
+        <UserInformation />
+      </div>
     </>
   );
 };

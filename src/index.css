@@ -1,19 +1,39 @@
-.sg-icon{
-    display: inline-block;
-    vertical-align: middle;
-    font-style: normal;
-    width: 18px;
-    height: 18px;
-    margin-right: 15px;
-    margin-bottom: 2px;
-    font-size: large;
-  }
+.sg-icon {
+  display: inline-block;
+  vertical-align: middle;
+  font-style: normal;
+  width: 18px;
+  height: 18px;
+  margin-right: 15px;
+  margin-bottom: 2px;
+  font-size: large;
+}
 
-  /* iconTemp */
-  .iconHeader {
-    color: rgb(13, 78, 135);
-    padding-right: 1rem;
-    margin-bottom: 0.65rem;
-    text-decoration: none;
-  }
-  /* iconTemp */
+/* iconTemp */
+.iconHeader {
+  color: rgb(13, 78, 135);
+  padding-right: 1rem;
+  margin-bottom: 0.65rem;
+  text-decoration: none;
+}
+/* iconTemp */
+
+.img-fluid {
+  width: 130px;
+  height: 130px !important;
+  object-fit: cover;
+}
+
+/* chart */
+.canvasjs-chart-canvas{
+height: 300px !important;
+width: 650px !important;
+display: flex !important; 
+justify-content: space-between !important;
+align-items: flex-end !important;
+}
+
+.canvasjs-chart-credit{ 
+  display: none;
+}
+/* chart */

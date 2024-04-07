@@ -1,0 +1,83 @@
+.container {
+  width: 16%;
+}
+.big {
+  position: fixed;
+  background-color: #277cd1;
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 74%;
+  border-radius: 50%;
+  top: 50%;
+  right: -60%;
+  transform: translateY(-50%);
+}
+
+.medium {
+  position: absolute;
+  background-color: #a0dbcc;
+  width: 100%;
+  padding-bottom: 74%;
+  border-radius: 50%;
+  z-index: 5;
+  top: 50%;
+  right: -10%;
+  transform: translateY(-50%);
+}
+
+.small {
+  position: absolute;
+  background-color: #ff9a8d;
+  width: 60%;
+  padding-bottom: 65%;
+  border-radius: 50%;
+  z-index: 10;
+  top: 50%;
+  left: 15%;
+  transform: translateY(-50%);
+}
+
+.login-image {
+  position: absolute;
+  right: 100%;
+  top: 20%;
+  height: 60vh;
+}
+
+.login-form {
+  margin-top: 25%;
+  width: 50%;
+}
+
+.form-control {
+  border: 3px solid #a0dbcc !important;
+  border-radius: 20px !important;
+}
+
+.form-btn{
+    background-color: white !important;
+    border-radius: 20px !important;
+    width: 25%;
+    border: 2px solid #a0dbcc !important;
+    color: #424548 !important;
+    margin-top: 5px !important;
+    margin-left: 90px;
+}
+
+.form-label{
+    color: #424548;
+}
+
+.password-reset-button{
+text-align: center;
+}
+
+.login-logo{
+    width: 42% ;
+    height: auto;
+    position: absolute;
+    margin: -390px -15px;
+    overflow: hidden;
+    z-index: -1;
+    transform: rotate(-5deg);
+}

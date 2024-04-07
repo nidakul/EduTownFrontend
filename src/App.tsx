@@ -1,6 +1,7 @@
 import "./App.css";
 import Home from "./pages/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Grades from "./pages/Grades/Grades";
 import UserInformation from "./pages/UserInformation/UserInformation";
 
 
@@ -9,7 +10,8 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element= {<Home />}>
-      <Route path="/user-information" element={<UserInformation />} />
+      <Route path="/" element= {<UserInformation />} />
+      <Route path="/grades" element={<Grades />} />
       </Route>
     </Routes>
     </BrowserRouter>

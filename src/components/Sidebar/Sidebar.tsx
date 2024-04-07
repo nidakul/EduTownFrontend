@@ -24,10 +24,10 @@ const Sidebar = () => {
           </div>
           <Container>
           <SidebarMenu.Nav>
-              <IconTemp {...userIcon} pathName="/user-information"></IconTemp> 
-              <IconTemp {...onlineLessonIcon}></IconTemp>
+              <IconTemp {...userIcon} pathName="/"></IconTemp> 
+              <IconTemp {...onlineLessonIcon} ></IconTemp>
               <IconTemp {...assignmentsIcon}></IconTemp>
-              <IconTemp {...examResultIcon}></IconTemp>
+              <IconTemp {...examResultIcon} pathName="/grades"></IconTemp>
               <IconTemp {...attendanceIcon}></IconTemp>
               <IconTemp {...calendar}></IconTemp>
               {/* Sınav Tarihleri ekle */}

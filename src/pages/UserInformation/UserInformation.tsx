@@ -1,13 +1,35 @@
 import { Card, Col, Container, Row, Table } from "react-bootstrap";
 import "./userInformation.css";
 import Chart from "../../utilities/Helpers/chart";
+import userService from "../../services/userService";
+import { useEffect, useState } from "react";
+import { getUserId } from "../../services/identityService";
 
 const UserInformation = () => {
+  const userId = getUserId();
+  const[user,setUser] = useState(null);
+
+  const fetchUserInformation = async () => {
+    try {
+      if(userId){
+        const response = await userService.getUserDetailById(userId);
+        setUser(response.data)
+        console.log(response.data);
+      }
+    }
+     catch (error) {
+      console.error("Veri alınamadı:", error);
+    } 
+  }
+
+  useEffect(() => {
+    fetchUserInformation();
+  }, [])
   return (
     <Container>
       <Card className="home-card">
         <div className="home-card-items">
-          <span className="home-card-msg">HOŞGELDİN İSİM</span>
+          {/* <span className="home-card-msg">HOŞGELDİN {user && user.firstName}</span> */}
           <img
             src="https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"
             className="img-fluid rounded"

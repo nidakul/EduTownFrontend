@@ -6,37 +6,46 @@ import authService from "../../services/authService";
 import { authActions } from "../../store/auth/authSlice";
 import { LoginRequest } from "../../models/requests/loginRequest";
 import { useNavigate } from "react-router-dom";
+import { parseJwt } from "../../utilities/Constants/parseJwt";
+import { setUserId } from "../../services/identityService";
+
+
 const Login = () => {
   const [nationalIdentity, setNationalIdentity] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const handleLogin = async (e: any) => {
-  e.preventDefault();
-  try {
-    const userData: LoginRequest = { nationalIdentity, password };
-    const response = await authService.login(userData);
-    dispatch(authActions.isAuthenticated(true));
-    console.log("Giriş başarılı", response.data);
-    navigate("/userInformation");
-  } catch (error:any) {
-    if (error.isAxiosError) {
-      console.error("Ağ hatası:", error.message);
-      console.error("Axios detayları:", error.response);
-    } else {
-      console.error("Diğer hata:", error);
+    e.preventDefault();
+    try {
+      const userData: LoginRequest = { nationalIdentity, password };
+      const response = await authService.login(userData);
+      console.log("response", response);
+      console.log("headers", response.headers);
+      dispatch(authActions.isAuthenticated(true));
+      const decodedToken = parseJwt(response.accessToken.token);
+      const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+      setUserId(userId);
+      console.log("userId", userId);
+      navigate("/userInformation");
+    } catch (error: any) {
+      if (error.isAxiosError) {
+        console.error("Ağ hatası:", error.message);
+        console.error("Axios detayları:", error.response);
+      } else {
+        console.error("Diğer hata:", error);
+      }
     }
-  }
-};
+
+    };
 
   return (
     <Container>
-      <img className="login-logo" src="/public/images/logo.svg" />
+      <img className="login-logo" src="/images/edu.svg" />
       <div className="big">
         <div className="medium">
           <div className="small">
-            <img className="login-image" src="/public/images/studying.png" />
+            <img className="login-image" src="/images/studying.png" />
           </div>
         </div>
       </div>

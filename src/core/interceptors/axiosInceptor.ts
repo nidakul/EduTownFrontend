@@ -1,12 +1,10 @@
 import { BASE_API_URL } from "../../environment/environment";
 import axios from "axios";
 import tokenService from "../services/tokenService";
-import { store } from "../../store/configureStore";
 
 const axiosInstance = axios.create({
   baseURL: BASE_API_URL,
 });
-
 axiosInstance.interceptors.request.use((config) => {
   const token = tokenService.getToken();
   config.headers.Authorization = "Bearer" + token;

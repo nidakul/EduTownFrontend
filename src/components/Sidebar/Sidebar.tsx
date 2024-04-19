@@ -6,8 +6,10 @@ import "./sidebar.css";
 import { assignmentsIcon, attendanceIcon, calendar, examResultIcon, onlineLessonIcon, userIcon } from "../../utilities/Constants/iconsList";
 import { Container } from "react-bootstrap";
 import IconTemp from "../../utilities/Helpers/iconTemp";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
+  const user = useSelector((state:any) => state.user.user);
   return (
     <SidebarMenu>
       <SidebarMenuHeader>
@@ -16,10 +18,10 @@ const Sidebar = () => {
       <SidebarMenuBody>
           <div className="sidebar-menu-body-items">
             <img
-              src="https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"
+              src={user && user.imageUrl}
               className="img-fluid rounded-circle"
             />
-            <SidebarMenu.Nav.Title>İsim soyisim</SidebarMenu.Nav.Title>
+            <SidebarMenu.Nav.Title>{user && user.firstName} {user && user.lastName}</SidebarMenu.Nav.Title>
             <SidebarMenu.Nav.Title>OkulAdı</SidebarMenu.Nav.Title>
           </div>
           <Container>

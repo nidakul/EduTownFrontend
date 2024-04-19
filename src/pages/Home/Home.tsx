@@ -4,37 +4,39 @@ import Chart from "../../utilities/Helpers/chart";
 import userService from "../../services/userService";
 import { useEffect, useState } from "react";
 import { getUserId } from "../../services/identityService";
-import { UserInformationResponse } from "../../models/responses/userInformationResponse";
+import { setUser } from "../../store/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
   const userId = getUserId();
-  const[user,setUser] = useState<UserInformationResponse>(Object);
-
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user.user);
   const fetchUserInformation = async () => {
     try {
-      if(userId){
+      if (userId) {
         const response = await userService.getUserDetailById(userId);
-        setUser(response.data)
-        console.log(response.data);
+        console.log("user", response.data);
+        dispatch(setUser(response.data));
       }
-    }
-     catch (error) {
+    } catch (error) {
       console.error("Veri alınamadı:", error);
-    } 
-  }
+    }
+  };
 
   useEffect(() => {
     fetchUserInformation();
-  }, [])
+  }, [dispatch, userId]);
   return (
-    <Container className="deneme">
+    <Container>
       <Card className="home-card">
         <div className="home-card-items">
-          <span className="home-card-msg">HOŞGELDİN {user && user.firstName && user.firstName.toLocaleUpperCase('tr-TR')}</span>
-          <img
-            src={user.imageUrl}
-            className="img-fluid rounded"
-          />
+          <span className="home-card-msg">
+            HOŞGELDİN{" "}
+            {user &&
+              user.firstName &&
+              user.firstName.toLocaleUpperCase("tr-TR")}
+          </span>
+          <img src={user && user.imageUrl} className="img-fluid rounded" />
           <span>sınıf adı / şube - no</span>
         </div>
         <Container className="user-information-container">

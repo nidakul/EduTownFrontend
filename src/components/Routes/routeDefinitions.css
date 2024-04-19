@@ -1,0 +1,13 @@
+.route-container {
+    display: flex;
+    flex-direction: column; 
+  }
+  
+  .main-content {
+    display: flex;
+  }
+  .home-container {
+    flex-grow: 1;
+  }
+  
+  

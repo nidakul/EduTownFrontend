@@ -6,30 +6,30 @@ export const userIcon = {
 
 export const onlineLessonIcon = {
   className: "sg-icon online-lesson",
-  image: "/public/images/online-class.svg",
+  image: "/images/online-class.svg",
   valueHeader: "Canlı Dersler",
 };
 
 export const assignmentsIcon = {
   className: "sg-icon assignment",
-  image: "/public/images/assignments.svg",
+  image: "/images/assignments.svg",
   valueHeader: "Ödevler",
 };
 
 export const examResultIcon = {
   className: "sg-icon exam-result",
-  image: "/public/images/exam-result.svg",
+  image: "/images/exam-result.svg",
   valueHeader: "Notlarım",
 };
 
 export const attendanceIcon = {
   className: "sg-icon attendance",
-  image: "/public/images/attendance.svg",
+  image: "/images/attendance.svg",
   valueHeader: "Devamsızlık Bilgilerim"
 };
 
 export const calendar = {
     className: "sg-icon calendar",
-    image: "/public/images/calendar.svg",
+    image: "/images/calendar.svg",
     valueHeader: "Ders Programım"
   };

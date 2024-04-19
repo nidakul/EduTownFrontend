@@ -1,0 +1,72 @@
+.home-card {
+  background: linear-gradient(
+    90deg,
+    rgba(221, 227, 228, 1) 0%,
+    rgba(0, 212, 255, 1) 37%,
+    rgba(2, 0, 36, 1) 79%
+  );
+  border-color: white !important;
+  
+}
+
+.home-card-msg {
+  font-size: 36px;
+  padding: 12px;
+  color: #dde3e4;
+  align-self: center;
+}
+
+.home-card-items {
+  margin-top: 5px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.rounded {
+  margin-bottom: 10px !important;
+}
+
+.user-information {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 60% !important;
+  width: max-content;
+}
+
+.book-information {
+  width: 50%;
+}
+
+.circle {
+  height: 60px;
+  width: 60px;
+  background-color: transparent;
+  border-radius: 50%;
+  border: 3px solid black;
+  border-color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.user-information-container {
+  max-width: 552px !important;
+}
+
+.circle .value {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.text {
+  font-size: 16px;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-bg-type: rgb(174 215 228) !important;
+}

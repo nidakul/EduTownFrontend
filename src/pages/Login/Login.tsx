@@ -27,7 +27,7 @@ const Login = () => {
       const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
       setUserId(userId);
       console.log("userId", userId);
-      navigate("/userInformation");
+      navigate("/home");
     } catch (error: any) {
       if (error.isAxiosError) {
         console.error("Ağ hatası:", error.message);

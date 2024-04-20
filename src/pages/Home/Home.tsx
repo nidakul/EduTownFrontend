@@ -37,7 +37,7 @@ const Home = () => {
               user.firstName.toLocaleUpperCase("tr-TR")}
           </span>
           <img src={user && user.imageUrl} className="img-fluid rounded" />
-          <span>sınıf adı / şube - no</span>
+          <span>sınıf adı / şube - {user && user.studentNo}</span>
         </div>
         <Container className="user-information-container">
           <Row>

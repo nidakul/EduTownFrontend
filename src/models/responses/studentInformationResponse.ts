@@ -1,4 +1,4 @@
-export interface UserInformationResponse{
+export interface StudentInformationResponse{
   id:number;
   nationalIdentity: string;
   firstName: string;
@@ -6,4 +6,5 @@ export interface UserInformationResponse{
   email: string;
   status: boolean;
   imageUrl: string;
+  studentNo: string;
 }

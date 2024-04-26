@@ -2,7 +2,7 @@ import { Card, Col, Container, Row, Table } from "react-bootstrap";
 import "./home.css";
 import Chart from "../../utilities/Helpers/chart";
 import userService from "../../services/userService";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUserId } from "../../services/identityService";
 import { setUser } from "../../store/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,8 +15,15 @@ const Home = () => {
     try {
       if (userId) {
         const response = await userService.getUserDetailById(userId);
-        console.log("user", response.data);
-        dispatch(setUser(response.data));
+        const certificate = await userService.getStudentCertificate(userId);
+        const userData = {
+          ...response.data,
+          certificate: certificate.data,
+        };
+        dispatch(setUser(userData));
+
+        console.log("userData", userData);
+        
       }
     } catch (error) {
       console.error("Veri alınamadı:", error);
@@ -74,7 +81,7 @@ const Home = () => {
           </Row>
         </Container>
       </Card>
-      <Card className="book-information">mflskm</Card>
+      <Card className="book-information">Okuduğu kitaplar</Card>
       <div className="certificate">
         <Table striped bordered hover>
           <thead>
@@ -86,14 +93,21 @@ const Home = () => {
               <th>2. Dönem</th>
             </tr>
           </thead>
+
+          {user && user.certificate.certificates && user.certificate.certificates.length > 0 && (
           <tbody>
-            <tr>
-              <td>5. Sınıf</td>
-              <td>2023-2024</td>
-              <td>Teşekkür Belgesi</td>
-              <td>Teşekkür Belgesi</td>
-            </tr>
-            <tr>
+            {user.certificate.certificates.map((cert: any) => (
+              <tr key={cert.id}>
+                <td>{cert.classroomName}</td>
+                <td>{cert.year}</td>
+                <td>{cert.certificateName}</td>
+                <td>{cert.certificateName}</td>
+              </tr>
+            ))}
+          </tbody>
+          )}
+
+          {/* <tr>
               <td>6. Sınıf</td>
               <td>2023-2024</td>
               <td>Teşekkür Belgesi</td>
@@ -110,8 +124,7 @@ const Home = () => {
               <td>2023-2024</td>
               <td>Teşekkür Belgesi</td>
               <td>Teşekkür Belgesi</td>
-            </tr>
-          </tbody>
+            </tr> */}
         </Table>
       </div>
       <Chart></Chart>

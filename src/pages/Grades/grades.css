@@ -1,0 +1,13 @@
+.grades-select{
+    width: 50%;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.grades-card{
+    margin-top: 20px;
+}
+
+.lesson-name{
+    width: 40%;
+}

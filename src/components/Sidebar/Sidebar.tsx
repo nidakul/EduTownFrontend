@@ -22,7 +22,7 @@ const Sidebar = () => {
               className="img-fluid rounded-circle"
             />
             <SidebarMenu.Nav.Title>{user && user.firstName} {user && user.lastName}</SidebarMenu.Nav.Title>
-            <SidebarMenu.Nav.Title>OkulAdı</SidebarMenu.Nav.Title>
+            <SidebarMenu.Nav.Title>{ user && user.schoolName}</SidebarMenu.Nav.Title>
           </div>
           <Container>
           <SidebarMenu.Nav>

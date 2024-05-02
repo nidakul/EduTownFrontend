@@ -1,5 +1,6 @@
 export interface StudentInformationResponse{
   id:number;
+  schoolName: string;
   nationalIdentity: string;
   firstName: string;
   lastName: string;

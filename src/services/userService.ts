@@ -6,15 +6,17 @@ import {  StudentCertificateResponse } from "../models/responses/studentCertific
 import { StudentGradesResponse } from "../models/responses/studentGradesResponse";
 
 class UserService {
+    apiUrl = BASE_API_URL + "Users";
+
     getUserDetailById(userId: string) : Promise<AxiosResponse<StudentInformationResponse, any>>{
-        return axiosInstance.get<StudentInformationResponse>(BASE_API_URL + "Users/" + "getStudentDetail/" + userId)
+        return axiosInstance.get<StudentInformationResponse>(this.apiUrl + "/getStudentDetail/" + userId)
     }
     getStudentCertificate(userId: string): Promise<AxiosResponse<StudentCertificateResponse,any>>{
-        return axiosInstance.get<StudentCertificateResponse>(BASE_API_URL + "Users/" + "getStudentCertificate/" + userId)
+        return axiosInstance.get<StudentCertificateResponse>(this.apiUrl + "/getStudentCertificate/" + userId)
     }
 
     getStudentGrades(userId: string): Promise<AxiosResponse<StudentGradesResponse,any>>{
-        return axiosInstance.get<StudentGradesResponse>(BASE_API_URL + "Users/" + "getStudentGrades/" + userId)
+        return axiosInstance.get<StudentGradesResponse>(this.apiUrl + "/getStudentGrades/" + userId)
     }
 }
 

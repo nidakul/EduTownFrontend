@@ -12,7 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserId } from "../../services/identityService";
 import userService from "../../services/userService";
 import { setUser } from "../../store/user/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import React from "react";
+import gradeTypeService from "../../services/gradeTypeService";
+import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
 
 type Props = {};
 
@@ -20,6 +23,16 @@ const Grades = (props: Props) => {
   const userId = getUserId();
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user.user);
+  const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
+  console.log("gradeType ", gradeType);
+  const fetchGradeType = async () => {
+    try {
+      const response = await gradeTypeService.getList();
+      setGradeType(response.data.items);
+    } catch (error) {
+      console.error("GradeType verisi alınamadı:", error);
+    }
+  };
 
   const fetchStudentGrade = async () => {
     try {
@@ -40,7 +53,8 @@ const Grades = (props: Props) => {
 
   useEffect(() => {
     fetchStudentGrade();
-  },[dispatch, userId]);
+    fetchGradeType();
+  }, [dispatch, userId]);
 
   return (
     <Container>
@@ -64,43 +78,54 @@ const Grades = (props: Props) => {
           </Col>
         </Row>
 
-            {user && user.grade.studentGrades && user.grade.studentGrades.length>0 && (
-        <Table striped bordered hover>
-          <thead className="grades">
-              <tr>
-              <th className="lesson-name">Dersler</th>
-              <th colSpan={2}>Yazılı Notları</th>
-              <th colSpan={2}>Projeler</th>
-              <th colSpan={2}>Sözlü Notları</th>
-              <th>Not</th>
-
-            </tr>
+        {user &&
+          user.grade.studentGrades &&
+          user.grade.studentGrades.length > 0 && (
+            <Table striped bordered hover>
+              <thead className="grades">
+                  <tr>
+                {gradeType.map((type, typeIndex) => (
+                  //ayrı bir component ile yönet burayı!!! colspan'i veritabanından çek
+                    <th key={typeIndex}  colSpan={typeIndex === 0 ? 1 : 2} className={typeIndex === 0 ? "lesson-name" : ""}>{type.name}</th>
+                  ))}
+                  </tr>
                 <tr>
-              <td></td>
-              <th>1</th>
-              <th>2</th>
-              <th>1</th>
-              <th>2</th>
-              <th>1</th>
-              <th>2</th>
-            </tr>
-          </thead>
-          <tbody>
-              {user.grade.studentGrades.map((studentGrade: any) => (
-                <tr>
-              <td>{studentGrade.lessonName}</td>
-              <td>Smith</td>
-              <td>43</td>
-              <td>43</td>
-              <td>43</td>
-              <td>43</td>
-              <td>43</td>
-              <td>43</td>
-            </tr>
-            ))}
-          </tbody>
+                  <td></td>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>1</th>
+                  <th>2</th>
+                </tr>
+              </thead>
 
-        </Table>
+              {user &&
+                user.grade.studentGrades &&
+                user.grade.studentGrades.length > 0 && (
+                  <tbody>
+                    {user.grade.studentGrades.map((studentGrade: any) => (
+                      <tr key={studentGrade.lessonName}>
+                        <td>{studentGrade.lessonName}</td>
+                        {studentGrade.grades.map(
+                          (grade: any, index: number) => (
+                            <React.Fragment key={index}>
+                              {grade.gradesDto.map(
+                                (gradeDto: any, gradeIndex: number) => (
+                                  <>
+                                    <td key={1}>{gradeDto.grade}</td>
+                                    <td key={gradeIndex}>{gradeDto.grade}</td>
+                                  </>
+                                )
+                              )}
+                            </React.Fragment>
+                          )
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                )}
+            </Table>
           )}
       </Card>
     </Container>

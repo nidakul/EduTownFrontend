@@ -83,20 +83,30 @@ const Grades = (props: Props) => {
           user.grade.studentGrades.length > 0 && (
             <Table striped bordered hover>
               <thead className="grades">
-                  <tr>
-                {gradeType.map((type, typeIndex) => (
-                  //ayrı bir component ile yönet burayı!!! colspan'i veritabanından çek
-                    <th key={typeIndex}  colSpan={typeIndex === 0 ? 1 : 2} className={typeIndex === 0 ? "lesson-name" : ""}>{type.name}</th>
+                <tr>
+                  {gradeType.map((type, typeIndex) => (
+                    //ayrı bir component ile yönet burayı!!! colspan'i veritabanından çek
+                    <th
+                      key={typeIndex}
+                      colSpan={type.gradeCount}
+                      className={typeIndex === 0 ? "lesson-name" : ""}
+                    >
+                      {type.name}
+                    </th>
                   ))}
-                  </tr>
+                </tr>
                 <tr>
                   <td></td>
-                  <th>1</th>
-                  <th>2</th>
-                  <th>1</th>
-                  <th>2</th>
-                  <th>1</th>
-                  <th>2</th>
+                  {gradeType.map((type, typeIndex) => (
+                    <React.Fragment key={typeIndex}>
+                      {/* create array for gradeCount*/}
+                      {Array.from(Array(type.gradeCount).keys()).map(
+                        (index) => (
+                          <th key={index}>{index + 1}</th>
+                        )
+                      )}
+                    </React.Fragment>
+                  ))}
                 </tr>
               </thead>
 
@@ -113,7 +123,7 @@ const Grades = (props: Props) => {
                               {grade.gradesDto.map(
                                 (gradeDto: any, gradeIndex: number) => (
                                   <>
-                                    <td key={1}>{gradeDto.grade}</td>
+                                    {/* <td key={1}>{gradeDto.grade}</td> */}
                                     <td key={gradeIndex}>{gradeDto.grade}</td>
                                   </>
                                 )

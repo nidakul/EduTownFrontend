@@ -1,5 +1,5 @@
 import { Col } from "react-bootstrap";
-import SidebarMenu from "react-bootstrap-sidebar-menu";
+import { Link } from "react-router-dom";
 
 type Props = {
   className: string;
@@ -8,15 +8,16 @@ type Props = {
   pathName?: string;
 };
 const iconTemp = (props: Props) => {
+  console.log("link", props.pathName);
   return (
     <>
     {/* SidebarMenu.Nav.Link yerine link ya da navLink dene */}
-      <SidebarMenu.Nav.Link href={props.pathName} className="iconHeader">
+      <Link to={props.pathName || ""} className="iconHeader">
         <Col lg="12">
           <img className={props.className} src={props.image} />
           <span>{props.valueHeader}</span>
         </Col>
-      </SidebarMenu.Nav.Link>
+      </Link>
     </>
   );
 };

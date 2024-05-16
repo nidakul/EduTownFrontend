@@ -2,7 +2,7 @@ export interface StudentGradesResponse{
     id: number;
     lessonName: string;
     gradeTypeName: string;
-    gradeNumber: number;
+    examCount: number;
     grade: number;
 }
 

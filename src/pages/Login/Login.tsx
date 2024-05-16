@@ -9,25 +9,28 @@ import { useNavigate } from "react-router-dom";
 import { parseJwt } from "../../utilities/Constants/parseJwt";
 import { setUserId } from "../../services/identityService";
 
-
 const Login = () => {
   const [nationalIdentity, setNationalIdentity] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    try {
+    try { 
       const userData: LoginRequest = { nationalIdentity, password };
       const response = await authService.login(userData);
       console.log("response", response);
       console.log("headers", response.headers);
       dispatch(authActions.isAuthenticated(true));
       const decodedToken = parseJwt(response.accessToken.token);
-      const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+      const userId =
+        decodedToken[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ];
       setUserId(userId);
       console.log("userId", userId);
-      navigate("/home");
+      // navigate("/");
     } catch (error: any) {
       if (error.isAxiosError) {
         console.error("Ağ hatası:", error.message);
@@ -36,8 +39,7 @@ const Login = () => {
         console.error("Diğer hata:", error);
       }
     }
-
-    };
+  };
 
   return (
     <Container>

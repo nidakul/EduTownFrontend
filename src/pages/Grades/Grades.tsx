@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import gradeTypeService from "../../services/gradeTypeService";
 import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
+import { authActions } from "../../store/auth/authSlice";
 
 type Props = {};
 
@@ -23,16 +24,20 @@ const Grades = (props: Props) => {
   const userId = getUserId();
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user.user);
+  console.log("user", user);
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   console.log("gradeType ", gradeType);
+  
+  
   const fetchGradeType = async () => {
     try {
       const response = await gradeTypeService.getList();
       setGradeType(response.data.items);
     } catch (error) {
-      console.error("GradeType verisi alınamadı:", error);
+      console.error("Failed to fetch gradeTypes:", error);
     }
   };
+
 
   const fetchStudentGrade = async () => {
     try {
@@ -47,9 +52,18 @@ const Grades = (props: Props) => {
         console.log("userData", userData);
       }
     } catch (error) {
-      console.error("Veri alınamadı:", error);
+      console.error("Failed to fetch userGrades", error);
     }
   };
+
+  function createArrayForGradeCount(gradeCount: number): number[] {
+    const gradeCountArray = Array.from(Array(gradeCount).keys()).map(
+      (index) => index + 1
+    );
+    console.log("gradeCountArray", gradeCountArray);
+    return gradeCountArray;
+  }
+
 
   useEffect(() => {
     fetchStudentGrade();
@@ -85,7 +99,6 @@ const Grades = (props: Props) => {
               <thead className="grades">
                 <tr>
                   {gradeType.map((type, typeIndex) => (
-                    //ayrı bir component ile yönet burayı!!! colspan'i veritabanından çek
                     <th
                       key={typeIndex}
                       colSpan={type.gradeCount}
@@ -100,8 +113,8 @@ const Grades = (props: Props) => {
                   {gradeType.map((type, typeIndex) => (
                     <React.Fragment key={typeIndex}>
                       {/* create array for gradeCount*/}
-                      {Array.from(Array(type.gradeCount).keys()).map(
-                        (index) => (
+                      {createArrayForGradeCount(type.gradeCount).map(
+                        (number, index) => (
                           <th key={index}>{index + 1}</th>
                         )
                       )}
@@ -109,32 +122,38 @@ const Grades = (props: Props) => {
                   ))}
                 </tr>
               </thead>
-
-              {user &&
-                user.grade.studentGrades &&
-                user.grade.studentGrades.length > 0 && (
-                  <tbody>
-                    {user.grade.studentGrades.map((studentGrade: any) => (
-                      <tr key={studentGrade.lessonName}>
-                        <td>{studentGrade.lessonName}</td>
-                        {studentGrade.grades.map(
-                          (grade: any, index: number) => (
-                            <React.Fragment key={index}>
-                              {grade.gradesDto.map(
-                                (gradeDto: any, gradeIndex: number) => (
-                                  <>
-                                    {/* <td key={1}>{gradeDto.grade}</td> */}
-                                    <td key={gradeIndex}>{gradeDto.grade}</td>
-                                  </>
-                                )
-                              )}
-                            </React.Fragment>
-                          )
-                        )}
-                      </tr>
-                    ))}
-                  </tbody>
-                )}
+              <tbody>
+                {user.grade.studentGrades.map((studentGrade: any) => (
+                  <tr key={studentGrade.lessonName}>
+                    <td>{studentGrade.lessonName}</td>
+                    {gradeType.map((type) => {
+                      const matchingGrade = studentGrade.grades.find(
+                        (grade: any) => grade.gradeTypeName === type.name
+                      );
+                      if (matchingGrade) {
+                        return Array.from(Array(type.gradeCount).keys()).map(
+                          (index) => {
+                            const matchingGradeDto =
+                              matchingGrade.gradesDto.find(
+                                (gradeDto: any) =>
+                                  gradeDto.examCount - 1 === index
+                              );
+                            return (
+                              <td key={index}>
+                                {matchingGradeDto ? matchingGradeDto.grade : ""}
+                              </td>
+                            );
+                          }
+                        );
+                      } else {
+                        return Array.from(Array(type.gradeCount).keys()).map(
+                          (index) => <td key={index}></td>
+                        );
+                      }
+                    })}
+                  </tr>
+                ))}
+              </tbody>
             </Table>
           )}
       </Card>

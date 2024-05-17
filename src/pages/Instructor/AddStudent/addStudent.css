@@ -1,0 +1,28 @@
+.form-add-student {
+  border: 2px solid #a0dbcc !important;
+  border-radius: 10px !important;
+  height: 450px !important;
+  width: 80%;
+  padding: 20px;
+}
+
+.add-student-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.add-student-container .form-control {
+  margin-bottom: 18px;
+}
+
+.add-student-button {
+  text-align: end;
+}
+
+.form-add-student .form-select {
+  border: 3px solid #a0dbcc !important;
+  border-radius: 10px !important;
+
+}
+

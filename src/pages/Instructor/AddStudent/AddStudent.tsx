@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./addStudent.css";
+import GeneratePassword from "../../../components/GeneratePassword/GeneratePassword";
 
 type Props = {};
 
 const AddStudent = (props: Props) => {
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+
   return (
     <Container className="add-student-container">
       <Form className="form-add-student">
@@ -82,11 +87,16 @@ const AddStudent = (props: Props) => {
             <Form.Control type="date"></Form.Control>
           </Col>
         </Form.Group>
-        <Form.Group className="add-student-button">
-          <Button type="button" className="form-btn">
-            Giriş
+        <Form.Group className="generate-password-button">
+          <Button type="button" className="form-btn" onClick={handleShow}>
+            Şifre Al
           </Button>
+          <GeneratePassword show={show} handleClose={handleClose} />
         </Form.Group>
+        <Form.Group>
+          {/* Oluşturulan Şifre: {password} */}
+        </Form.Group>
+
       </Form>
     </Container>
   );

@@ -1,12 +1,23 @@
 export function generatePassword() {
   let pass = "";
-  const str =
-    "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const passwordLength = 6;
+  const lowercase = "abcdefghijklmnopqrstuvwxyz";
+  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  // const symbols = "!@#$%^&*()";
+  const symbols = "#?!@$%^&*-";
+  const allChars = lowercase + uppercase + numbers + symbols;
+  const passwordLength = 8;
 
-  for (let i = 0; i < passwordLength; i++) {
-    let randomNumber = Math.floor(Math.random() * str.length);
-    pass += str.charAt(randomNumber);
+  pass += lowercase.charAt(Math.floor(Math.random() * lowercase.length));
+  pass += uppercase.charAt(Math.floor(Math.random() * uppercase.length));
+  pass += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  pass += symbols.charAt(Math.floor(Math.random() * symbols.length));
+
+  for (let i = 4; i < passwordLength; i++) {
+    let randomNumber = Math.floor(Math.random() * allChars.length);
+    pass += allChars.charAt(randomNumber);
   }
+  // pass = pass.split('').sort(function(){return 0.5-Math.random()}).join('');
+
   return pass;
 }

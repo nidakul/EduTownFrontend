@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, ModalBody } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import "./generatePassword.css";
 import { generatePassword } from "../../utilities/Constants/generatePassword";
 
 type Props = {
   show: boolean;
   handleClose: () => void;
+  setGeneratedPassword: (password: string) => void;
 };
 
 const GeneratePassword = (props: Props) => {
@@ -13,7 +14,9 @@ const GeneratePassword = (props: Props) => {
 
   useEffect(() => {
     if (props.show) {
-      setPassword(generatePassword());
+      const generatedPassword = generatePassword();
+      setPassword(generatedPassword);
+      props.setGeneratedPassword(generatedPassword);
     }
   }, [props.show]);
   return (
@@ -27,10 +30,7 @@ const GeneratePassword = (props: Props) => {
       </Modal.Header>
       <Modal.Body>{password}</Modal.Body>
       <Modal.Footer>
-        <Button
-          className="form-btn"
-          onClick={props.handleClose}
-        >
+        <Button className="form-btn" onClick={props.handleClose}>
           Kapat
         </Button>
       </Modal.Footer>

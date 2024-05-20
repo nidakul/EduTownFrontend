@@ -7,6 +7,7 @@ type Props = {};
 
 const AddStudent = (props: Props) => {
   const [show, setShow] = useState(false);
+  const [password, setPassword] = useState("");
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
@@ -23,18 +24,17 @@ const AddStudent = (props: Props) => {
             </Form.Select>
           </Col>
           <Form.Label column sm={2}>
-            Kayıt Tarihi:
+            Şube
           </Form.Label>
           <Col sm={4}>
-            <Form.Control
-              type="date"
-              //   value = getDate()
-            ></Form.Control>
+            <Form.Select>
+              <option>Şube Seçiniz</option>
+            </Form.Select>
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
           <Form.Label column sm={2}>
-            TC Kimlik No:
+            TC Kimlik No
           </Form.Label>
           <Col sm={4}>
             <Form.Control
@@ -44,18 +44,19 @@ const AddStudent = (props: Props) => {
             ></Form.Control>
           </Col>
           <Form.Label column sm={2}>
-            Kayıt Tarihi:
+            Okul Numarası
           </Form.Label>
           <Col sm={4}>
             <Form.Control
-              type="date"
-              //   value = getDate()
+              type="text"
+              placeholder="Okul Numarası Giriniz"
+              // value =
             ></Form.Control>
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
           <Form.Label column sm={2}>
-            Ad:
+            Ad
           </Form.Label>
           <Col sm={4}>
             <Form.Control type="text" placeholder="Ad Giriniz"></Form.Control>
@@ -91,12 +92,13 @@ const AddStudent = (props: Props) => {
           <Button type="button" className="form-btn" onClick={handleShow}>
             Şifre Al
           </Button>
-          <GeneratePassword show={show} handleClose={handleClose} />
+          <GeneratePassword
+            show={show}
+            handleClose={handleClose}
+            setGeneratedPassword={setPassword}
+          />
         </Form.Group>
-        <Form.Group>
-          {/* Oluşturulan Şifre: {password} */}
-        </Form.Group>
-
+        {password && <Form.Group>Oluşturulan Şifre: {password}</Form.Group>}
       </Form>
     </Container>
   );

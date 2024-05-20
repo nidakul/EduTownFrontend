@@ -22,7 +22,8 @@
 
 .form-add-student .form-select {
   border: 3px solid #a0dbcc !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
+  margin-bottom: 18px;
+
 
 }
-

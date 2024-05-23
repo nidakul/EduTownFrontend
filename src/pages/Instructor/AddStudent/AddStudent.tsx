@@ -14,9 +14,15 @@ const AddStudent = (props: Props) => {
   return (
     <Container className="add-student-container">
       <Form className="form-add-student">
+        <div className="add-student-image">
+          <img
+            className="img-fluid rounded"
+            src="https://media.istockphoto.com/id/1318858332/tr/foto%C4%9Fraf/ofiste-poz-veren-g%C3%BCl%C3%BCmseyen-kad%C4%B1n-%C3%A7al%C4%B1%C5%9Fan%C4%B1n-vesikal%C4%B1k-portresi.jpg?s=1024x1024&w=is&k=20&c=9fZmmIVi9BzG2-Bk3VEoyPqqYp0G-bZP9W7qtAY7V_w="
+          />
+        </div>
         <Form.Group as={Row}>
           <Form.Label column sm={2}>
-            Sınıf
+            Sınıf / Cinsiyette ekle
           </Form.Label>
           <Col sm={4}>
             <Form.Select>

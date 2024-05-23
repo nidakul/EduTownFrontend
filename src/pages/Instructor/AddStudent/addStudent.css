@@ -1,7 +1,7 @@
 .form-add-student {
   border: 2px solid #a0dbcc !important;
   border-radius: 10px !important;
-  height: 450px !important;
+  height: 550px !important;
   width: 80%;
   padding: 20px;
 }
@@ -24,6 +24,10 @@
   border: 3px solid #a0dbcc !important;
   border-radius: 20px !important;
   margin-bottom: 18px;
+}
 
-
+.add-student-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }

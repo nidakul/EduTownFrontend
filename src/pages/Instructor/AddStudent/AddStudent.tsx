@@ -2,18 +2,53 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./addStudent.css";
 import GeneratePassword from "../../../components/GeneratePassword/GeneratePassword";
+import studentService from "../../../services/studentService";
 
 type Props = {};
 
 const AddStudent = (props: Props) => {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    studentNo: 0,
+    schoolId: 1,
+    classroomId: 1,
+    nationalIdentity: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    birthdate: new Date(),
+    birthplace: "",
+    branch: "",
+    imageUrl: "",
+  });
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      await studentService.addStudent({ ...formData });
+      console.log("Öğrenci başarıyla eklendi!");
+    } catch (error) {
+      console.log("Öğrenci eklenirken bir hata oluştu.");
+    }
+  };
 
   return (
     <Container className="add-student-container">
-      <Form className="form-add-student">
+      <Form className="form-add-student" onSubmit={handleSubmit}>
         <div className="add-student-image">
           <img
             className="img-fluid rounded"
@@ -22,10 +57,14 @@ const AddStudent = (props: Props) => {
         </div>
         <Form.Group as={Row}>
           <Form.Label column sm={2}>
-            Sınıf / Cinsiyette ekle
+            Sınıf
           </Form.Label>
           <Col sm={4}>
-            <Form.Select>
+            <Form.Select
+              name="classroomId"
+              value={formData.classroomId}
+              onChange={handleChange}
+            >
               <option>Sınıf Seçiniz</option>
             </Form.Select>
           </Col>
@@ -33,7 +72,11 @@ const AddStudent = (props: Props) => {
             Şube
           </Form.Label>
           <Col sm={4}>
-            <Form.Select>
+            <Form.Select
+              name="branch"
+              value={formData.branch}
+              onChange={handleChange}
+            >
               <option>Şube Seçiniz</option>
             </Form.Select>
           </Col>
@@ -46,7 +89,9 @@ const AddStudent = (props: Props) => {
             <Form.Control
               type="text"
               placeholder="TC Kimlik No Giriniz"
-              // value =
+              name="nationalIdentity"
+              value={formData.nationalIdentity}
+              onChange={handleChange}
             ></Form.Control>
           </Col>
           <Form.Label column sm={2}>
@@ -56,7 +101,9 @@ const AddStudent = (props: Props) => {
             <Form.Control
               type="text"
               placeholder="Okul Numarası Giriniz"
-              // value =
+              name="studentNo"
+              value={formData.studentNo}
+              onChange={handleChange}
             ></Form.Control>
           </Col>
         </Form.Group>
@@ -65,7 +112,13 @@ const AddStudent = (props: Props) => {
             Ad
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="text" placeholder="Ad Giriniz"></Form.Control>
+            <Form.Control
+              type="text"
+              placeholder="Ad Giriniz"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+            ></Form.Control>
           </Col>
           <Form.Label column sm={2}>
             Soyad:
@@ -74,6 +127,9 @@ const AddStudent = (props: Props) => {
             <Form.Control
               type="text"
               placeholder="Soyad Giriniz"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
             ></Form.Control>
           </Col>
         </Form.Group>
@@ -85,13 +141,41 @@ const AddStudent = (props: Props) => {
             <Form.Control
               type="text"
               placeholder="Doğum Yeri Giriniz"
+              name="birthplace"
+              value={formData.birthplace}
+              onChange={handleChange}
             ></Form.Control>
           </Col>
           <Form.Label column sm={2}>
             Doğum Tarihi:
           </Form.Label>
           <Col sm={4}>
-            <Form.Control type="date"></Form.Control>
+            <Form.Control
+              type="date"
+              name="birthdate"
+              value={formData.birthdate.toISOString().split("T")[0]}
+              onChange={handleChange}
+            ></Form.Control>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row}>
+          <Form.Label column sm={2}>
+            Cinsiyet
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Select>
+              <option>Cinsiyet Seçiniz</option>
+              <option>Kadın</option>
+              <option>Erkek</option>
+            </Form.Select>
+          </Col>
+          <Form.Label column sm={2}>
+            Gir bişey
+          </Form.Label>
+          <Col sm={4}>
+            <Form.Select>
+              <option>Gir bişey</option>
+            </Form.Select>
           </Col>
         </Form.Group>
         <Form.Group className="generate-password-button">
@@ -105,6 +189,12 @@ const AddStudent = (props: Props) => {
           />
         </Form.Group>
         {password && <Form.Group>Oluşturulan Şifre: {password}</Form.Group>}
+        <Form.Group>
+          <Button type="submit" className="form-btn">
+            Kaydet
+          </Button>
+          {message && <div>{message}</div>}
+        </Form.Group>
       </Form>
     </Container>
   );

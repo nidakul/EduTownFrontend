@@ -2,7 +2,7 @@ export interface AddStudent{
     studentNo: number;
     schoolId: number;
     classroomId: number;
-    nationalIdentity: number;
+    nationalIdentity: string;
     password: string;
     firstName: string;
     lastName: string;
@@ -11,4 +11,5 @@ export interface AddStudent{
     birthplace: string;
     branch: string;
     imageUrl: string;
-}
+} 
+// cinsiyet ekle

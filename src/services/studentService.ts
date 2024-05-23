@@ -11,4 +11,4 @@ addStudent(userData: AddStudent ){
 
 }
 
-export default new StudentService(); 
+export default new StudentService();  

@@ -1,17 +1,17 @@
 .form-add-student {
   border: 2px solid #a0dbcc !important;
   border-radius: 10px !important;
-  height: 550px !important;
+  height: 620px !important;
   width: 80%;
-  padding: 20px;
+  padding: 30px;
 }
 
 .add-student-container {
   display: flex;
   justify-content: center;
-  margin-top: 10%;
+  margin-top: 5%;
 }
-
+ 
 .add-student-container .form-control {
   margin-bottom: 18px;
 }
@@ -30,4 +30,9 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.submit-button{
+  display: flex;
+  justify-content: center;
 }

@@ -10,7 +10,7 @@ const AddStudent = (props: Props) => {
   const [show, setShow] = useState(false);
   const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
-    studentNo: 0,
+    studentNo: "",
     schoolId: 1,
     classroomId: 1,
     nationalIdentity: "",
@@ -26,7 +26,6 @@ const AddStudent = (props: Props) => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-  const [message, setMessage] = useState("");
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -38,13 +37,17 @@ const AddStudent = (props: Props) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (!password) {
+      console.log("şifre alınmadı!");
+    }
     try {
       await studentService.addStudent({ ...formData });
       console.log("Öğrenci başarıyla eklendi!");
     } catch (error) {
-      console.log("Öğrenci eklenirken bir hata oluştu.");
+      console.log("Öğrenci eklenirken bir hata oluştu.", error);
     }
   };
+  console.log(formData);
 
   return (
     <Container className="add-student-container">
@@ -78,6 +81,8 @@ const AddStudent = (props: Props) => {
               onChange={handleChange}
             >
               <option>Şube Seçiniz</option>
+              <option>A</option>
+              <option>B</option>
             </Form.Select>
           </Col>
         </Form.Group>
@@ -188,13 +193,16 @@ const AddStudent = (props: Props) => {
             setGeneratedPassword={setPassword}
           />
         </Form.Group>
-        {password && <Form.Group>Oluşturulan Şifre: {password}</Form.Group>}
-        <Form.Group>
-          <Button type="submit" className="form-btn">
-            Kaydet
-          </Button>
-          {message && <div>{message}</div>}
-        </Form.Group>
+        {password && (
+          <Form.Group>
+            Oluşturulan Şifre: {password}
+            <Form.Group className="submit-button">
+              <Button type="submit" className="form-btn">
+                Kaydet
+              </Button>
+            </Form.Group>
+          </Form.Group>
+        )}
       </Form>
     </Container>
   );

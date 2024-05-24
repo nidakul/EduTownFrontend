@@ -1,5 +1,5 @@
 export interface AddStudent{
-    studentNo: number;
+    studentNo: string;
     schoolId: number;
     classroomId: number;
     nationalIdentity: string;

@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import React from "react";
 import gradeTypeService from "../../services/gradeTypeService";
 import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
-import { authActions } from "../../store/auth/authSlice";
 
 type Props = {};
 
@@ -28,7 +27,6 @@ const Grades = (props: Props) => {
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   console.log("gradeType ", gradeType);
   
-  
   const fetchGradeType = async () => {
     try {
       const response = await gradeTypeService.getList();
@@ -37,6 +35,8 @@ const Grades = (props: Props) => {
       console.error("Failed to fetch gradeTypes:", error);
     }
   };
+
+
 
 
   const fetchStudentGrade = async () => {
@@ -48,8 +48,8 @@ const Grades = (props: Props) => {
           ...response.data,
           grade: grades.data,
         };
+        console.log("grade", userData.grade);
         dispatch(setUser(userData));
-        console.log("userData", userData);
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
@@ -93,6 +93,7 @@ const Grades = (props: Props) => {
         </Row>
 
         {user &&
+        user.grade &&
           user.grade.studentGrades &&
           user.grade.studentGrades.length > 0 && (
             <Table striped bordered hover>

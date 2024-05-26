@@ -35,9 +35,18 @@ const AddStudent = (props: Props) => {
     }));
   };
 
+  const setGeneratedPassword = (generatedPassword: string) => {
+    setPassword(generatedPassword);
+    setFormData((prevData) => ({
+      ...prevData,
+      password: generatedPassword,
+    }));
+  };
+
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!password) {
+    if (!formData.password) {
       console.log("şifre alınmadı!");
     }
     try {
@@ -48,6 +57,7 @@ const AddStudent = (props: Props) => {
     }
   };
   console.log(formData);
+  console.log(password);
 
   return (
     <Container className="add-student-container">
@@ -190,7 +200,7 @@ const AddStudent = (props: Props) => {
           <GeneratePassword
             show={show}
             handleClose={handleClose}
-            setGeneratedPassword={setPassword}
+            setGeneratedPassword={setGeneratedPassword}
           />
         </Form.Group>
         {password && (

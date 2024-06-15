@@ -1,8 +1,5 @@
-.rounded-circle {
-  border-radius: 50%;
-}
 
-.sidebar-menu {
+.sidebar-menu { 
   padding-top: 0;
   flex-direction: column;
 }

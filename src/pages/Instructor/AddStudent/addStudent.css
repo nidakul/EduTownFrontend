@@ -36,3 +36,8 @@
   display: flex;
   justify-content: center;
 }
+
+.profile-image-btn{
+  background-color: #fff !important;
+  border-color: #fff !important;
+}

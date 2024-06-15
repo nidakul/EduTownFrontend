@@ -53,7 +53,7 @@ const Grades = (props: Props) => {
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
-    }
+    } 
   };
 
   function createArrayForGradeCount(gradeCount: number): number[] {
@@ -131,13 +131,13 @@ const Grades = (props: Props) => {
                       const matchingGrade = studentGrade.grades.find(
                         (grade: any) => grade.gradeTypeName === type.name
                       );
-                      if (matchingGrade) {
+                      if (matchingGrade) { 
                         return Array.from(Array(type.gradeCount).keys()).map(
                           (index) => {
                             const matchingGradeDto =
                               matchingGrade.gradesDto.find(
                                 (gradeDto: any) =>
-                                  gradeDto.examCount - 1 === index
+                                  gradeDto.examCount - 1 === index 
                               );
                             return (
                               <td key={index}>
@@ -161,4 +161,6 @@ const Grades = (props: Props) => {
     </Container>
   );
 };
-export default Grades;
+export default Grades; 
+
+

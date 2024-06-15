@@ -21,17 +21,17 @@ const RouteDefinitions = () => {
       <div className="main-content">
         {isAuthenticated && <Sidebar />}
         <div className="home-container">
-          <Routes> 
+          <Routes>
             {!isAuthenticated ? (
               <Route path="/login" element={<Login />} />
             ) : (
               <>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<AddStudent />} /> 
                 <Route path="/grades" element={<Grades />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Navigate to="/" />} />
               </>
-            )}
+            )} 
           </Routes>
         </div>
       </div>

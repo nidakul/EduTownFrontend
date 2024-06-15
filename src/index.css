@@ -47,3 +47,10 @@ align-items: flex-end !important;
   margin-top: 5px !important;
   margin-left: 90px;
 }
+
+/* profile image */
+.rounded-circle {
+  border-radius: 50%;
+}
+/* profile image */
+

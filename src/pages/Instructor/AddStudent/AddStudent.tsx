@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./addStudent.css";
 import GeneratePassword from "../../../components/GeneratePassword/GeneratePassword";
@@ -11,7 +11,7 @@ const AddStudent = (props: Props) => {
   const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
     studentNo: "",
-    schoolId: 1,
+    schoolId: 2,
     classroomId: 1,
     nationalIdentity: "",
     password: "",
@@ -24,15 +24,17 @@ const AddStudent = (props: Props) => {
     imageUrl: "",
   });
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    const { name, value,  } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }))
   };
 
   const setGeneratedPassword = (generatedPassword: string) => {
@@ -63,9 +65,18 @@ const AddStudent = (props: Props) => {
     <Container className="add-student-container">
       <Form className="form-add-student" onSubmit={handleSubmit}>
         <div className="add-student-image">
-          <img
-            className="img-fluid rounded"
-            src="https://media.istockphoto.com/id/1318858332/tr/foto%C4%9Fraf/ofiste-poz-veren-g%C3%BCl%C3%BCmseyen-kad%C4%B1n-%C3%A7al%C4%B1%C5%9Fan%C4%B1n-vesikal%C4%B1k-portresi.jpg?s=1024x1024&w=is&k=20&c=9fZmmIVi9BzG2-Bk3VEoyPqqYp0G-bZP9W7qtAY7V_w="
+          <Button className="profile-image-btn">
+            <img
+              src="/images/userIcon.svg"
+              className="img-fluid rounded-circle"
+            />
+          </Button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            name="imageUrl"
+            onChange={handleChange}
           />
         </div>
         <Form.Group as={Row}>

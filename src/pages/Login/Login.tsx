@@ -13,7 +13,7 @@ const Login = () => {
   const [nationalIdentity, setNationalIdentity] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ const Login = () => {
       console.log("response", response);
       console.log("headers", response.headers);
       dispatch(authActions.isAuthenticated(true));
-      const decodedToken = parseJwt(response.accessToken.token);
+      const decodedToken = parseJwt(response.accessToken.token); 
       const userId =
         decodedToken[
           "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"

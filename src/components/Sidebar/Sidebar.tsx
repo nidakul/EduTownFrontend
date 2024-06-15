@@ -14,7 +14,6 @@ import {
 import { Container } from "react-bootstrap";
 import IconTemp from "../../utilities/Helpers/iconTemp";
 import { useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   const user = useSelector((state: any) => state.user.user);
@@ -25,7 +24,7 @@ const Sidebar = () => {
       </SidebarMenuHeader>
       <SidebarMenuBody>
         <div className="sidebar-menu-body-items">
-          <img
+          <img 
             src={user && user.imageUrl}
             className="img-fluid rounded-circle"
           />

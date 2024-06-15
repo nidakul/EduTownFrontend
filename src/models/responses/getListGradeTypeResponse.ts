@@ -7,3 +7,4 @@ export interface GetListGradeTypeResponse{
 export interface GetListGradeTypeList{
     items: GetListGradeTypeResponse[];
 }
+

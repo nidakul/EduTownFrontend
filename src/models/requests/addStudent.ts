@@ -1,5 +1,20 @@
-export interface AddStudent{
-    studentNo: string;
+// export interface AddStudent{
+//     studentNo: string;
+//     schoolId: number;
+//     classroomId: number;
+//     nationalIdentity: string;
+//     password: string;
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     birthdate: Date;
+//     birthplace: string;
+//     branch: string;
+//     imageUrl: string;
+// } 
+// // cinsiyet ekle
+
+export interface UserForRegisterCommand {
     schoolId: number;
     classroomId: number;
     nationalIdentity: string;
@@ -7,9 +22,13 @@ export interface AddStudent{
     firstName: string;
     lastName: string;
     email: string;
+    imageUrl?: string;
+}
+
+export interface AddStudent {
+    studentNo: string;
     birthdate: Date;
     birthplace: string;
     branch: string;
-    imageUrl: string;
-} 
-// cinsiyet ekle
+    userForRegisterCommand: UserForRegisterCommand;
+}

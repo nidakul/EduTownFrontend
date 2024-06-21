@@ -11,17 +11,19 @@ const AddStudent = (props: Props) => {
   const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
     studentNo: "",
-    schoolId: 2,
-    classroomId: 1,
-    nationalIdentity: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    email: "",
     birthdate: new Date(),
     birthplace: "",
     branch: "",
-    imageUrl: "",
+    userForRegisterCommand: {
+      schoolId: 2,
+      classroomId: 1,
+      nationalIdentity: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      imageUrl: "",
+    },
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -29,26 +31,39 @@ const AddStudent = (props: Props) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const handleChange = (e: any) => {
-    const { name, value,  } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
+    if (name in formData.userForRegisterCommand) {
+      setFormData((prevData) => ({
+        ...prevData,
+        userForRegisterCommand: {
+          ...prevData.userForRegisterCommand,
+          [name]: value,
+        },
+      }));
+    } else {
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
-      }))
+      }));
+    }
   };
 
   const setGeneratedPassword = (generatedPassword: string) => {
     setPassword(generatedPassword);
     setFormData((prevData) => ({
       ...prevData,
-      password: generatedPassword,
+      userForRegisterCommand: {
+        ...prevData.userForRegisterCommand,
+        password: generatedPassword,
+      },
     }));
   };
 
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!formData.password) {
+    if (!formData.userForRegisterCommand.password) {
       console.log("şifre alınmadı!");
     }
     try {
@@ -86,7 +101,7 @@ const AddStudent = (props: Props) => {
           <Col sm={4}>
             <Form.Select
               name="classroomId"
-              value={formData.classroomId}
+              value={formData.userForRegisterCommand.classroomId}
               onChange={handleChange}
             >
               <option>Sınıf Seçiniz</option>
@@ -116,7 +131,7 @@ const AddStudent = (props: Props) => {
               type="text"
               placeholder="TC Kimlik No Giriniz"
               name="nationalIdentity"
-              value={formData.nationalIdentity}
+              value={formData.userForRegisterCommand.nationalIdentity}
               onChange={handleChange}
             ></Form.Control>
           </Col>
@@ -142,7 +157,7 @@ const AddStudent = (props: Props) => {
               type="text"
               placeholder="Ad Giriniz"
               name="firstName"
-              value={formData.firstName}
+              value={formData.userForRegisterCommand.firstName}
               onChange={handleChange}
             ></Form.Control>
           </Col>
@@ -154,7 +169,7 @@ const AddStudent = (props: Props) => {
               type="text"
               placeholder="Soyad Giriniz"
               name="lastName"
-              value={formData.lastName}
+              value={formData.userForRegisterCommand.lastName}
               onChange={handleChange}
             ></Form.Control>
           </Col>

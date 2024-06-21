@@ -28,7 +28,7 @@ const RouteDefinitions = () => {
               <Route path="/login" element={<Login />} />
             ) : (
               <>
-                <Route path="/" element={<ExamDate />} /> 
+                <Route path="/" element={<AddStudent />} /> 
                 <Route path="/grades" element={<Grades />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Navigate to="/" />} />

@@ -31,6 +31,14 @@ const AddStudent = (props: Props) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+  // const handleChange = (e: any) => {
+  //   const { name, value,  } = e.target;
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       [name]: value,
+  //     }))
+  // };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
@@ -54,12 +62,22 @@ const AddStudent = (props: Props) => {
     setPassword(generatedPassword);
     setFormData((prevData) => ({
       ...prevData,
-      userForRegisterCommand: {
-        ...prevData.userForRegisterCommand,
-        password: generatedPassword,
-      },
+      password: generatedPassword,
     }));
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files[0]) {
+      setFormData((prevData) => ({
+        ...prevData,
+        userForRegisterCommand: {
+          ...prevData.userForRegisterCommand,
+          imageUrl: URL.createObjectURL(files[0])
+        }
+      }))
+    }
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -80,9 +98,10 @@ const AddStudent = (props: Props) => {
     <Container className="add-student-container">
       <Form className="form-add-student" onSubmit={handleSubmit}>
         <div className="add-student-image">
-          <Button className="profile-image-btn">
+          <Button className="profile-image-btn" 
+          onClick={() => fileInputRef.current && fileInputRef.current.click()}>
             <img
-              src="/images/userIcon.svg"
+              src={formData.userForRegisterCommand.imageUrl || "/images/userIcon.svg"}
               className="img-fluid rounded-circle"
             />
           </Button>
@@ -91,7 +110,7 @@ const AddStudent = (props: Props) => {
             ref={fileInputRef}
             style={{ display: "none" }}
             name="imageUrl"
-            onChange={handleChange}
+            onChange={handleFileChange}
           />
         </div>
         <Form.Group as={Row}>

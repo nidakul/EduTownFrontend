@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./addStudent.css";
 import GeneratePassword from "../../../components/GeneratePassword/GeneratePassword";
 import studentService from "../../../services/studentService";
+import FormattedDate from "../../../utilities/Helpers/formattedDate";
 
 type Props = {};
 
@@ -93,6 +94,7 @@ const AddStudent = (props: Props) => {
   };
   console.log(formData);
   console.log(password);
+  console.log(formData.birthdate);
 
   return (
     <Container className="add-student-container">
@@ -203,7 +205,7 @@ const AddStudent = (props: Props) => {
               placeholder="Doğum Yeri Giriniz"
               name="birthplace"
               value={formData.birthplace}
-              onChange={handleChange}
+              onChange={handleChange} 
             ></Form.Control>
           </Col>
           <Form.Label column sm={2}>
@@ -213,7 +215,7 @@ const AddStudent = (props: Props) => {
             <Form.Control
               type="date"
               name="birthdate"
-              value={formData.birthdate.toISOString().split("T")[0]}
+              value={formData.birthdate.toISOString()} 
               onChange={handleChange}
             ></Form.Control>
           </Col>

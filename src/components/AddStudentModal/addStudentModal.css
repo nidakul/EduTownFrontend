@@ -10,4 +10,16 @@
 .container{
     margin-top: 20px;
     font-size: 17px;
+    
 }
+
+.modal{
+    margin-top: 6%;
+}
+
+.add-student-modal .row {
+    display: flex;
+    justify-content: flex-start; /* veya center */
+    align-items: center; /* veya flex-start, hizalamayı istediğiniz şekilde ayarlayabilirsiniz */
+}
+

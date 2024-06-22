@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./addStudent.css";
 import GeneratePassword from "../../../components/GeneratePassword/GeneratePassword";
-import studentService from "../../../services/studentService";
 import AddStudentModal from "../../../components/AddStudentModal/AddStudentModal";
 
 type Props = {};
@@ -32,14 +31,6 @@ const AddStudent = (props: Props) => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-
-  // const handleChange = (e: any) => {
-  //   const { name, value,  } = e.target;
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       [name]: value,
-  //     }))
-  // };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -85,25 +76,14 @@ const AddStudent = (props: Props) => {
     }
   }
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    if (!formData.userForRegisterCommand.password) {
-      console.log("şifre alınmadı!");
-    }
-    try {
-      await studentService.addStudent({ ...formData });
-      console.log("Öğrenci başarıyla eklendi!");
-    } catch (error) {
-      console.log("Öğrenci eklenirken bir hata oluştu.", error);
-    }
-  };
+ 
   console.log(formData);
   console.log(password);
   console.log(formData.birthdate);
 
   return (
     <Container className="add-student-container">
-      <Form className="form-add-student" onSubmit={handleSubmit}>
+      <Form className="form-add-student">
         <div className="add-student-image">
           <Button className="profile-image-btn"
             onClick={() => fileInputRef.current && fileInputRef.current.click()}>
@@ -263,10 +243,8 @@ const AddStudent = (props: Props) => {
         {password && (
           <Form.Group>
             Oluşturulan Şifre: {password}
-            <Form.Group className="submit-button">
-              {/* <Button type="submit" className="form-btn"> */}
+            <Form.Group className="save-button">
               <AddStudentModal studentData={formData} />
-              {/* </Button> */}
             </Form.Group>
           </Form.Group>
         )}

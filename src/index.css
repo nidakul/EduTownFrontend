@@ -48,9 +48,15 @@ align-items: flex-end !important;
   margin-left: 90px;
 }
 
+.form-close-btn{
+  background-color: white !important;
+  color: #000000 !important;
+  border-color: white !important;
+}
+
 /* profile image */
 .rounded-circle {
-  border-radius: 50%;
+  border-radius: 50%; 
 }
 /* profile image */
 

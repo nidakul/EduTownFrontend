@@ -3,7 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import "./addStudent.css";
 import GeneratePassword from "../../../components/GeneratePassword/GeneratePassword";
 import studentService from "../../../services/studentService";
-import FormattedDate from "../../../utilities/Helpers/formattedDate";
+import AddStudentModal from "../../../components/AddStudentModal/AddStudentModal";
 
 type Props = {};
 
@@ -24,6 +24,7 @@ const AddStudent = (props: Props) => {
       lastName: "",
       email: "",
       imageUrl: "",
+      gender: ""
     },
   });
 
@@ -63,9 +64,13 @@ const AddStudent = (props: Props) => {
     setPassword(generatedPassword);
     setFormData((prevData) => ({
       ...prevData,
-      password: generatedPassword,
+      userForRegisterCommand: {
+        ...prevData.userForRegisterCommand,
+        password: generatedPassword
+      }
     }));
   };
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -100,8 +105,8 @@ const AddStudent = (props: Props) => {
     <Container className="add-student-container">
       <Form className="form-add-student" onSubmit={handleSubmit}>
         <div className="add-student-image">
-          <Button className="profile-image-btn" 
-          onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+          <Button className="profile-image-btn"
+            onClick={() => fileInputRef.current && fileInputRef.current.click()}>
             <img
               src={formData.userForRegisterCommand.imageUrl || "/images/userIcon.svg"}
               className="img-fluid rounded-circle"
@@ -205,7 +210,7 @@ const AddStudent = (props: Props) => {
               placeholder="Doğum Yeri Giriniz"
               name="birthplace"
               value={formData.birthplace}
-              onChange={handleChange} 
+              onChange={handleChange}
             ></Form.Control>
           </Col>
           <Form.Label column sm={2}>
@@ -215,7 +220,7 @@ const AddStudent = (props: Props) => {
             <Form.Control
               type="date"
               name="birthdate"
-              value={formData.birthdate.toISOString()} 
+              value={formData.birthdate.toISOString().split('T')[0]}
               onChange={handleChange}
             ></Form.Control>
           </Col>
@@ -225,12 +230,17 @@ const AddStudent = (props: Props) => {
             Cinsiyet
           </Form.Label>
           <Col sm={4}>
-            <Form.Select>
+            <Form.Select
+              name="gender"
+              value={formData.userForRegisterCommand.gender}
+              onChange={handleChange}
+            >
               <option>Cinsiyet Seçiniz</option>
               <option>Kadın</option>
               <option>Erkek</option>
             </Form.Select>
           </Col>
+
           <Form.Label column sm={2}>
             Gir bişey
           </Form.Label>
@@ -254,9 +264,9 @@ const AddStudent = (props: Props) => {
           <Form.Group>
             Oluşturulan Şifre: {password}
             <Form.Group className="submit-button">
-              <Button type="submit" className="form-btn">
-                Kaydet
-              </Button>
+              {/* <Button type="submit" className="form-btn"> */}
+              <AddStudentModal studentData={formData} />
+              {/* </Button> */}
             </Form.Group>
           </Form.Group>
         )}

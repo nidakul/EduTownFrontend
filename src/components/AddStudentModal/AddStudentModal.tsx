@@ -47,7 +47,7 @@ const AddStudentModal = (props: Props) => {
                         <p>Sınıf/{branch}</p> 
                     </div>
                     <Container>
-                        <Row>
+                        <Row> 
                             <Col>
                                 <p>Tc Kimlik No: {userForRegisterCommand.nationalIdentity}</p>
                             </Col>

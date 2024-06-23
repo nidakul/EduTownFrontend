@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 import React from "react";
 import gradeTypeService from "../../services/gradeTypeService";
 import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
+import schoolService from "../../services/schoolService";
+import { GetClassesBySchoolId } from "../../models/responses/getClassesBySchoolId";
 
 type Props = {};
 
@@ -26,7 +28,9 @@ const Grades = (props: Props) => {
   console.log("user", user);
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   console.log("gradeType ", gradeType);
-  
+  const [schoolId, setSchoolId] = useState<number>();
+  const [classes, setClasses] = useState<GetClassesBySchoolId>();
+
   const fetchGradeType = async () => {
     try {
       const response = await gradeTypeService.getList();
@@ -36,24 +40,36 @@ const Grades = (props: Props) => {
     }
   };
 
+  console.log("schoolId", schoolId);
 
+  const fetchClasses = async (schoolId: number) => {
+    try{
+      const classes = await schoolService.getClassesBySchoolId(schoolId);
+      setClasses(classes.data);
+    }catch (error) {
+      console.error("Failed to fetch classes:", error);
+
+    }
+  }
 
 
   const fetchStudentGrade = async () => {
     try {
       if (userId) {
         const response = await userService.getUserDetailById(userId);
-        const grades = await userService.getStudentGrades(userId);
+        // const grades = await userService.getStudentGrades(userId);
         const userData = {
           ...response.data,
-          grade: grades.data,
+          // grade: grades.data,
         };
-        console.log("grade", userData.grade);
+        // console.log("grade", userData.grade);
         dispatch(setUser(userData));
+        setSchoolId(userData.schoolId);
+        console.log("schoolId2", schoolId);
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
-    } 
+    }
   };
 
   function createArrayForGradeCount(gradeCount: number): number[] {
@@ -69,6 +85,12 @@ const Grades = (props: Props) => {
     fetchStudentGrade();
     fetchGradeType();
   }, [dispatch, userId]);
+
+  useEffect(() => {
+    if (schoolId) {
+      fetchClasses(schoolId);
+    }
+  }, [schoolId]);
 
   return (
     <Container>
@@ -93,7 +115,7 @@ const Grades = (props: Props) => {
         </Row>
 
         {user &&
-        user.grade &&
+          user.grade &&
           user.grade.studentGrades &&
           user.grade.studentGrades.length > 0 && (
             <Table striped bordered hover>
@@ -131,13 +153,13 @@ const Grades = (props: Props) => {
                       const matchingGrade = studentGrade.grades.find(
                         (grade: any) => grade.gradeTypeName === type.name
                       );
-                      if (matchingGrade) { 
+                      if (matchingGrade) {
                         return Array.from(Array(type.gradeCount).keys()).map(
                           (index) => {
                             const matchingGradeDto =
                               matchingGrade.gradesDto.find(
                                 (gradeDto: any) =>
-                                  gradeDto.examCount - 1 === index 
+                                  gradeDto.examCount - 1 === index
                               );
                             return (
                               <td key={index}>
@@ -161,6 +183,6 @@ const Grades = (props: Props) => {
     </Container>
   );
 };
-export default Grades; 
+export default Grades;
 
 

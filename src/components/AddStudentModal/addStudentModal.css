@@ -17,9 +17,4 @@
     margin-top: 6%;
 }
 
-.add-student-modal .row {
-    display: flex;
-    justify-content: flex-start; /* veya center */
-    align-items: center; /* veya flex-start, hizalamayı istediğiniz şekilde ayarlayabilirsiniz */
-}
 

@@ -18,6 +18,7 @@ import gradeTypeService from "../../services/gradeTypeService";
 import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
 import schoolService from "../../services/schoolService";
 import { GetClassesBySchoolId } from "../../models/responses/getClassesBySchoolId";
+import lessonService from "../../services/lessonService";
 
 type Props = {};
 
@@ -29,7 +30,7 @@ const Grades = (props: Props) => {
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   console.log("gradeType ", gradeType);
   const [schoolId, setSchoolId] = useState<number>();
-  const [classes, setClasses] = useState<GetClassesBySchoolId>();
+  const [classes, setClasses] = useState<GetClassesBySchoolId | null>(null);
 
   const fetchGradeType = async () => {
     try {
@@ -43,14 +44,16 @@ const Grades = (props: Props) => {
   console.log("schoolId", schoolId);
 
   const fetchClasses = async (schoolId: number) => {
-    try{
+    try {
       const classes = await schoolService.getClassesBySchoolId(schoolId);
       setClasses(classes.data);
-    }catch (error) {
+    } catch (error) {
       console.error("Failed to fetch classes:", error);
 
     }
   }
+
+ 
 
 
   const fetchStudentGrade = async () => {
@@ -65,7 +68,9 @@ const Grades = (props: Props) => {
         // console.log("grade", userData.grade);
         dispatch(setUser(userData));
         setSchoolId(userData.schoolId);
-        console.log("schoolId2", schoolId);
+        // if (userData.schoolId) {
+        //   fetchClasses(userData.schoolId);
+        // }
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
@@ -99,9 +104,11 @@ const Grades = (props: Props) => {
         aria-label="Default select example"
       >
         <option>Sınıfı seçiniz</option>
-        <option value="1">8. Sınıf</option>
-        <option value="2">7. Sınıf</option>
-        <option value="3">6. Sınıf</option>
+        {classes && classes.classroomName.map((className, index) => (
+          <option key={index} value={className}>
+            {className}
+          </option>
+        ))}
       </Form.Select>
 
       <Card className="grades-card">

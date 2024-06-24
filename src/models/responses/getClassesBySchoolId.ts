@@ -1,4 +1,6 @@
 export interface GetClassesBySchoolId{
     schoolName: string;
-    classroomName: string;
+    classroomName: string[];
 }
+
+

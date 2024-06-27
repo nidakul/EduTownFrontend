@@ -72,12 +72,12 @@ const Grades = (props: Props) => {
     try {
       if (userId) {
         const response = await userService.getStudentDetailById(userId);
-        // const grades = await userService.getStudentGrades(userId);
+        const grades = await userService.getStudentGrades(userId);
         const userData = {
           ...response.data,
-          // grade: grades.data,
+          grade: grades.data,
         };
-        // console.log("grade", userData.grade);
+        // console.log("grade", userData.grade); 
         dispatch(setUser(userData));
         setSchoolId(userData.schoolId);
         setClassId(userData.classroomId);
@@ -118,8 +118,8 @@ const Grades = (props: Props) => {
     <Container>
       <Form.Select
         className="grades-select"
-        aria-label="Default select example"
-      // onChange={(e) => setClassId(Number(e.target.value))}
+        aria-label="Select className"
+        onChange={(e) => setClassId(Number(e.target.value))}
       >
         <option>Sınıfı seçiniz</option>
         {classes && classes.classroomName.map((className, index) => (
@@ -139,10 +139,7 @@ const Grades = (props: Props) => {
           </Col>
         </Row>
 
-        {/* {user &&
-          user.grade &&
-          user.grade.studentGrades &&
-          user.grade.studentGrades.length > 0 && ( */}
+
         <Table striped bordered hover>
           <thead className="grades">
             <tr>
@@ -157,62 +154,55 @@ const Grades = (props: Props) => {
               ))}
             </tr>
             <tr>
-              <td></td>
+              <th></th>
               {gradeType.map((type, typeIndex) => (
                 <div key={typeIndex}>
                   {/* create array for gradeCount*/}
                   {createArrayForGradeCount(type.gradeCount).map(
                     (number, index) => (
-                      <th key={index}>{index + 1}</th>
+                      <th key={index}>number</th>
                     )
                   )}
                 </div>
               ))}
             </tr>
+
           </thead>
           <tbody>
             {lessons && lessons.lessonName && lessons.lessonName.map((lessonName: string, index: number) => (
-              <>
-                <tr key={index}>
-                  <td>{lessonName}</td>
-                </tr>
-              </>
-            ))}
-          </tbody>
-          {/* <tbody>
-                {user.grade.studentGrades.map((studentGrade: any) => (
-                  <tr key={studentGrade.lessonName}>
-                    <td>{studentGrade.lessonName}</td>
-                    {gradeType.map((type) => {
-                      const matchingGrade = studentGrade.grades.find(
-                        (grade: any) => grade.gradeTypeName === type.name
-                      );
-                      if (matchingGrade) {
-                        return Array.from(Array(type.gradeCount).keys()).map(
-                          (index) => {
-                            const matchingGradeDto =
-                              matchingGrade.gradesDto.find(
-                                (gradeDto: any) =>
-                                  gradeDto.examCount - 1 === index
-                              );
-                            return (
-                              <td key={index}>
-                                {matchingGradeDto ? matchingGradeDto.grade : ""}
-                              </td>
-                            );
-                          }
-                        );
-                      } else {
-                        return Array.from(Array(type.gradeCount).keys()).map(
-                          (index) => <td key={index}></td>
-                        );
-                      }
-                    })}
-                  </tr>
+              <tr key={index}>
+                <td>{lessonName}</td>
+                {gradeType.map((type, typeIndex) => (
+                  <div key={typeIndex}>
+                    {createArrayForGradeCount(type.gradeCount).map(
+                      (number, index) => (
+                        <td key={index}>{/* Buraya öğrenci notunu ekleyebilirsiniz */}</td>
+                      )
+                    )}
+                  </div>
                 ))}
-              </tbody> */}
+              </tr>
+            ))}
+            {user &&
+              user.grade &&
+              user.grade.studentGrades &&
+              user.grade.studentGrades.length > 0 &&
+              user.grade.studentGrades.map((studentGrade: any, index: number) => (
+                <tr key={index}>
+                  <td>{studentGrade.lessonName}</td>
+                  {gradeType.map((type, typeIndex) => (
+                    <React.Fragment key={typeIndex}>
+                      {createArrayForGradeCount(type.gradeCount).map(
+                        (number, index) => (
+                          <td key={index}>{studentGrade.grade}</td>
+                        )
+                      )}
+                    </React.Fragment>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
         </Table>
-        {/* )} */}
       </Card>
     </Container>
   );

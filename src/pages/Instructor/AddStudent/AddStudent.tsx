@@ -76,7 +76,7 @@ const AddStudent = (props: Props) => {
     }
   }
 
- 
+
   console.log(formData);
   console.log(password);
   console.log(formData.birthdate);

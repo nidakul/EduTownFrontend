@@ -8,7 +8,7 @@ import { StudentGradesResponse } from "../models/responses/studentGradesResponse
 class UserService {
     apiUrl = BASE_API_URL + "Users";
 
-    getUserDetailById(userId: string) : Promise<AxiosResponse<StudentInformationResponse, any>>{
+    getStudentDetailById(userId: string) : Promise<AxiosResponse<StudentInformationResponse, any>>{
         return axiosInstance.get<StudentInformationResponse>(this.apiUrl + "/getStudentDetail/" + userId)
     }
     getStudentCertificate(userId: string): Promise<AxiosResponse<StudentCertificateResponse,any>>{

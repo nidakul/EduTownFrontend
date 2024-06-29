@@ -20,6 +20,8 @@ import schoolService from "../../services/schoolService";
 import { GetClassesBySchoolId } from "../../models/responses/getClassesBySchoolId";
 import lessonService from "../../services/lessonService";
 import { GetLessonsBySchoolIdAndClassIdResponse } from "../../models/responses/getLessonsBySchoolIdAndClassIdResponse";
+import termService from "../../services/termService";
+import { GetTermsResponse } from "../../models/responses/getTermsResponse";
 
 type Props = {};
 
@@ -34,6 +36,7 @@ const Grades = (props: Props) => {
   const [classId, setClassId] = useState<number>();
   const [classes, setClasses] = useState<GetClassesBySchoolId | null>(null);
   const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
+  const [terms, setTerms] = useState<GetTermsResponse[]>([]);
 
   const fetchGradeType = async () => {
     try {
@@ -54,6 +57,15 @@ const Grades = (props: Props) => {
     } catch (error) {
       console.error("Failed to fetch classes:", error);
 
+    }
+  }
+
+  const fetchTerms = async () => {
+    try {
+      const terms = await termService.getList();
+      setTerms(terms.data.items);
+    } catch (error) {
+      console.error("Failed to fetch terms:", error);
     }
   }
 
@@ -99,6 +111,7 @@ const Grades = (props: Props) => {
   useEffect(() => {
     fetchStudentGrade();
     fetchGradeType();
+    fetchTerms();
   }, [dispatch, userId]);
 
   useEffect(() => {
@@ -119,7 +132,7 @@ const Grades = (props: Props) => {
       <Form.Select
         className="grades-select"
         aria-label="Select className"
-        onChange={(e) => setClassId(Number(e.target.value))}
+      // onChange={(e) => setClassId(Number(e.target.value))}
       >
         <option>Sınıfı seçiniz</option>
         {classes && classes.classroomName.map((className, index) => (
@@ -131,14 +144,12 @@ const Grades = (props: Props) => {
 
       <Card className="grades-card">
         <Row>
-          <Col>
-            <Button>1. Dönem Notları</Button>
-          </Col>
-          <Col>
-            <Button>2. Dönem Notları</Button>
-          </Col>
+          {terms.map((term, index) => (
+            <Col key={index}>
+              <Button>{term.name}. Dönem</Button>
+            </Col>
+          ))}
         </Row>
-
 
         <Table striped bordered hover>
           <thead className="grades">
@@ -153,54 +164,13 @@ const Grades = (props: Props) => {
                 </th>
               ))}
             </tr>
-            <tr>
-              <th></th>
-              {gradeType.map((type, typeIndex) => (
-                <div key={typeIndex}>
-                  {/* create array for gradeCount*/}
-                  {createArrayForGradeCount(type.gradeCount).map(
-                    (number, index) => (
-                      <th key={index}>number</th>
-                    )
-                  )}
-                </div>
-              ))}
-            </tr>
-
           </thead>
           <tbody>
             {lessons && lessons.lessonName && lessons.lessonName.map((lessonName: string, index: number) => (
               <tr key={index}>
                 <td>{lessonName}</td>
-                {gradeType.map((type, typeIndex) => (
-                  <div key={typeIndex}>
-                    {createArrayForGradeCount(type.gradeCount).map(
-                      (number, index) => (
-                        <td key={index}>{/* Buraya öğrenci notunu ekleyebilirsiniz */}</td>
-                      )
-                    )}
-                  </div>
-                ))}
               </tr>
             ))}
-            {user &&
-              user.grade &&
-              user.grade.studentGrades &&
-              user.grade.studentGrades.length > 0 &&
-              user.grade.studentGrades.map((studentGrade: any, index: number) => (
-                <tr key={index}>
-                  <td>{studentGrade.lessonName}</td>
-                  {gradeType.map((type, typeIndex) => (
-                    <React.Fragment key={typeIndex}>
-                      {createArrayForGradeCount(type.gradeCount).map(
-                        (number, index) => (
-                          <td key={index}>{studentGrade.grade}</td>
-                        )
-                      )}
-                    </React.Fragment>
-                  ))}
-                </tr>
-              ))}
           </tbody>
         </Table>
       </Card>

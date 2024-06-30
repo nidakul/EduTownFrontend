@@ -22,6 +22,9 @@ import lessonService from "../../services/lessonService";
 import { GetLessonsBySchoolIdAndClassIdResponse } from "../../models/responses/getLessonsBySchoolIdAndClassIdResponse";
 import termService from "../../services/termService";
 import { GetTermsResponse } from "../../models/responses/getTermsResponse";
+import { GetListClassesResponse, GetListClassesResponseItems } from "../../models/responses/getListClassesResponse";
+import classService from "../../services/classService";
+import { AxiosResponse } from "axios";
 
 type Props = {};
 
@@ -33,11 +36,13 @@ const Grades = (props: Props) => {
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   console.log("gradeType ", gradeType);
   const [schoolId, setSchoolId] = useState<number>();
-  const [classId, setClassId] = useState<number>();
-  const [classes, setClasses] = useState<GetClassesBySchoolId | null>(null);
+  const [classId, setClassId] = useState<number>(); //kullanıcının class'ı 
+  const [classes, setClasses] = useState<GetListClassesResponse[]>([]);
   const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
   const [terms, setTerms] = useState<GetTermsResponse[]>([]);
-
+  const [selectedTerm, setSelectedTerm] = useState<number>();
+  // const [selectedClassId, setSelectedClassId] = useState<number>(user.classroomId);
+  console.log("classes", classes);
   const fetchGradeType = async () => {
     try {
       const response = await gradeTypeService.getList();
@@ -48,17 +53,29 @@ const Grades = (props: Props) => {
   };
 
   console.log("schoolId", schoolId);
-  console.log("classroomId", classId);
+  // console.log("classroomId", selectedClassId);
 
-  const fetchClasses = async (schoolId: number) => {
+  // const fetchClasses = async (schoolId: number) => {
+  //   try {
+  //     const classes = await schoolService.getClassesBySchoolId(schoolId);
+  //     setClasses(classes.data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch classes:", error);
+  //   }
+  // }
+
+  const fetchClasses = async () => {
     try {
-      const classes = await schoolService.getClassesBySchoolId(schoolId);
-      setClasses(classes.data);
+      if (classId !== undefined) {
+        const response = await classService.getList();
+        const classesArray = response.data.items.filter(classItem => classItem.id <= classId);
+        setClasses(classesArray);
+      }
     } catch (error) {
       console.error("Failed to fetch classes:", error);
-
     }
   }
+
 
   const fetchTerms = async () => {
     try {
@@ -69,15 +86,15 @@ const Grades = (props: Props) => {
     }
   }
 
-  const fetchLessons = async (schoolId: number, classroomId: number) => {
-    try {
-      const lessons = await lessonService.getLessonsBySchoolIdAndClassId(schoolId, classroomId);
-      setLessons(lessons.data);
-      console.log("lessons", lessons.data);
-    } catch (error) {
-      console.error("Failed to fetch lessons:", error);
-    }
-  }
+  // const fetchLessons = async (schoolId: number, classroomId: number) => {
+  //   try {
+  //     const lessons = await lessonService.getLessonsBySchoolIdAndClassId(schoolId, classroomId);
+  //     setLessons(lessons.data);
+  //     console.log("lessons", lessons.data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch lessons:", error);
+  //   }
+  // }
 
 
   const fetchStudentGrade = async () => {
@@ -99,49 +116,52 @@ const Grades = (props: Props) => {
     }
   };
 
+  const handleTermClick = (termId: number) => {
+    console.log(termId, "tıklandı");
+    setSelectedTerm(termId);
+  }
+
+
   useEffect(() => {
     fetchStudentGrade();
     fetchGradeType();
     fetchTerms();
   }, [dispatch, userId]);
 
+  // useEffect(() => {
+  //   if (schoolId && selectedClassId)
+  //     fetchLessons(schoolId, selectedClassId);
+
+  // }, [selectedClassId]);
+
   useEffect(() => {
-    if (schoolId) {
-      fetchClasses(schoolId);
+    if (classId !== undefined) {
+      fetchClasses();
     }
-  }, [schoolId]);
-
-  useEffect(() => {
-    if (schoolId && classId)
-      fetchLessons(schoolId, classId);
-
   }, [classId]);
-
 
   return (
     <Container>
       <Form.Select
         className="grades-select"
         aria-label="Select className"
-      // onChange={(e) => setClassId(Number(e.target.value))}
+      // onChange={(e) => setSelectedClassId(Number(e.target.value))}
       >
         <option>Sınıfı seçiniz</option>
-        {classes && classes.classroomName.map((className, index) => (
-          <option key={index} value={className}>
-            {className}
+        {classes && classes.map((classItem: any, index: number) => (
+          <option key={index} value={classItem.id}>
+            {classItem.name}. Sınıf
           </option>
         ))}
       </Form.Select>
 
-      <Card className="grades-card">
-        <Row>
-          {terms.map((term, index) => (
-            <Col key={index}>
-              <Button>{term.name}. Dönem</Button>
-            </Col>
-          ))}
-        </Row>
+      <div className="terms">
+        {terms.map((term) => (
+          <Button key={term.id} onClick={() => handleTermClick(term.id)}>{term.name}. Dönem</Button>
+        ))}
+      </div>
 
+      <Card className="grades-card">
         <Table striped bordered hover>
           <thead className="grades">
             <tr>
@@ -151,12 +171,12 @@ const Grades = (props: Props) => {
                   colSpan={type.gradeCount}
                   className={typeIndex === 0 ? "lesson-name" : ""}
                 >
-                  {type.gradeCount}
                   {type.name}
                 </th>
               ))}
             </tr>
             <tr>
+              {/* number of colspan */}
               {gradeType.map((type, typeIndex) => (
                 type.gradeCount > 0 ?
                   Array.from({ length: type.gradeCount }).map((_, countIndex) => (
@@ -164,7 +184,6 @@ const Grades = (props: Props) => {
                       {countIndex + 1}
                     </th>
                   ))
-                  // 
                   : (<th key={`${typeIndex}-empty`}></th>
                   )
               ))}

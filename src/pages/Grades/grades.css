@@ -15,3 +15,17 @@
 .grades th {
     text-align: center !important;
 }
+
+.terms {
+    display: flex;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.terms button {
+    background-color: white;
+    color: black;
+    border-color: white;
+    font-size: 17px;
+    font-weight: bold;
+}

@@ -1,17 +1,17 @@
-.grades-select{
+.grades-select {
     width: 50%;
     margin-top: 20px;
     margin-left: 20px;
 }
 
-.grades-card{
+.grades-card {
     margin-top: 20px;
 }
 
-.lesson-name{
+.lesson-name {
     width: 40%;
 }
 
-.grades th{
-text-align: center !important;
+.grades th {
+    text-align: center !important;
 }

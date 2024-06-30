@@ -24,7 +24,7 @@ const Sidebar = () => {
       </SidebarMenuHeader>
       <SidebarMenuBody>
         <div className="sidebar-menu-body-items">
-          <img 
+          <img
             src={user && user.imageUrl}
             className="img-fluid rounded-circle"
           />

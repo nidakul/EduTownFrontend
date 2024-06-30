@@ -99,15 +99,6 @@ const Grades = (props: Props) => {
     }
   };
 
-  function createArrayForGradeCount(gradeCount: number): number[] {
-    const gradeCountArray = Array.from(Array(gradeCount).keys()).map(
-      (index) => index + 1
-    );
-    console.log("gradeCountArray", gradeCountArray);
-    return gradeCountArray;
-  }
-
-
   useEffect(() => {
     fetchStudentGrade();
     fetchGradeType();
@@ -160,8 +151,22 @@ const Grades = (props: Props) => {
                   colSpan={type.gradeCount}
                   className={typeIndex === 0 ? "lesson-name" : ""}
                 >
+                  {type.gradeCount}
                   {type.name}
                 </th>
+              ))}
+            </tr>
+            <tr>
+              {gradeType.map((type, typeIndex) => (
+                type.gradeCount > 0 ?
+                  Array.from({ length: type.gradeCount }).map((_, countIndex) => (
+                    <th key={`${typeIndex}-${countIndex}`}>
+                      {countIndex + 1}
+                    </th>
+                  ))
+                  // 
+                  : (<th key={`${typeIndex}-empty`}></th>
+                  )
               ))}
             </tr>
           </thead>

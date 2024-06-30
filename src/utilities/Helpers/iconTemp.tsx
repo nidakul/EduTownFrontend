@@ -8,10 +8,10 @@ type Props = {
   pathName?: string;
 };
 const iconTemp = (props: Props) => {
-  console.log("link", props.pathName);
+  // console.log("link", props.pathName);
   return (
     <>
-    {/* SidebarMenu.Nav.Link yerine link ya da navLink dene */}
+      {/* SidebarMenu.Nav.Link yerine link ya da navLink dene */}
       <Link to={props.pathName || ""} className="iconHeader">
         <Col lg="12">
           <img className={props.className} src={props.image} />

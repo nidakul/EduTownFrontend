@@ -16,15 +16,13 @@ import { useEffect, useState } from "react";
 import React from "react";
 import gradeTypeService from "../../services/gradeTypeService";
 import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
-import schoolService from "../../services/schoolService";
-import { GetClassesBySchoolId } from "../../models/responses/getClassesBySchoolId";
 import lessonService from "../../services/lessonService";
 import { GetLessonsBySchoolIdAndClassIdResponse } from "../../models/responses/getLessonsBySchoolIdAndClassIdResponse";
 import termService from "../../services/termService";
 import { GetTermsResponse } from "../../models/responses/getTermsResponse";
-import { GetListClassesResponse, GetListClassesResponseItems } from "../../models/responses/getListClassesResponse";
+import { GetListClassesResponse } from "../../models/responses/getListClassesResponse";
 import classService from "../../services/classService";
-import { AxiosResponse } from "axios";
+import { StudentGradesResponse } from "../../models/responses/studentGradesResponse";
 
 type Props = {};
 
@@ -34,15 +32,15 @@ const Grades = (props: Props) => {
   const user = useSelector((state: any) => state.user.user);
   console.log("user", user);
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
-  console.log("gradeType ", gradeType);
   const [schoolId, setSchoolId] = useState<number>();
-  const [classId, setClassId] = useState<number>(); //kullanıcının class'ı 
+  const [classId, setClassId] = useState<number>(); //user's classroomId
+  const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
   const [classes, setClasses] = useState<GetListClassesResponse[]>([]);
   const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
   const [terms, setTerms] = useState<GetTermsResponse[]>([]);
-  const [selectedTerm, setSelectedTerm] = useState<number>();
-  // const [selectedClassId, setSelectedClassId] = useState<number>(user.classroomId);
-  console.log("classes", classes);
+  const [grades, setGrades] = useState<StudentGradesResponse[]>([]);
+  const [selectedTermId, setSelectedTermId] = useState<number>();
+
   const fetchGradeType = async () => {
     try {
       const response = await gradeTypeService.getList();
@@ -53,16 +51,7 @@ const Grades = (props: Props) => {
   };
 
   console.log("schoolId", schoolId);
-  // console.log("classroomId", selectedClassId);
-
-  // const fetchClasses = async (schoolId: number) => {
-  //   try {
-  //     const classes = await schoolService.getClassesBySchoolId(schoolId);
-  //     setClasses(classes.data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch classes:", error);
-  //   }
-  // }
+  console.log("classroomId", classId);
 
   const fetchClasses = async () => {
     try {
@@ -86,53 +75,54 @@ const Grades = (props: Props) => {
     }
   }
 
-  // const fetchLessons = async (schoolId: number, classroomId: number) => {
-  //   try {
-  //     const lessons = await lessonService.getLessonsBySchoolIdAndClassId(schoolId, classroomId);
-  //     setLessons(lessons.data);
-  //     console.log("lessons", lessons.data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch lessons:", error);
-  //   }
-  // }
+  const fetchLessons = async (schoolId: number, classroomId: number) => {
+    try {
+      const lessons = await lessonService.getLessonsBySchoolIdAndClassId(schoolId, classroomId);
+      setLessons(lessons.data);
+      console.log("lessons", lessons.data);
+    } catch (error) {
+      console.error("Failed to fetch lessons:", error);
+    }
+  }
 
-
-  const fetchStudentGrade = async () => {
+  const fetchStudentGrades = async () => {
     try {
       if (userId) {
         const response = await userService.getStudentDetailById(userId);
         const grades = await userService.getStudentGrades(userId);
         const userData = {
           ...response.data,
-          grade: grades.data,
+          grade: grades.data.studentGrades,
         };
-        // console.log("grade", userData.grade); 
         dispatch(setUser(userData));
+        console.log("gradessss", userData.grade);
         setSchoolId(userData.schoolId);
         setClassId(userData.classroomId);
+        setGrades(userData.grade);
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
     }
   };
+  console.log("gradeeee", grades);
 
   const handleTermClick = (termId: number) => {
     console.log(termId, "tıklandı");
-    setSelectedTerm(termId);
+    setSelectedTermId(termId);
   }
 
 
   useEffect(() => {
-    fetchStudentGrade();
+    fetchStudentGrades();
     fetchGradeType();
     fetchTerms();
   }, [dispatch, userId]);
 
-  // useEffect(() => {
-  //   if (schoolId && selectedClassId)
-  //     fetchLessons(schoolId, selectedClassId);
+  useEffect(() => {
+    if (schoolId && selectedClassId)
+      fetchLessons(schoolId, selectedClassId);
 
-  // }, [selectedClassId]);
+  }, [selectedClassId]);
 
   useEffect(() => {
     if (classId !== undefined) {
@@ -142,14 +132,15 @@ const Grades = (props: Props) => {
 
   return (
     <Container>
+      <label htmlFor="grades-select">Öğrencinin Sınıfları:</label>
       <Form.Select
+        id="grades-select"
         className="grades-select"
         aria-label="Select className"
-      // onChange={(e) => setSelectedClassId(Number(e.target.value))}
+        onChange={(e) => setSelectedClassId(Number(e.target.value))}
       >
-        <option>Sınıfı seçiniz</option>
         {classes && classes.map((classItem: any, index: number) => (
-          <option key={index} value={classItem.id}>
+          <option key={index} value={classItem.id} selected={classItem.id === classId}>
             {classItem.name}. Sınıf
           </option>
         ))}

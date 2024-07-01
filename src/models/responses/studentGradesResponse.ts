@@ -1,5 +1,7 @@
 export interface StudentGradesResponse{
     id: number;
+    classroomId: number;
+    termId: number;
     classroomName: string;
     lessonName: string;
     gradeTypeName: string;
@@ -9,7 +11,7 @@ export interface StudentGradesResponse{
 }
 
 export interface StudentGradesList{
-    // userId: string;
+    userId: string;
     studentGrades: StudentGradesResponse[];
 }
 

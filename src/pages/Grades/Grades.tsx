@@ -99,12 +99,12 @@ const Grades = (props: Props) => {
         setSchoolId(userData.schoolId);
         setClassId(userData.classroomId);
         setGrades(userData.grade);
+        setSelectedClassId(userData.classroomId); // set initial selectedclass
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
     }
   };
-  console.log("gradeeee", grades);
 
   const handleTermClick = (termId: number) => {
     console.log(termId, "tıklandı");
@@ -137,10 +137,11 @@ const Grades = (props: Props) => {
         id="grades-select"
         className="grades-select"
         aria-label="Select className"
+        value={selectedClassId}
         onChange={(e) => setSelectedClassId(Number(e.target.value))}
       >
         {classes && classes.map((classItem: any, index: number) => (
-          <option key={index} value={classItem.id} selected={classItem.id === classId}>
+          <option key={index} value={classItem.id}>
             {classItem.name}. Sınıf
           </option>
         ))}
@@ -189,7 +190,7 @@ const Grades = (props: Props) => {
           </tbody>
         </Table>
       </Card>
-    </Container>
+    </Container >
   );
 };
 export default Grades;

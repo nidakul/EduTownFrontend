@@ -39,7 +39,7 @@ const Grades = (props: Props) => {
   const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
   const [terms, setTerms] = useState<GetTermsResponse[]>([]);
   const [grades, setGrades] = useState<StudentGradesResponse[]>([]);
-  const [selectedTermId, setSelectedTermId] = useState<number>();
+  const [selectedTermId, setSelectedTermId] = useState<number>(1);
 
   const fetchGradeType = async () => {
     try {
@@ -99,7 +99,7 @@ const Grades = (props: Props) => {
         setSchoolId(userData.schoolId);
         setClassId(userData.classroomId);
         setGrades(userData.grade);
-        setSelectedClassId(userData.classroomId); // set initial selectedclass
+        setSelectedClassId(userData.classroomId); // set initial selectedclass 
       }
     } catch (error) {
       console.error("Failed to fetch userGrades", error);
@@ -185,6 +185,7 @@ const Grades = (props: Props) => {
             {lessons && lessons.lessonName && lessons.lessonName.map((lessonName: string, index: number) => (
               <tr key={index}>
                 <td>{lessonName}</td>
+
               </tr>
             ))}
           </tbody>
@@ -194,5 +195,3 @@ const Grades = (props: Props) => {
   );
 };
 export default Grades;
-
-

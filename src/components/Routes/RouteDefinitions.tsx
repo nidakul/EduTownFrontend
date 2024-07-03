@@ -9,6 +9,7 @@ import Grades from "../../pages/Grades/Grades";
 import AddStudent from "../../pages/Instructor/AddStudent/AddStudent";
 import ExamDate from "../../pages/ExamDate/ExamDate";
 import { Container, Row } from "react-bootstrap";
+import AddGrades from "../../pages/Instructor/AddGrades/AddGrades";
 
 const RouteDefinitions = () => {
   const isAuthenticated = useSelector(
@@ -28,12 +29,12 @@ const RouteDefinitions = () => {
               <Route path="/login" element={<Login />} />
             ) : (
               <>
-                <Route path="/" element={<AddStudent />} /> 
+                <Route path="/" element={<AddGrades />} />
                 <Route path="/grades" element={<Grades />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Navigate to="/" />} />
               </>
-            )} 
+            )}
           </Routes>
         </div>
       </div>

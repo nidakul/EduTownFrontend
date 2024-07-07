@@ -1,0 +1,26 @@
+.card-header {
+    background-color: #a0dbcc !important;
+    font-weight: 550;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.card {
+    width: 70%;
+}
+
+.exam {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.exam-text {
+    margin-right: 60px;
+}
+
+.deneme {
+    border: 1px solid grey;
+}

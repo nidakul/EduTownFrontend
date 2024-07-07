@@ -16,6 +16,7 @@
   margin-bottom: 0.65rem;
   text-decoration: none;
 }
+
 /* iconTemp */
 
 .img-fluid {
@@ -25,20 +26,21 @@
 }
 
 /* chart */
-.canvasjs-chart-canvas{
-height: 300px !important;
-width: 650px !important;
-display: flex !important; 
-justify-content: space-between !important;
-align-items: flex-end !important;
+.canvasjs-chart-canvas {
+  height: 300px !important;
+  width: 650px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
 }
 
-.canvasjs-chart-credit{ 
+.canvasjs-chart-credit {
   display: none;
 }
+
 /* chart */
 
-.form-btn{
+.form-btn {
   background-color: white !important;
   border-radius: 20px !important;
   width: 25%;
@@ -48,7 +50,7 @@ align-items: flex-end !important;
   margin-left: 90px;
 }
 
-.form-close-btn{
+.form-close-btn {
   background-color: white !important;
   color: #000000 !important;
   border-color: white !important;
@@ -56,7 +58,7 @@ align-items: flex-end !important;
 
 /* profile image */
 .rounded-circle {
-  border-radius: 50%; 
+  border-radius: 50%;
 }
-/* profile image */
 
+/* profile image */

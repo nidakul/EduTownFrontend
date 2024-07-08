@@ -10,7 +10,7 @@ class UserService {
 
     getStudentDetailById(userId: string) : Promise<AxiosResponse<StudentInformationResponse, any>>{
         return axiosInstance.get<StudentInformationResponse>(this.apiUrl + "/getStudentDetail/" + userId)
-    }
+    } 
     getStudentCertificate(userId: string): Promise<AxiosResponse<StudentCertificateResponse,any>>{
         return axiosInstance.get<StudentCertificateResponse>(this.apiUrl + "/getStudentCertificate/" + userId)
     }

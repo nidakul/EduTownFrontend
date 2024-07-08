@@ -11,4 +11,12 @@ export interface StudentInformationResponse{
   status: boolean;
   imageUrl: string;
   studentNo: string;
+  gender: string;
+  birthdate: Date;
+  birthplace: string;
+  branch:string;
+}
+
+export interface StudentInformationList{
+  items:StudentInformationResponse[];
 }

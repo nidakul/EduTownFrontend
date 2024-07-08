@@ -14,16 +14,16 @@ const Home = () => {
   const fetchUserInformation = async () => {
     try {
       if (userId) {
-        const response = await userService.getUserDetailById(userId);
+        // const response = await userService.getUserDetailById(userId);
         const certificate = await userService.getStudentCertificate(userId);
         const userData = {
-          ...response.data,
+          // ...response.data,
           certificate: certificate.data,
         };
         dispatch(setUser(userData));
 
         console.log("userData", userData);
-        
+
       }
     } catch (error) {
       console.error("Veri alınamadı:", error);
@@ -95,16 +95,16 @@ const Home = () => {
           </thead>
 
           {user && user.certificate.certificates && user.certificate.certificates.length > 0 && (
-          <tbody>
-            {user.certificate.certificates.map((cert: any) => (
-              <tr key={cert.id}>
-                <td>{cert.classroomName}</td>
-                <td>{cert.year}</td>
-                <td>{cert.certificateName}</td>
-                <td>{cert.certificateName}</td>
-              </tr>
-            ))}
-          </tbody>
+            <tbody>
+              {user.certificate.certificates.map((cert: any) => (
+                <tr key={cert.id}>
+                  <td>{cert.classroomName}</td>
+                  <td>{cert.year}</td>
+                  <td>{cert.certificateName}</td>
+                  <td>{cert.certificateName}</td>
+                </tr>
+              ))}
+            </tbody>
           )}
 
           {/* <tr>

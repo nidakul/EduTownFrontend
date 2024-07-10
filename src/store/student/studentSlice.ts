@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
 import studentService from '../../services/studentService';
 import { StudentInformationResponse } from '../../models/responses/studentInformationResponse';
 

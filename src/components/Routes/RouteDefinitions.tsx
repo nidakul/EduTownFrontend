@@ -10,6 +10,8 @@ import AddStudent from "../../pages/Instructor/AddStudent/AddStudent";
 import ExamDate from "../../pages/ExamDate/ExamDate";
 import { Container, Row } from "react-bootstrap";
 import AddGrades from "../../pages/Instructor/AddGrades/AddGrades";
+import ListStudent from "../Student/ListStudent/ListStudent";
+import NotFound from "../../pages/NotFound/NotFound";
 
 const RouteDefinitions = () => {
   const isAuthenticated = useSelector(
@@ -29,10 +31,11 @@ const RouteDefinitions = () => {
               <Route path="/login" element={<Login />} />
             ) : (
               <>
-                <Route path="/" element={<AddGrades />} />
+                <Route path="/" element={<ListStudent />} />
                 <Route path="/grades" element={<Grades />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Navigate to="/" />} />
+                <Route path="*" element={<NotFound />} />
               </>
             )}
           </Routes>

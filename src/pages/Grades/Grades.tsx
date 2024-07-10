@@ -1,10 +1,8 @@
 import {
   Button,
   Card,
-  Col,
   Container,
   Form,
-  Row,
   Table,
 } from "react-bootstrap";
 import "./grades.css";
@@ -13,7 +11,6 @@ import { getUserId } from "../../services/identityService";
 import userService from "../../services/userService";
 import { setUser } from "../../store/user/userSlice";
 import { useEffect, useState } from "react";
-import React from "react";
 import gradeTypeService from "../../services/gradeTypeService";
 import { GetListGradeTypeResponse } from "../../models/responses/getListGradeTypeResponse";
 import lessonService from "../../services/lessonService";

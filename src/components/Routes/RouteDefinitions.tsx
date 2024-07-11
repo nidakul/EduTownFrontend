@@ -31,7 +31,7 @@ const RouteDefinitions = () => {
               <Route path="/login" element={<Login />} />
             ) : (
               <>
-                <Route path="/" element={<ListStudent />} />
+                <Route path="/" element={<Grades />} />
                 <Route path="/grades" element={<Grades />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Navigate to="/" />} />
@@ -46,3 +46,4 @@ const RouteDefinitions = () => {
 };
 
 export default RouteDefinitions;
+

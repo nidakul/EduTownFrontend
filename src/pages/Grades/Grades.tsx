@@ -17,22 +17,24 @@ import lessonService from "../../services/lessonService";
 import { GetLessonsBySchoolIdAndClassIdResponse } from "../../models/responses/getLessonsBySchoolIdAndClassIdResponse";
 import termService from "../../services/termService";
 import { GetTermsResponse } from "../../models/responses/getTermsResponse";
-import { GetListClassesResponse } from "../../models/responses/getListClassesResponse";
-import classService from "../../services/classService";
 import { StudentGradesResponse } from "../../models/responses/studentGradesResponse";
+import schoolTypeService from "../../services/schoolTypeService";
+import { AppDispatch, RootState } from "../../store/configureStore";
+import { getSchoolById } from "../../store/school/schoolSlice";
 
 type Props = {};
 
 const Grades = (props: Props) => {
   const userId = getUserId();
-  const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user.user);
-  console.log("user", user);
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.user);
+  const school = useSelector((state: RootState) => state.school)
+  console.log("school", school.school?.schoolTypeId);
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   const [schoolId, setSchoolId] = useState<number>();
   const [classId, setClassId] = useState<number>(); //user's classroomId
   const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
-  const [classes, setClasses] = useState<GetListClassesResponse[]>([]);
+  const [classes, setClasses] = useState<string[]>([]);
   const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
   const [terms, setTerms] = useState<GetTermsResponse[]>([]);
   const [grades, setGrades] = useState<StudentGradesResponse[]>([]);
@@ -47,21 +49,31 @@ const Grades = (props: Props) => {
     }
   };
 
-  console.log("schoolId", schoolId);
-  console.log("classroomId", classId);
+  // const fetchClasses = async () => {
+  //   try {
+  //     if (classId !== undefined) {
+  //       const response = await classService.getList();
+  //       const classesArray = response.data.items.filter(classItem => classItem.id <= classId);
+  //       setClasses(classesArray);
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to fetch classes:", error);
+  //   }
+  // }
 
   const fetchClasses = async () => {
     try {
-      if (classId !== undefined) {
-        const response = await classService.getList();
-        const classesArray = response.data.items.filter(classItem => classItem.id <= classId);
-        setClasses(classesArray);
+      const schoolTypeId = school.school?.schoolTypeId;
+      if (schoolTypeId !== undefined) {
+        const classes = await schoolTypeService.getClassesBySchoolTypeIdResponse(schoolTypeId);
+        setClasses(classes.data.classroomName)
+      } else {
+        console.error("schoolTypeId is undefined");
       }
     } catch (error) {
       console.error("Failed to fetch classes:", error);
     }
-  }
-
+  };
 
   const fetchTerms = async () => {
     try {
@@ -109,6 +121,7 @@ const Grades = (props: Props) => {
   }
 
 
+
   useEffect(() => {
     fetchStudentGrades();
     fetchGradeType();
@@ -122,10 +135,14 @@ const Grades = (props: Props) => {
   }, [selectedClassId]);
 
   useEffect(() => {
-    if (classId !== undefined) {
-      fetchClasses();
+    fetchClasses();
+  }, []);
+
+  useEffect(() => {
+    if (schoolId) {
+      dispatch(getSchoolById(schoolId));
     }
-  }, [classId]);
+  }, [schoolId, dispatch])
 
   return (
     <Container>
@@ -138,8 +155,8 @@ const Grades = (props: Props) => {
         onChange={(e) => setSelectedClassId(Number(e.target.value))}
       >
         {classes && classes.map((classItem: any, index: number) => (
-          <option key={index} value={classItem.id}>
-            {classItem.name}. Sınıf
+          <option key={index} value={classItem}>
+            {classItem}. Sınıf
           </option>
         ))}
       </Form.Select>

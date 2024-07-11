@@ -1,15 +1,16 @@
 import { AxiosResponse } from "axios";
-import { BASE_API_URL } from "../environment/environment";
 import axiosInstance from "../core/interceptors/axiosInceptor";
-import { GetClassesBySchoolId } from "../models/responses/getClassesBySchoolId";
+import { BASE_API_URL } from "../environment/environment";
+import { SchoolResponse } from "../models/responses/schoolResponse";
 
-class SchoolService{
- apiUrl = BASE_API_URL + "Schools/"
+class ClassService{
+    apiUrl = BASE_API_URL + "Schools/";
 
- getClassesBySchoolId(schoolId: number): Promise<AxiosResponse<GetClassesBySchoolId, any>>{
-    return axiosInstance.get<GetClassesBySchoolId>(this.apiUrl + "getClassesBySchoolId/" + schoolId);
- }
+    getById(id:number) : Promise<AxiosResponse<SchoolResponse,any>>{
+return axiosInstance.get<SchoolResponse>(this.apiUrl + id);
+    }
 
+    
 }
 
-export default new SchoolService();
+export default new ClassService();

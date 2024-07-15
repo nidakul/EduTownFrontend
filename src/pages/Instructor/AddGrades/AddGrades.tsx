@@ -1,26 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import "./addGrades.css";
 import { getUserId } from '../../../services/identityService';
 import schoolService from '../../../services/schoolService';
 import lessonService from '../../../services/lessonService';
 import { GetLessonsBySchoolIdAndClassIdResponse } from '../../../models/responses/getLessonsBySchoolIdAndClassIdResponse';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/configureStore';
+import { getClassesBySchoolTypeId } from '../../../store/class/classSlice';
+import { getSchoolById } from '../../../store/school/schoolSlice';
 
 type Props = {}
 
 const AddGrades = (props: Props) => {
     const userId = getUserId();
     const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
+    const dispatch = useDispatch<AppDispatch>();
+    const classes = useSelector((state: RootState) => state.classes.classes);
+    const school = useSelector((state: RootState) => state.school);
 
-    const fetchLessons = async (schoolId: number, classroomId: number) => {
-        try {
-            const lessons = await lessonService.getLessonsBySchoolIdAndClassId(schoolId, classroomId);
-            setLessons(lessons.data);
-            console.log("lessons", lessons.data);
-        } catch (error) {
-            console.error("Failed to fetch lessons:", error);
+    useEffect(() => {
+        dispatch(getSchoolById(1));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (classes && classes.schoolTypeId !== undefined) {
+            dispatch(getClassesBySchoolTypeId(classes.schoolTypeId));
         }
-    }
+    }, [classes, dispatch]);
+
     return (
         <Container>
             <Card>
@@ -33,11 +41,14 @@ const AddGrades = (props: Props) => {
                             </Form.Label>
                             <Col sm={4}>
                                 <Form.Select
-                                // name="classroomId"
-                                // value={formData.userForRegisterCommand.classroomId}
-                                // onChange={handleChange}
+                                    name="class-select"
+                                // value={selectedClassId}
+                                // onChange={(e) => setSelectedClassId(Number(e.target.value))}
                                 >
                                     <option>Sınıf-Şube Seçiniz</option>
+                                    {classes && classes.classroomName && classes.classroomName.map((classItem, index) => (
+                                        <option key={index} value={classItem}>{classItem}. Sınıf</option>
+                                    ))}
                                 </Form.Select>
                             </Col>
                             <Form.Label column sm={2}>

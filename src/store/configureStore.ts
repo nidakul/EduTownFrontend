@@ -4,12 +4,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { userReducer } from "./user/userSlice";
 import studentReducer from "./student/studentSlice";
 import schoolReducer from "./school/schoolSlice";
+import classReducer from "./class/classSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   student: studentReducer,
-  school: schoolReducer
+  school: schoolReducer,
+  classes: classReducer
 });
 
 export const store = configureStore({ reducer: rootReducer }); 

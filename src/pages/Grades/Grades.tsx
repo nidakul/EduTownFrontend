@@ -28,7 +28,7 @@ const Grades = (props: Props) => {
   const userId = getUserId();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user.user);
-  const school = useSelector((state: RootState) => state.school)
+  const school = useSelector((state: RootState) => state.school);
   console.log("school", school.school?.schoolTypeId);
   const [gradeType, setGradeType] = useState<GetListGradeTypeResponse[]>([]);
   const [schoolId, setSchoolId] = useState<number>();
@@ -61,6 +61,7 @@ const Grades = (props: Props) => {
   //   }
   // }
 
+  // fix: schoolTypeId'ye göre değil öğrencinin sınıflarını getir
   const fetchClasses = async () => {
     try {
       const schoolTypeId = school.school?.schoolTypeId;

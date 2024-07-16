@@ -1,5 +1,8 @@
 export interface GetListClassesBySchoolTypeId {
-    schoolTypeId: number;
-    schoolTypeName: string;
-    classroomName: string[];
+    classes: Classes[];
 } 
+
+export interface Classes{
+    classroomId: number
+    classroomName: string;
+}

@@ -18,16 +18,20 @@ const AddGrades = (props: Props) => {
     const dispatch = useDispatch<AppDispatch>();
     const classes = useSelector((state: RootState) => state.classes.classes);
     const school = useSelector((state: RootState) => state.school);
+    const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
+    console.log("mfls", classes);
 
     useEffect(() => {
         dispatch(getSchoolById(1));
     }, [dispatch]);
 
     useEffect(() => {
-        if (classes && classes.schoolTypeId !== undefined) {
-            dispatch(getClassesBySchoolTypeId(classes.schoolTypeId));
+        if (school && school.school?.schoolTypeId !== undefined) {
+            dispatch(getClassesBySchoolTypeId(school.school.schoolTypeId));
         }
     }, [classes, dispatch]);
+
+    console.log("classes.schoolTypeId", school.school?.schoolTypeId);
 
     return (
         <Container>
@@ -42,12 +46,12 @@ const AddGrades = (props: Props) => {
                             <Col sm={4}>
                                 <Form.Select
                                     name="class-select"
-                                // value={selectedClassId}
-                                // onChange={(e) => setSelectedClassId(Number(e.target.value))}
+                                    value={selectedClassId}
+                                    onChange={(e) => setSelectedClassId(Number(e.target.value))}
                                 >
                                     <option>Sınıf-Şube Seçiniz</option>
-                                    {classes && classes.classroomName && classes.classroomName.map((classItem, index) => (
-                                        <option key={index} value={classItem}>{classItem}. Sınıf</option>
+                                    {classes && classes.classes.map((classItem, index) => (
+                                        <option key={index} value={classItem.classroomId}>{classItem.classroomName}. Sınıf</option>
                                     ))}
                                 </Form.Select>
                             </Col>

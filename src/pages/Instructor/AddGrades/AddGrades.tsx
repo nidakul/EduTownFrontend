@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import "./addGrades.css";
 import { getUserId } from '../../../services/identityService';
-import schoolService from '../../../services/schoolService';
-import lessonService from '../../../services/lessonService';
-import { GetLessonsBySchoolIdAndClassIdResponse } from '../../../models/responses/getLessonsBySchoolIdAndClassIdResponse';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/configureStore';
 import { getClassesBySchoolTypeId } from '../../../store/class/classSlice';
 import { getSchoolById } from '../../../store/school/schoolSlice';
 import { getUserDetailById } from '../../../store/user/userSlice';
 import { getLessonsBySchoolIdAndClassId } from '../../../store/lesson/lessonSlice';
+import { getTerms } from '../../../store/term/termSlice';
 
 type Props = {}
 
@@ -21,9 +19,14 @@ const AddGrades = (props: Props) => {
     const school = useSelector((state: RootState) => state.school.school);
     const lesson = useSelector((state: RootState) => state.lesson.lesson);
     const user = useSelector((state: RootState) => state.user.user);
+    const term = useSelector((state: RootState) => state.term.term?.items);
     console.log("user", user);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
+    const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
+    const [selectedTermId, setSelectedTermId] = useState<number>();
     console.log("selectedClassId", selectedClassId);
+    console.log("selectedLessonId", selectedLessonId);
+    console.log("term", selectedTermId);
 
     useEffect(() => {
         if (userId) {
@@ -48,6 +51,10 @@ const AddGrades = (props: Props) => {
             dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
     }, [dispatch, user, selectedClassId]);
 
+    useEffect(() => {
+        dispatch(getTerms());
+    }, [])
+
 
     return (
         <Container>
@@ -66,8 +73,8 @@ const AddGrades = (props: Props) => {
                                     onChange={(e) => setSelectedClassId(Number(e.target.value))}
                                 >
                                     <option>Sınıf-Şube Seçiniz</option>
-                                    {classes && classes.classes.map((classItem, index) => (
-                                        <option key={index} value={classItem.classroomId}>{classItem.classroomName}. Sınıf</option>
+                                    {classes && classes.classes.map((classItem) => (
+                                        <option key={classItem.classroomId} value={classItem.classroomId}>{classItem.classroomName}. Sınıf</option>
                                     ))}
                                 </Form.Select>
                             </Col>
@@ -76,17 +83,32 @@ const AddGrades = (props: Props) => {
                             </Form.Label>
                             <Col sm={4}>
                                 <Form.Select
-                                // name="branch"
-                                // value={formData.branch}
-                                // onChange={handleChange}
+                                    name="lesson"
+                                    value={selectedLessonId}
+                                    onChange={(e) => setSelectedLessonId(Number(e.target.value))}
                                 >
                                     <option>Ders Seçiniz</option>
-                                    {lesson && lesson.lessonName.map((lessonName: string, index: number) => (
-                                        <option key={index}>{lessonName}</option>
+                                    {lesson && lesson.lessons.map((lessonItem) => (
+                                        <option key={lessonItem.lessonId} value={lessonItem.lessonId}>{lessonItem.lessonName}
+                                        </option>
                                     ))}
                                 </Form.Select>
                             </Col>
+                            {term && term.map((termItem) => (
+                                <Col>
+                                    <Form.Check
+                                        key={termItem.id}
+                                        type="radio"
+                                        label={`${termItem.name}. Dönem`}
+                                        value={termItem.id}
+                                        checked={selectedTermId == termItem.id}
+                                        aria-label='term-checkbox'
+                                        onChange={(e) => setSelectedTermId(Number(e.target.value))}
+                                    />
+                                </Col>
+                            ))}
                         </Form.Group>
+
                     </Form>
                 </Card.Body>
                 <Card.Header>Not Girişi</Card.Header>

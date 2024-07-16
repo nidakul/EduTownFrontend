@@ -6,6 +6,7 @@ import studentReducer from "./student/studentSlice";
 import schoolReducer from "./school/schoolSlice";
 import classReducer from "./class/classSlice";
 import lessonReducer from "./lesson/lessonSlice";
+import termReducer from "./term/termSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   student: studentReducer,
   school: schoolReducer,
   classes: classReducer,
-  lesson: lessonReducer
+  lesson: lessonReducer,
+  term: termReducer
 });
 
 export const store = configureStore({ reducer: rootReducer }); 

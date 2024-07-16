@@ -12,6 +12,7 @@ import { Container, Row } from "react-bootstrap";
 import AddGrades from "../../pages/Instructor/AddGrades/AddGrades";
 import ListStudent from "../Student/ListStudent/ListStudent";
 import NotFound from "../../pages/NotFound/NotFound";
+import AddStudentGrade from "../AddStudentGrade/AddStudentGrade";
 
 const RouteDefinitions = () => {
   const isAuthenticated = useSelector(

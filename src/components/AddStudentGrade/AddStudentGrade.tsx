@@ -1,18 +1,46 @@
-import React from 'react'
-import { Table } from 'react-bootstrap'
+import React from 'react';
+import { Table } from 'react-bootstrap';
+import { GetListGradeTypeResponse } from '../../models/responses/getListGradeTypeResponse';
 
-type Props = {}
+type Props = {
+    gradeType?: GetListGradeTypeResponse[];
+}
 
 const AddStudentGrade = (props: Props) => {
+    const { gradeType } = props;
+    console.log("gradeType", gradeType);
+
     return (
         <div>
-            <Table>
+            <Table striped bordered hover>
                 <thead>
-                    <tr></tr>
+                    <tr>
+                        {gradeType && gradeType.map((type) => (
+                            <th
+                                key={type.id}
+                                colSpan={type.gradeCount}
+                            >
+                                {type.name}
+                            </th>
+                        ))}
+                    </tr>
+                    <tr>
+                        {/* number of colspan */}
+                        {gradeType && gradeType.map((type, typeIndex) => (
+                            type.gradeCount > 0 ?
+                                Array.from({ length: type.gradeCount }).map((_, countIndex) => (
+                                    <th key={`${typeIndex}-${countIndex}`}>
+                                        {countIndex + 1}
+                                    </th>
+                                ))
+                                : (<th key={`${typeIndex}-empty`}></th>
+                                )
+                        ))}
+                    </tr>
                 </thead>
             </Table>
         </div>
-    )
+    );
 }
 
-export default AddStudentGrade 
+export default AddStudentGrade;

@@ -67,7 +67,7 @@ const Grades = (props: Props) => {
       const schoolTypeId = school.school?.schoolTypeId;
       if (schoolTypeId !== undefined) {
         const classes = await schoolTypeService.getClassesBySchoolTypeIdResponse(schoolTypeId);
-        setClasses(classes.data.classroomName)
+        // setClasses(classes.data.classroomName)
       } else {
         console.error("schoolTypeId is undefined");
       }
@@ -95,26 +95,26 @@ const Grades = (props: Props) => {
     }
   }
 
-  const fetchStudentGrades = async () => {
-    try {
-      if (userId) {
-        const response = await userService.getStudentDetailById(userId);
-        const grades = await userService.getStudentGrades(userId);
-        const userData = {
-          ...response.data,
-          grade: grades.data.studentGrades,
-        };
-        dispatch(setUser(userData));
-        console.log("gradessss", userData.grade);
-        setSchoolId(userData.schoolId);
-        setClassId(userData.classroomId);
-        setGrades(userData.grade);
-        setSelectedClassId(userData.classroomId); // set initial selectedclass 
-      }
-    } catch (error) {
-      console.error("Failed to fetch userGrades", error);
-    }
-  };
+  // const fetchStudentGrades = async () => {
+  //   try {
+  //     if (userId) {
+  //       const response = await userService.getStudentDetailById(userId);
+  //       const grades = await userService.getStudentGrades(userId);
+  //       const userData = {
+  //         ...response.data,
+  //         grade: grades.data.studentGrades,
+  //       };
+  //       dispatch(setUser(userData));
+  //       console.log("gradessss", userData.grade);
+  //       setSchoolId(userData.schoolId);
+  //       setClassId(userData.classroomId);
+  //       setGrades(userData.grade);
+  //       setSelectedClassId(userData.classroomId); // set initial selectedclass 
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to fetch userGrades", error);
+  //   }
+  // };
 
   const handleTermClick = (termId: number) => {
     console.log(termId, "tıklandı");
@@ -124,7 +124,7 @@ const Grades = (props: Props) => {
 
 
   useEffect(() => {
-    fetchStudentGrades();
+    // fetchStudentGrades();
     fetchGradeType();
     fetchTerms();
   }, [dispatch, userId]);
@@ -196,14 +196,14 @@ const Grades = (props: Props) => {
               ))}
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {lessons && lessons.lessonName && lessons.lessonName.map((lessonName: string, index: number) => (
               <tr key={index}>
                 <td>{lessonName}</td>
 
               </tr>
             ))}
-          </tbody>
+          </tbody> */}
         </Table>
       </Card>
     </Container >

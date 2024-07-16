@@ -12,10 +12,6 @@
     width: 40%;
 }
 
-.grades th {
-    text-align: center !important;
-}
-
 .terms {
     display: flex;
     margin-top: 20px;

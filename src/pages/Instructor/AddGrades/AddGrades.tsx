@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import "./addGrades.css";
 import { getUserId } from '../../../services/identityService';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,8 @@ import { getUserDetailById } from '../../../store/user/userSlice';
 import { getLessonsBySchoolIdAndClassId } from '../../../store/lesson/lessonSlice';
 import { getTerms } from '../../../store/term/termSlice';
 import { getGradeTypes } from '../../../store/gradeType/gradeTypeSlice';
+import AddStudentGrade from '../../../components/AddStudentGrade/AddStudentGrade';
+import { GetListGradeTypeList, GetListGradeTypeResponse } from '../../../models/responses/getListGradeTypeResponse';
 
 type Props = {}
 
@@ -26,9 +28,9 @@ const AddGrades = (props: Props) => {
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
     const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
     const [selectedTermId, setSelectedTermId] = useState<number>();
-    console.log("selectedClassId", selectedClassId);
+    const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
+    console.log("gradeTypes", gradeTypes);
     console.log("selectedLessonId", selectedLessonId);
-    console.log("type", gradeType);
 
     useEffect(() => {
         if (userId) {
@@ -58,6 +60,11 @@ const AddGrades = (props: Props) => {
         dispatch(getGradeTypes());
     }, [])
 
+    useEffect(() => {
+        if (gradeType) {
+            setGradeTypes(gradeType);
+        }
+    }, [gradeType]);
 
     return (
         <Container>
@@ -141,7 +148,21 @@ const AddGrades = (props: Props) => {
             <div className='add-grades-btn'>
                 <Button className='form-btn-color'>Listele</Button>
             </div>
-        </Container >
+            <Card>
+                <Form>
+                    <Card.Header>Seçili Alanlara Göre Ders Notu Girişi</Card.Header>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>yeni sütunlar</th>
+                            </tr>
+                            <AddStudentGrade gradeType={gradeTypes} />
+                        </thead>
+
+                    </Table>
+                </Form>
+            </Card>
+        </Container>
     )
 }
 

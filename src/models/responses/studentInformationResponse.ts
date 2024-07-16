@@ -1,4 +1,4 @@
-export interface StudentInformationResponse{
+export interface UserInformationResponse{
   id:number;
   schoolId: number;
   classroomId: number;
@@ -17,6 +17,6 @@ export interface StudentInformationResponse{
   branch:string;
 }
 
-export interface StudentInformationList{
-  items:StudentInformationResponse[];
+export interface UserInformationList{
+  items:UserInformationResponse[];
 }

@@ -5,13 +5,15 @@ import { userReducer } from "./user/userSlice";
 import studentReducer from "./student/studentSlice";
 import schoolReducer from "./school/schoolSlice";
 import classReducer from "./class/classSlice";
+import lessonReducer from "./lesson/lessonSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   student: studentReducer,
   school: schoolReducer,
-  classes: classReducer
+  classes: classReducer,
+  lesson: lessonReducer
 });
 
 export const store = configureStore({ reducer: rootReducer }); 

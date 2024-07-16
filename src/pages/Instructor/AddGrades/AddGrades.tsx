@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/configureStore';
 import { getClassesBySchoolTypeId } from '../../../store/class/classSlice';
 import { getSchoolById } from '../../../store/school/schoolSlice';
+import { getUserDetailById } from '../../../store/user/userSlice';
 
 type Props = {}
 
@@ -17,21 +18,31 @@ const AddGrades = (props: Props) => {
     const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
     const dispatch = useDispatch<AppDispatch>();
     const classes = useSelector((state: RootState) => state.classes.classes);
-    const school = useSelector((state: RootState) => state.school);
+    const school = useSelector((state: RootState) => state.school.school);
+    const user = useSelector((state: RootState) => state.user.user);
+    console.log("user", user);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
-    console.log("mfls", classes);
+    console.log("school", school);
 
     useEffect(() => {
-        dispatch(getSchoolById(1));
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (school && school.school?.schoolTypeId !== undefined) {
-            dispatch(getClassesBySchoolTypeId(school.school.schoolTypeId));
+        if (userId) {
+            dispatch(getUserDetailById(userId));
         }
-    }, [classes, dispatch]);
+    }, [dispatch, userId]);
 
-    console.log("classes.schoolTypeId", school.school?.schoolTypeId);
+    useEffect(() => {
+        if (user?.schoolId !== undefined) {
+            dispatch(getSchoolById(user.schoolId));
+        }
+    }, [dispatch, user]);
+
+    useEffect(() => {
+        if (school && school.schoolTypeId !== undefined) {
+            dispatch(getClassesBySchoolTypeId(school.schoolTypeId));
+        }
+    }, [dispatch, school]);
+
+    console.log("classes.schoolTypeId", school?.schoolTypeId);
 
     return (
         <Container>

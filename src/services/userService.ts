@@ -1,15 +1,15 @@
 import { AxiosResponse } from "axios";
 import axiosInstance from "../core/interceptors/axiosInceptor";
 import { BASE_API_URL } from "../environment/environment";
-import { StudentInformationResponse } from "../models/responses/studentInformationResponse";
 import {  StudentCertificateResponse } from "../models/responses/studentCertificateResponse";
 import { StudentGradesList, StudentGradesResponse } from "../models/responses/studentGradesResponse";
+import { UserInformationResponse } from "../models/responses/studentInformationResponse";
 
 class UserService {
     apiUrl = BASE_API_URL + "Users";
 
-    getStudentDetailById(userId: string) : Promise<AxiosResponse<StudentInformationResponse, any>>{
-        return axiosInstance.get<StudentInformationResponse>(this.apiUrl + "/getStudentDetail/" + userId)
+    getUserDetailById(userId: string) : Promise<AxiosResponse<UserInformationResponse, any>>{
+        return axiosInstance.get<UserInformationResponse>(this.apiUrl + "/getStudentDetail/" + userId)
     } 
     getStudentCertificate(userId: string): Promise<AxiosResponse<StudentCertificateResponse,any>>{
         return axiosInstance.get<StudentCertificateResponse>(this.apiUrl + "/getStudentCertificate/" + userId)

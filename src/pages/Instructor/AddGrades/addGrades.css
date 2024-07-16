@@ -9,6 +9,9 @@
 
 .card {
     width: 70%;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
 }
 
 .exam {
@@ -41,9 +44,13 @@
 .term-label {
     text-align: center;
 }
- 
+
 .term-checkbox {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.add-grades-form {
+    padding: 30px !important;
 }

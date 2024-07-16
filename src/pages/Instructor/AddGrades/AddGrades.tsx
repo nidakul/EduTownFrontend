@@ -9,6 +9,7 @@ import { getSchoolById } from '../../../store/school/schoolSlice';
 import { getUserDetailById } from '../../../store/user/userSlice';
 import { getLessonsBySchoolIdAndClassId } from '../../../store/lesson/lessonSlice';
 import { getTerms } from '../../../store/term/termSlice';
+import { getGradeTypes } from '../../../store/gradeType/gradeTypeSlice';
 
 type Props = {}
 
@@ -20,13 +21,14 @@ const AddGrades = (props: Props) => {
     const lesson = useSelector((state: RootState) => state.lesson.lesson);
     const user = useSelector((state: RootState) => state.user.user);
     const term = useSelector((state: RootState) => state.term.term?.items);
+    const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
     console.log("user", user);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
     const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
     const [selectedTermId, setSelectedTermId] = useState<number>();
     console.log("selectedClassId", selectedClassId);
     console.log("selectedLessonId", selectedLessonId);
-    console.log("term", selectedTermId);
+    console.log("type", gradeType);
 
     useEffect(() => {
         if (userId) {
@@ -53,15 +55,16 @@ const AddGrades = (props: Props) => {
 
     useEffect(() => {
         dispatch(getTerms());
+        dispatch(getGradeTypes());
     }, [])
 
 
     return (
         <Container>
-            <Card>
-                <Card.Header>Sınıf-Şube ve Ders Seçiniz</Card.Header>
-                <Card.Body>
-                    <Form>
+            <Form>
+                <Card>
+                    <Card.Header>Sınıf-Şube ve Ders Seçiniz</Card.Header>
+                    <Card.Body className='add-grades-form'>
                         <Form.Group as={Row}>
                             <Form.Label column sm={2}>
                                 Sınıf - Şube :
@@ -114,25 +117,26 @@ const AddGrades = (props: Props) => {
                             </Form.Group>
                         </Form.Group>
 
-                    </Form>
-                </Card.Body>
-                <Card.Header>Not Girişi</Card.Header>
-                <Card.Body>
-                    <Card>
-                        <Card.Header>Sınav Puanları</Card.Header>
-                        <Card.Body>
-                            <div className='exam'>
-                                <Card.Text className='exam-text'>1. Sınav</Card.Text>
-                                <Card.Text>1. Sınav</Card.Text>
-                            </div>
-                        </Card.Body>
 
-                        <Card.Header>Sınav Puanları</Card.Header>
+                    </Card.Body>
+                    <Card.Header>Not Girişi</Card.Header>
+                    <Card.Body>
+                        {gradeType && gradeType.map((gradeTypeItem) => (
+                            <Card>
+                                <Card.Header>{gradeTypeItem.name}</Card.Header>
+                                <Card.Body>
+                                    <div className='exam'>
+                                        <Card.Text className='exam-text'>1. Sınav</Card.Text>
+                                        <Card.Text>1. Sınav</Card.Text>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        ))}
 
-                    </Card>
-                </Card.Body>
-            </Card >
-        </Container >
+                    </Card.Body>
+                </Card >
+            </Form>
+        </Container>
     )
 }
 

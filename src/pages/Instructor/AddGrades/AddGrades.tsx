@@ -94,19 +94,24 @@ const AddGrades = (props: Props) => {
                                     ))}
                                 </Form.Select>
                             </Col>
-                            {term && term.map((termItem) => (
-                                <Col>
-                                    <Form.Check
-                                        key={termItem.id}
-                                        type="radio"
-                                        label={`${termItem.name}. Dönem`}
-                                        value={termItem.id}
-                                        checked={selectedTermId == termItem.id}
-                                        aria-label='term-checkbox'
-                                        onChange={(e) => setSelectedTermId(Number(e.target.value))}
-                                    />
+                            <Form.Group as={Row} className="term-checkbox-group">
+                                <Form.Label column sm={12} className="term-label">
+                                    Dönem Seçiniz:
+                                </Form.Label>
+                                <Col sm={12} className='term-checkbox'>
+                                    {term && term.map((termItem) => (
+                                        <Form.Check
+                                            key={termItem.id}
+                                            type="radio"
+                                            label={`${termItem.name}. Dönem`}
+                                            value={termItem.id}
+                                            checked={selectedTermId == termItem.id}
+                                            aria-label='term-checkbox'
+                                            onChange={(e) => setSelectedTermId(Number(e.target.value))}
+                                        />
+                                    ))}
                                 </Col>
-                            ))}
+                            </Form.Group>
                         </Form.Group>
 
                     </Form>
@@ -125,7 +130,6 @@ const AddGrades = (props: Props) => {
                         <Card.Header>Sınav Puanları</Card.Header>
 
                     </Card>
-                    {/* <span className='deneme'>mfdsko</span> */}
                 </Card.Body>
             </Card >
         </Container >

@@ -21,6 +21,29 @@
     margin-right: 60px;
 }
 
-.deneme {
-    border: 1px solid grey;
+
+.form-check-input:checked {
+    background-color: #a0dbcc !important;
+    border-color: #a0dbcc !important;
+}
+
+.term-checkbox .form-check {
+    margin: 0 90px;
+}
+
+.term-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px !important;
+}
+
+.term-label {
+    text-align: center;
+}
+ 
+.term-checkbox {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }

@@ -10,19 +10,20 @@ import { AppDispatch, RootState } from '../../../store/configureStore';
 import { getClassesBySchoolTypeId } from '../../../store/class/classSlice';
 import { getSchoolById } from '../../../store/school/schoolSlice';
 import { getUserDetailById } from '../../../store/user/userSlice';
+import { getLessonsBySchoolIdAndClassId } from '../../../store/lesson/lessonSlice';
 
 type Props = {}
 
 const AddGrades = (props: Props) => {
     const userId = getUserId();
-    const [lessons, setLessons] = useState<GetLessonsBySchoolIdAndClassIdResponse>();
     const dispatch = useDispatch<AppDispatch>();
     const classes = useSelector((state: RootState) => state.classes.classes);
     const school = useSelector((state: RootState) => state.school.school);
+    const lesson = useSelector((state: RootState) => state.lesson.lesson);
     const user = useSelector((state: RootState) => state.user.user);
     console.log("user", user);
-    const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
-    console.log("school", school);
+    const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
+    console.log("selectedClassId", selectedClassId);
 
     useEffect(() => {
         if (userId) {
@@ -42,7 +43,11 @@ const AddGrades = (props: Props) => {
         }
     }, [dispatch, school]);
 
-    console.log("classes.schoolTypeId", school?.schoolTypeId);
+    useEffect(() => {
+        if (user && classes && selectedClassId !== undefined)
+            dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+    }, [dispatch, user, selectedClassId]);
+
 
     return (
         <Container>
@@ -76,8 +81,9 @@ const AddGrades = (props: Props) => {
                                 // onChange={handleChange}
                                 >
                                     <option>Ders Seçiniz</option>
-                                    <option>A</option>
-                                    <option>B</option>
+                                    {lesson && lesson.lessonName.map((lessonName: string, index: number) => (
+                                        <option key={index}>{lessonName}</option>
+                                    ))}
                                 </Form.Select>
                             </Col>
                         </Form.Group>

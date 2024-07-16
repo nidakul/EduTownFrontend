@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import "./addGrades.css";
 import { getUserId } from '../../../services/identityService';
 import { useDispatch, useSelector } from 'react-redux';
@@ -61,8 +61,8 @@ const AddGrades = (props: Props) => {
 
     return (
         <Container>
-            <Form>
-                <Card>
+            <Card>
+                <Form>
                     <Card.Header>Sınıf-Şube ve Ders Seçiniz</Card.Header>
                     <Card.Body className='add-grades-form'>
                         <Form.Group as={Row}>
@@ -116,27 +116,32 @@ const AddGrades = (props: Props) => {
                                 </Col>
                             </Form.Group>
                         </Form.Group>
-
-
                     </Card.Body>
                     <Card.Header>Not Girişi</Card.Header>
-                    <Card.Body>
+                    <Card.Body className='gradeType-card'>
                         {gradeType && gradeType.map((gradeTypeItem) => (
                             <Card>
                                 <Card.Header>{gradeTypeItem.name}</Card.Header>
-                                <Card.Body>
-                                    <div className='exam'>
-                                        <Card.Text className='exam-text'>1. Sınav</Card.Text>
-                                        <Card.Text>1. Sınav</Card.Text>
-                                    </div>
+                                <Card.Body >
+                                    {Array.from({ length: gradeTypeItem.gradeCount }, (_, index) => (
+                                        <Form.Check
+                                            className='gradeType-checkbox'
+                                            key={index}
+                                            type='checkbox'
+                                            label={`${index + 1}. Not`}
+                                            aria-label={`gradeType-checkbox`}
+                                        />
+                                    ))}
                                 </Card.Body>
                             </Card>
                         ))}
-
                     </Card.Body>
-                </Card >
-            </Form>
-        </Container>
+                </Form >
+            </Card >
+            <div className='add-grades-btn'>
+                <Button className='form-btn-color'>Listele</Button>
+            </div>
+        </Container >
     )
 }
 

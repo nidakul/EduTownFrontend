@@ -8,7 +8,7 @@
 }
 
 .card {
-    width: 70%;
+    width: 95%;
     display: flex !important;
     justify-content: center !important;
     text-align: center !important;
@@ -53,4 +53,15 @@
 
 .add-grades-form {
     padding: 30px !important;
+}
+
+.gradeType-card {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.add-grades-btn {
+    display: flex !important;
+    justify-content: center;
 }

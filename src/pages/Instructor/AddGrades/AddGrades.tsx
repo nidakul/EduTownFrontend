@@ -13,6 +13,7 @@ import { getGradeTypes } from '../../../store/gradeType/gradeTypeSlice';
 import { GetListGradeTypeResponse } from '../../../models/responses/getListGradeTypeResponse';
 import { getAllStudents } from '../../../store/student/studentSlice';
 import { UserInformationResponse } from '../../../models/responses/userInformationResponse';
+import { getBranchesBySchoolIdAndClassId } from '../../../store/branch/branchSlice';
 
 type Props = {}
 
@@ -23,6 +24,7 @@ const AddGrades = (props: Props) => {
     const classes = useSelector((state: RootState) => state.classes.classes);
     const school = useSelector((state: RootState) => state.school.school);
     const lesson = useSelector((state: RootState) => state.lesson.lesson);
+    const branch = useSelector((state: RootState) => state.branch.branch);
     const user = useSelector((state: RootState) => state.user.items);
     const student = useSelector((state: RootState) => state.student.items);
     const term = useSelector((state: RootState) => state.term.term?.items);
@@ -31,11 +33,12 @@ const AddGrades = (props: Props) => {
     console.log("user", user);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
     const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
+    const [selectedBranchId, setSelectedBranchId] = useState<number | undefined>(undefined);
     const [selectedTermId, setSelectedTermId] = useState<number>();
     const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
     const [filteredStudents, setFilteredStudents] = useState<UserInformationResponse[]>([]);
 
-    console.log("classes", classes);
+    console.log("selectedBranchId", selectedBranchId);
 
     const fetchStudents = async () => {
         if (selectedClassId && student) {
@@ -67,8 +70,10 @@ const AddGrades = (props: Props) => {
     }, [dispatch, school]);
 
     useEffect(() => {
-        if (user && classes && selectedClassId !== undefined)
+        if (user && classes && selectedClassId !== undefined) {
             dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+            dispatch(getBranchesBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+        }
     }, [dispatch, user, selectedClassId]);
 
     useEffect(() => {
@@ -106,14 +111,14 @@ const AddGrades = (props: Props) => {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group as={Col} sm={4}>
-                                <Form.Select öesös
+                                <Form.Select
                                     name="branch-select"
-                                    value={selectedClassId}
-                                    onChange={(e) => setSelectedClassId(Number(e.target.value))}
+                                    value={selectedBranchId}
+                                    onChange={(e) => setSelectedBranchId(Number(e.target.value))}
                                 >
                                     <option>Şube Seçiniz</option>
-                                    {classes && classes.classes.map((classItem) => (
-                                        <option key={classItem.classroomId} value={classItem.classroomId}>{classItem.classroomName}. Sınıf</option>
+                                    {branch && branch.branches.map((branchItem) => (
+                                        <option key={branchItem.branchId} value={branchItem.branchId}>{branchItem.branchName}</option>
                                     ))}
                                 </Form.Select>
                             </Form.Group>

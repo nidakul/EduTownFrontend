@@ -10,27 +10,43 @@ import { getUserDetailById } from '../../../store/user/userSlice';
 import { getLessonsBySchoolIdAndClassId } from '../../../store/lesson/lessonSlice';
 import { getTerms } from '../../../store/term/termSlice';
 import { getGradeTypes } from '../../../store/gradeType/gradeTypeSlice';
-import AddStudentGrade from '../../../components/AddStudentGrade/AddStudentGrade';
-import { GetListGradeTypeList, GetListGradeTypeResponse } from '../../../models/responses/getListGradeTypeResponse';
+import { GetListGradeTypeResponse } from '../../../models/responses/getListGradeTypeResponse';
+import { getAllStudents } from '../../../store/student/studentSlice';
+import { UserInformationResponse } from '../../../models/responses/userInformationResponse';
 
 type Props = {}
 
 const AddGrades = (props: Props) => {
     const userId = getUserId();
     const dispatch = useDispatch<AppDispatch>();
+
     const classes = useSelector((state: RootState) => state.classes.classes);
     const school = useSelector((state: RootState) => state.school.school);
     const lesson = useSelector((state: RootState) => state.lesson.lesson);
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user.items);
+    const student = useSelector((state: RootState) => state.student.items);
     const term = useSelector((state: RootState) => state.term.term?.items);
     const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
+
     console.log("user", user);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
     const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
     const [selectedTermId, setSelectedTermId] = useState<number>();
     const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
-    console.log("gradeTypes", gradeTypes);
-    console.log("selectedLessonId", selectedLessonId);
+    const [filteredStudents, setFilteredStudents] = useState<UserInformationResponse[]>([]);
+
+    console.log("classes", classes);
+
+    const fetchStudents = async () => {
+        if (selectedClassId && student) {
+            const filtered = student.filter(student => student.classroomId === selectedClassId);
+            setFilteredStudents(filtered);
+        }
+    }
+
+    useEffect(() => {
+        fetchStudents();
+    }, [selectedClassId, student]);
 
     useEffect(() => {
         if (userId) {
@@ -61,6 +77,10 @@ const AddGrades = (props: Props) => {
     }, [])
 
     useEffect(() => {
+        dispatch(getAllStudents());
+    }, [])
+
+    useEffect(() => {
         if (gradeType) {
             setGradeTypes(gradeType);
         }
@@ -72,26 +92,32 @@ const AddGrades = (props: Props) => {
                 <Form>
                     <Card.Header>Sınıf-Şube ve Ders Seçiniz</Card.Header>
                     <Card.Body className='add-grades-form'>
-                        <Form.Group as={Row}>
-                            <Form.Label column sm={2}>
-                                Sınıf - Şube :
-                            </Form.Label>
-                            <Col sm={4}>
+                        <Row>
+                            <Form.Group as={Col} sm={4}>
                                 <Form.Select
                                     name="class-select"
                                     value={selectedClassId}
                                     onChange={(e) => setSelectedClassId(Number(e.target.value))}
                                 >
-                                    <option>Sınıf-Şube Seçiniz</option>
+                                    <option>Sınıf Seçiniz</option>
                                     {classes && classes.classes.map((classItem) => (
                                         <option key={classItem.classroomId} value={classItem.classroomId}>{classItem.classroomName}. Sınıf</option>
                                     ))}
                                 </Form.Select>
-                            </Col>
-                            <Form.Label column sm={2}>
-                                Ders :
-                            </Form.Label>
-                            <Col sm={4}>
+                            </Form.Group>
+                            <Form.Group as={Col} sm={4}>
+                                <Form.Select öesös
+                                    name="branch-select"
+                                    value={selectedClassId}
+                                    onChange={(e) => setSelectedClassId(Number(e.target.value))}
+                                >
+                                    <option>Şube Seçiniz</option>
+                                    {classes && classes.classes.map((classItem) => (
+                                        <option key={classItem.classroomId} value={classItem.classroomId}>{classItem.classroomName}. Sınıf</option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group as={Col} sm={4}>
                                 <Form.Select
                                     name="lesson"
                                     value={selectedLessonId}
@@ -103,8 +129,10 @@ const AddGrades = (props: Props) => {
                                         </option>
                                     ))}
                                 </Form.Select>
-                            </Col>
-                            <Form.Group as={Row} className="term-checkbox-group">
+                            </Form.Group>
+                        </Row>
+                        <Row className="mt-3">
+                            <Form.Group as={Col} className="term-checkbox-group">
                                 <Form.Label column sm={12} className="term-label">
                                     Dönem Seçiniz:
                                 </Form.Label>
@@ -122,7 +150,7 @@ const AddGrades = (props: Props) => {
                                     ))}
                                 </Col>
                             </Form.Group>
-                        </Form.Group>
+                        </Row>
                     </Card.Body>
                     <Card.Header>Not Girişi</Card.Header>
                     <Card.Body className='gradeType-card'>
@@ -154,15 +182,48 @@ const AddGrades = (props: Props) => {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>yeni sütunlar</th>
+                                <th>Okul No</th>
+                                <th>Adı Soyadı</th>
+                                {gradeType && gradeType.map((type) => (
+                                    <th
+                                        key={type.id}
+                                        colSpan={type.gradeCount}
+                                    >
+                                        {type.name}
+                                    </th>
+                                ))}
+                                <th>Puanı</th>
                             </tr>
-                            <AddStudentGrade gradeType={gradeTypes} />
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                {/* number of colspan */}
+                                {gradeType && gradeType.map((type, typeIndex) => (
+                                    type.gradeCount > 0 ?
+                                        Array.from({ length: type.gradeCount }).map((_, countIndex) => (
+                                            <th key={`${typeIndex}-${countIndex}`}>
+                                                {countIndex + 1}
+                                            </th>
+                                        ))
+                                        : (<th key={`${typeIndex}-empty`}></th>
+                                        )
+                                ))}
+                            </tr>
+                            <th></th>
                         </thead>
+                        <tbody>
 
+                            {student && student.map((studentItem) => (
+                                <tr key={studentItem.id}>
+                                    <td>{studentItem.studentNo}</td>
+                                    <td>{studentItem.firstName} {studentItem.lastName}</td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </Table>
                 </Form>
             </Card>
-        </Container>
+        </Container >
     )
 }
 

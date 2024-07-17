@@ -3,7 +3,7 @@ import axiosInstance from "../core/interceptors/axiosInceptor";
 import { BASE_API_URL } from "../environment/environment";
 import {  StudentCertificateResponse } from "../models/responses/studentCertificateResponse";
 import { StudentGradesList, StudentGradesResponse } from "../models/responses/studentGradesResponse";
-import { UserInformationResponse } from "../models/responses/studentInformationResponse";
+import { UserInformationResponse } from "../models/responses/userInformationResponse";
 
 class UserService {
     apiUrl = BASE_API_URL + "Users";

@@ -4,9 +4,9 @@ export interface UserInformationResponse{
   classroomId: number;
   schoolName: string;
   classroomName: string;
-  nationalIdentity: string; 
+  nationalIdentity: string;  
   firstName: string;
-  lastName: string;
+  lastName: string; 
   email: string;
   status: boolean;
   imageUrl: string;

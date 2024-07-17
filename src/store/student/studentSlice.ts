@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import studentService from '../../services/studentService';
-import { StudentInformationResponse } from '../../models/responses/studentInformationResponse';
+import { UserInformationResponse } from '../../models/responses/userInformationResponse';
 
 const initialState = {
-    items: [] as StudentInformationResponse[]}
+    items: [] as UserInformationResponse[]} 
 
 
 export const getAllStudents = createAsyncThunk('students/getAll', async() => {
@@ -14,10 +14,10 @@ export const getAllStudents = createAsyncThunk('students/getAll', async() => {
 export const studentSlice = createSlice({
     name: "student",
     initialState,
-    reducers:{
+    reducers:{ 
 
     },
-    extraReducers: (builder) => {
+    extraReducers: (builder) => { 
         builder.addCase(getAllStudents.fulfilled,(state, action) => {
             state.items = action.payload;
         })

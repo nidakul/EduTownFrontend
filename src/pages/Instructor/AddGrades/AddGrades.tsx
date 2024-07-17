@@ -38,18 +38,18 @@ const AddGrades = (props: Props) => {
     const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
     const [filteredStudents, setFilteredStudents] = useState<UserInformationResponse[]>([]);
 
-    console.log("selectedBranchId", selectedBranchId);
+    console.log("filteredStudents", filteredStudents);
 
     const fetchStudents = async () => {
-        if (selectedClassId && student) {
-            const filtered = student.filter(student => student.classroomId === selectedClassId);
+        if (selectedClassId && selectedBranchId && student) {
+            const filtered = student.filter(student => student.classroomId === selectedClassId && student.branchId === selectedBranchId);
             setFilteredStudents(filtered);
         }
     }
 
     useEffect(() => {
         fetchStudents();
-    }, [selectedClassId, student]);
+    }, [selectedClassId, selectedBranchId, student]);
 
     useEffect(() => {
         if (userId) {
@@ -218,10 +218,10 @@ const AddGrades = (props: Props) => {
                         </thead>
                         <tbody>
 
-                            {student && student.map((studentItem) => (
-                                <tr key={studentItem.id}>
-                                    <td>{studentItem.studentNo}</td>
-                                    <td>{studentItem.firstName} {studentItem.lastName}</td>
+                            {filteredStudents && filteredStudents.map((filteredStudentsItem) => (
+                                <tr key={filteredStudentsItem.id}>
+                                    <td>{filteredStudentsItem.studentNo}</td>
+                                    <td>{filteredStudentsItem.firstName} {filteredStudentsItem.lastName}</td>
                                 </tr>
                             ))}
                         </tbody>

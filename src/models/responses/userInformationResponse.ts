@@ -1,7 +1,9 @@
 export interface UserInformationResponse{
   id:number;
   schoolId: number;
+  branchId: number;
   classroomId: number;
+  branchName: number;
   schoolName: string;
   classroomName: string;
   nationalIdentity: string;  
@@ -14,7 +16,6 @@ export interface UserInformationResponse{
   gender: string;
   birthdate: Date;
   birthplace: string;
-  branch:string;
 }
 
 export interface UserInformationList{

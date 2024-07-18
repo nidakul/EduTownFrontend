@@ -37,19 +37,15 @@ const AddGrades = (props: Props) => {
     const [selectedTermId, setSelectedTermId] = useState<number>();
     const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
     const [filteredStudents, setFilteredStudents] = useState<UserInformationResponse[]>([]);
+    const [showFilteredStudent, setShowFilteredStudent] = useState(false);
 
-    console.log("filteredStudents", filteredStudents);
-
-    const fetchStudents = async () => {
+    const handleListFilteredStudents = () => {
         if (selectedClassId && selectedBranchId && student) {
             const filtered = student.filter(student => student.classroomId === selectedClassId && student.branchId === selectedBranchId);
             setFilteredStudents(filtered);
-        }
+            setShowFilteredStudent(true);
+        };
     }
-
-    useEffect(() => {
-        fetchStudents();
-    }, [selectedClassId, selectedBranchId, student]);
 
     useEffect(() => {
         if (userId) {
@@ -160,7 +156,7 @@ const AddGrades = (props: Props) => {
                     <Card.Header>Not Girişi</Card.Header>
                     <Card.Body className='gradeType-card'>
                         {gradeType && gradeType.map((gradeTypeItem) => (
-                            <Card>
+                            <Card key={gradeTypeItem.id}>
                                 <Card.Header>{gradeTypeItem.name}</Card.Header>
                                 <Card.Body >
                                     {Array.from({ length: gradeTypeItem.gradeCount }, (_, index) => (
@@ -179,55 +175,57 @@ const AddGrades = (props: Props) => {
                 </Form >
             </Card >
             <div className='add-grades-btn'>
-                <Button className='form-btn-color'>Listele</Button>
+                <Button className='form-btn-color' onClick={handleListFilteredStudents}>Listele</Button>
             </div>
-            <Card>
-                <Form>
-                    <Card.Header>Seçili Alanlara Göre Ders Notu Girişi</Card.Header>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Okul No</th>
-                                <th>Adı Soyadı</th>
-                                {gradeType && gradeType.map((type) => (
-                                    <th
-                                        key={type.id}
-                                        colSpan={type.gradeCount}
-                                    >
-                                        {type.name}
-                                    </th>
-                                ))}
-                                <th>Puanı</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                {/* number of colspan */}
-                                {gradeType && gradeType.map((type, typeIndex) => (
-                                    type.gradeCount > 0 ?
-                                        Array.from({ length: type.gradeCount }).map((_, countIndex) => (
-                                            <th key={`${typeIndex}-${countIndex}`}>
-                                                {countIndex + 1}
-                                            </th>
-                                        ))
-                                        : (<th key={`${typeIndex}-empty`}></th>
-                                        )
-                                ))}
-                            </tr>
-                            <th></th>
-                        </thead>
-                        <tbody>
-
-                            {filteredStudents && filteredStudents.map((filteredStudentsItem) => (
-                                <tr key={filteredStudentsItem.id}>
-                                    <td>{filteredStudentsItem.studentNo}</td>
-                                    <td>{filteredStudentsItem.firstName} {filteredStudentsItem.lastName}</td>
+            {showFilteredStudent && (
+                <Card>
+                    <Form>
+                        <Card.Header>Seçili Alanlara Göre Ders Notu Girişi</Card.Header>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Okul No</th>
+                                    <th>Adı Soyadı</th>
+                                    {gradeType && gradeType.map((type) => (
+                                        <th
+                                            key={type.id}
+                                            colSpan={type.gradeCount}
+                                        >
+                                            {type.name}
+                                        </th>
+                                    ))}
+                                    <th>Puanı</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </Form>
-            </Card>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    {/* number of colspan */}
+                                    {gradeType && gradeType.map((type, typeIndex) => (
+                                        type.gradeCount > 0 ?
+                                            Array.from({ length: type.gradeCount }).map((_, countIndex) => (
+                                                <th key={`${typeIndex}-${countIndex}`}>
+                                                    {countIndex + 1}
+                                                </th>
+                                            ))
+                                            : (<th key={`${typeIndex}-empty`}></th>
+                                            )
+                                    ))}
+                                </tr>
+                                <th></th>
+                            </thead>
+                            <tbody>
+
+                                {filteredStudents && filteredStudents.map((filteredStudentsItem) => (
+                                    <tr key={filteredStudentsItem.id}>
+                                        <td>{filteredStudentsItem.studentNo}</td>
+                                        <td>{filteredStudentsItem.firstName} {filteredStudentsItem.lastName}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Form>
+                </Card>
+            )}
         </Container >
     )
 }

@@ -3,7 +3,7 @@ import axiosInstance from "../core/interceptors/axiosInceptor";
 import { BASE_API_URL } from "../environment/environment";
 import { AddStudent } from "../models/requests/addStudent";
 import { UserInformationList } from "../models/responses/userInformationResponse";
-import { StudentGradesList } from "../models/responses/studentGradesResponse";
+import { StudentGradesResponse } from "../models/responses/studentGradesResponse";
 
 class StudentService{
 apiUrl = BASE_API_URL + "Students";
@@ -21,8 +21,8 @@ getListStudentDetail(
     )
 }
 
-getStudentGrades(studentId: string): Promise<AxiosResponse<StudentGradesList,any>>{
-    return axiosInstance.get<StudentGradesList>(this.apiUrl + "/getStudentGrades/" + studentId)
+getStudentGrades(studentId: string): Promise<AxiosResponse<StudentGradesResponse,any>>{
+    return axiosInstance.get<StudentGradesResponse>(this.apiUrl + "/getStudentGrades/" + studentId)
 }
 
 }

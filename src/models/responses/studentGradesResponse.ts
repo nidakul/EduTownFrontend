@@ -1,16 +1,33 @@
-export interface StudentGradesResponse{
-    id: string;
-    classroomId: number;
-    termId: number;
-    classroomName: string;
-    lessonName: string;
-    gradeTypeName: string;
-    termName: string;
+export interface GradeDto {
     examCount: number;
     grade: number;
 }
 
-export interface StudentGradesList{
-    studentGrades: StudentGradesResponse[];
+export interface GradeType {
+    gradeTypeId: number;
+    gradeTypeName: string;
+    gradesDto: GradeDto[];
 }
 
+export interface Lesson {
+    lessonId: number;
+    lessonName: string;
+    grades: GradeType[];
+}
+
+export interface TermName {
+    termId: number;
+    termName: string;
+    lessons: Lesson[];
+}
+
+export interface StudentGrade {
+    classroomId: number;
+    classroomName: string;
+    termNames: TermName[];
+}
+
+export interface StudentGradesResponse {
+    id: string;
+    studentGrades: StudentGrade[];
+}

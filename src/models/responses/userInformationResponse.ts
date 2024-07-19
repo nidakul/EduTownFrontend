@@ -1,5 +1,5 @@
 export interface UserInformationResponse{
-  id:number;
+  id:string;
   schoolId: number;
   branchId: number;
   classroomId: number;

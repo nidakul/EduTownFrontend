@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap';
 import "./addGrades.css";
@@ -11,9 +12,10 @@ import { getLessonsBySchoolIdAndClassId } from '../../../store/lesson/lessonSlic
 import { getTerms } from '../../../store/term/termSlice';
 import { getGradeTypes } from '../../../store/gradeType/gradeTypeSlice';
 import { GetListGradeTypeResponse } from '../../../models/responses/getListGradeTypeResponse';
-import { getAllStudents } from '../../../store/student/studentSlice';
+import { getAllStudents, getStudentGrades } from '../../../store/student/studentSlice';
 import { UserInformationResponse } from '../../../models/responses/userInformationResponse';
 import { getBranchesBySchoolIdAndClassId } from '../../../store/branch/branchSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 type Props = {}
 
@@ -27,10 +29,11 @@ const AddGrades = (props: Props) => {
     const branch = useSelector((state: RootState) => state.branch.branch);
     const user = useSelector((state: RootState) => state.user.items);
     const student = useSelector((state: RootState) => state.student.items);
+    const studentGrade = useSelector((state: RootState) => state.student.studentGrades);
     const term = useSelector((state: RootState) => state.term.term?.items);
     const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
 
-    console.log("user", user);
+    console.log("student", studentGrade);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
     const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
     const [selectedBranchId, setSelectedBranchId] = useState<number | undefined>(undefined);
@@ -39,13 +42,31 @@ const AddGrades = (props: Props) => {
     const [filteredStudents, setFilteredStudents] = useState<UserInformationResponse[]>([]);
     const [showFilteredStudent, setShowFilteredStudent] = useState(false);
 
-    const handleListFilteredStudents = () => {
-        if (selectedClassId && selectedBranchId && student) {
+    const [studentGrades, setStudentGrades] = useState<{ [key: string]: any }>({});
+
+
+
+    const handleListFilteredStudents = async () => {
+        if (selectedClassId && selectedBranchId && student && selectedTermId && selectedLessonId) {
             const filtered = student.filter(student => student.classroomId === selectedClassId && student.branchId === selectedBranchId);
             setFilteredStudents(filtered);
             setShowFilteredStudent(true);
+
+            // Her bir öğrenci için notları al ve state'e ekle
+            const newStudentGrades: { [key: string]: any } = {};
+            for (const studentItem of filtered) {
+                try {
+                    const resultAction = await dispatch(getStudentGrades(studentItem.id.toString()));
+                    const studentGradeData = unwrapResult(resultAction);
+                    newStudentGrades[studentItem.id] = studentGradeData;
+                } catch (error) {
+                    console.error(`Failed to fetch grades for student ${studentItem.id}:`, error);
+                }
+            }
+            setStudentGrades(newStudentGrades);
         };
     }
+
 
     useEffect(() => {
         if (userId) {
@@ -214,18 +235,37 @@ const AddGrades = (props: Props) => {
                                 <th></th>
                             </thead>
                             <tbody>
-
-                                {filteredStudents && filteredStudents.map((filteredStudentsItem) => (
+                                {filteredStudents.map((filteredStudentsItem) => (
                                     <tr key={filteredStudentsItem.id}>
                                         <td>{filteredStudentsItem.studentNo}</td>
                                         <td>{filteredStudentsItem.firstName} {filteredStudentsItem.lastName}</td>
+                                        {gradeType && gradeType.map((gradeItem) => (
+                                            <React.Fragment key={gradeItem.id}>
+                                                {studentGrades && studentGrades[filteredStudentsItem.id]?.studentGrades.map((studentGradeItem: any) => (
+                                                    studentGradeItem.classroomId === selectedClassId &&
+                                                    studentGradeItem.termNames.some((term: any) => term.termId === selectedTermId) &&
+                                                    studentGradeItem.termNames.flatMap((term: any) =>
+                                                        term.lessons
+                                                            .filter((lesson: any) => lesson.lessonId === selectedLessonId)
+                                                            .flatMap((lesson: any) =>
+                                                                lesson.grades.find((g: any) => g.gradeTypeId === gradeItem.id)?.gradesDto
+                                                            ).flat()
+                                                    ).map((grade: any, index: number) => (
+                                                        <td key={index}>
+                                                            {grade && grade.grade || ""}
+                                                        </td>
+                                                    ))
+                                                ))}
+                                            </React.Fragment>
+                                        ))}
                                     </tr>
                                 ))}
                             </tbody>
                         </Table>
                     </Form>
                 </Card>
-            )}
+            )
+            }
         </Container >
     )
 }

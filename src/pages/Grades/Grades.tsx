@@ -48,24 +48,20 @@ const Grades = (props: Props) => {
   const [grades, setGrades] = useState<StudentGradesResponse[]>([]);
   const [selectedTermId, setSelectedTermId] = useState<number>(1);
 
+  const fetchStudentClasses = async () => {
+    if (user?.classroomId) {
+      await dispatch(getAllClasses()); // dispatch işleminin tamamlanmasını bekleyin
+      const filteredClasses = classes.filter((classItem: ClassInformationResponse) => classItem.id <= user.classroomId);
+      setStudentClasses(filteredClasses);
+    }
+  };
+  console.log("lesson", lesson);
   const fetchGradeType = async () => {
     try {
       const response = await gradeTypeService.getList();
       setGradeType(response.data.items);
     } catch (error) {
       console.error("Failed to fetch gradeTypes:", error);
-    }
-  };
-  // console.log("user", user);
-  console.log("selectedClassId", selectedClassId);
-  console.log("studentClasses", studentClasses);
-
-  // fix: schoolTypeId'ye göre değil öğrencinin sınıflarını getir
-  const fetchStudentClasses = async () => {
-    if (user?.classroomId) {
-      await dispatch(getAllClasses()); // dispatch işleminin tamamlanmasını bekleyin
-      const filteredClasses = classes.filter((classItem: ClassInformationResponse) => classItem.id <= user.classroomId);
-      setStudentClasses(filteredClasses);
     }
   };
 
@@ -106,6 +102,12 @@ const Grades = (props: Props) => {
     fetchStudentClasses();
   }, [user]);
 
+  useEffect(() => {
+    if (user && classes && selectedClassId !== undefined) {
+      dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+    }
+  }, [dispatch, user, selectedClassId]);
+
   return (
     <Container>
       <label htmlFor="grades-select">Öğrencinin Sınıfları:</label>
@@ -145,8 +147,8 @@ const Grades = (props: Props) => {
               ))}
             </tr>
             <tr>
-              {/* number of colspan */}
               <th></th>
+              {/* number of colspan */}
               {gradeType.map((type, typeIndex) => (
                 type.gradeCount > 0 ?
                   Array.from({ length: type.gradeCount }).map((_, countIndex) => (
@@ -159,14 +161,13 @@ const Grades = (props: Props) => {
               ))}
             </tr>
           </thead>
-          {/* <tbody>
-            {lessons && lessons.lessonName && lessons.lessonName.map((lessonName: string, index: number) => (
-              <tr key={index}>
-                <td>{lessonName}</td>
-
+          <tbody>
+            {lesson && lesson.lessons && lesson.lessons.map((lessonItem) => (
+              <tr key={lessonItem.lessonId}>
+                <td>{lessonItem.lessonName}</td>
               </tr>
             ))}
-          </tbody> */}
+          </tbody>
         </Table>
       </Card>
     </Container >

@@ -260,7 +260,6 @@ const AddGrades = (props: Props) => {
                                             });
                                         });
                                     }
-
                                     return (
                                         <tr key={student.id}>
                                             <td>{student.studentNo}</td>

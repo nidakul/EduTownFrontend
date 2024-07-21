@@ -1,9 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import schoolTypeService from "../../services/schoolTypeService"
 import { GetListClassesBySchoolTypeId } from "../../models/responses/getListClassesBySchoolTypeId";
+import { ClassInformationResponse } from "../../models/responses/classInformationResponse";
+import classService from "../../services/classService";
 
-const initialState: {classes: GetListClassesBySchoolTypeId | null} = {
-    classes: null
+interface ClassState{
+classes: GetListClassesBySchoolTypeId | null;
+items: ClassInformationResponse[];
+}
+
+const initialState: ClassState = {
+    classes: null,
+    items: []
 } 
 
 export const getClassesBySchoolTypeId = createAsyncThunk('classes/getSchoolTypeId',
@@ -13,13 +21,22 @@ export const getClassesBySchoolTypeId = createAsyncThunk('classes/getSchoolTypeI
     }
 )
 
+export const getAllClasses = createAsyncThunk('classes/getAll', async() => {
+    const response = await classService.getList();
+    return response.data.items;
+})
+
 export const classSlice = createSlice({
     name: "classes",
     initialState,
     reducers:{},
     extraReducers: (builder) => {
-        builder.addCase(getClassesBySchoolTypeId.fulfilled, (state, action) => {
+        builder
+        .addCase(getClassesBySchoolTypeId.fulfilled, (state, action) => {
             state.classes = action.payload;
+        })
+        .addCase(getAllClasses.fulfilled, (state, action) => {
+            state.items = action.payload;
         })
     }
 }

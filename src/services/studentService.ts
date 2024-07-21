@@ -14,7 +14,7 @@ addStudent(userData: AddStudent ){
 
 getListStudentDetail( 
     pageIndex: number = 0,
-    pageSize: number = 10 
+    pageSize: number = 20 
 ){
     return axiosInstance.get<UserInformationList>(
         (this.apiUrl + "/getListStudentDetail" + `?PageIndex=${pageIndex}&PageSize=${pageSize}`)

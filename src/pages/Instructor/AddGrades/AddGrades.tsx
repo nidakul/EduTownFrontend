@@ -235,31 +235,46 @@ const AddGrades = (props: Props) => {
                                 <th></th>
                             </thead>
                             <tbody>
-                                {filteredStudents.map((filteredStudentsItem) => (
-                                    <tr key={filteredStudentsItem.id}>
-                                        <td>{filteredStudentsItem.studentNo}</td>
-                                        <td>{filteredStudentsItem.firstName} {filteredStudentsItem.lastName}</td>
-                                        {gradeType && gradeType.map((gradeItem) => (
-                                            <React.Fragment key={gradeItem.id}>
-                                                {studentGrades && studentGrades[filteredStudentsItem.id]?.studentGrades.map((studentGradeItem: any) => (
-                                                    studentGradeItem.classroomId === selectedClassId &&
-                                                    studentGradeItem.termNames.some((term: any) => term.termId === selectedTermId) &&
-                                                    studentGradeItem.termNames.flatMap((term: any) =>
-                                                        term.lessons
-                                                            .filter((lesson: any) => lesson.lessonId === selectedLessonId)
-                                                            .flatMap((lesson: any) =>
-                                                                lesson.grades.find((g: any) => g.gradeTypeId === gradeItem.id)?.gradesDto
-                                                            ).flat()
-                                                    ).map((grade: any, index: number) => (
-                                                        <td key={index}>
-                                                            {grade && grade.grade || ""}
-                                                        </td>
-                                                    ))
-                                                ))}
-                                            </React.Fragment>
-                                        ))}
-                                    </tr>
-                                ))}
+                                {filteredStudents.map((student) => {
+                                    const studentGradesData = studentGrades[student.id];
+
+                                    // İlgili öğrenci için notları ve examCount değerlerini içeren bir dizi oluştur
+                                    const gradesByGradeType: { [key: number]: { [key: number]: number | undefined } } = {};
+                                    if (studentGradesData && studentGradesData.studentGrades.length > 0) {
+                                        studentGradesData.studentGrades.forEach((studentGrade: any) => {
+                                            studentGrade.termNames.forEach((termName: any) => {
+                                                if (termName.termId === selectedTermId) {
+                                                    termName.lessons.forEach((lesson: any) => {
+                                                        if (lesson.lessonId === selectedLessonId) {
+                                                            lesson.grades.forEach((gradeType: any) => {
+                                                                if (!gradesByGradeType[gradeType.gradeTypeId]) {
+                                                                    gradesByGradeType[gradeType.gradeTypeId] = {};
+                                                                }
+                                                                gradeType.gradesDto.forEach((grade: any) => {
+                                                                    gradesByGradeType[gradeType.gradeTypeId][grade.examCount] = grade.grade;
+                                                                });
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+
+                                    return (
+                                        <tr key={student.id}>
+                                            <td>{student.studentNo}</td>
+                                            <td>{`${student.firstName} ${student.lastName}`}</td>
+                                            {gradeTypes && gradeTypes.map((gradeTypeItem) => (
+                                                Array.from({ length: gradeTypeItem.gradeCount }, (_, index) => (
+                                                    <td key={`${student.id}-${gradeTypeItem.id}-${index}`}>
+                                                        {gradesByGradeType[gradeTypeItem.id] && gradesByGradeType[gradeTypeItem.id][index + 1] !== undefined ? gradesByGradeType[gradeTypeItem.id][index + 1] : ""}
+                                                    </td>
+                                                ))
+                                            ))}
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </Table>
                     </Form>

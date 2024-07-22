@@ -17,8 +17,6 @@ import { getStudentGrades } from "../../store/student/studentSlice";
 import { getGradeTypes } from "../../store/gradeType/gradeTypeSlice";
 import { getUserDetailById } from "../../store/user/userSlice";
 import { getTerms } from "../../store/term/termSlice";
-import { StudentGradesResponse } from "../../models/responses/studentGradesResponse";
-
 
 type Props = {};
 
@@ -87,24 +85,14 @@ const Grades = (props: Props) => {
   useEffect(() => {
     if (user && selectedClassId !== undefined) {
       dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
-      console.log("lesson", lesson);
     }
-  }, [dispatch, user, selectedClassId]);
+  }, [dispatch, selectedClassId]);
 
-  useEffect(() => {
-    if (user && selectedClassId !== undefined) {
-      dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
-    }
-  }, [dispatch, user, selectedClassId]);
-
-  useEffect(() => {
-    if (user?.classroomId && !selectedClassId) {
-      setSelectedClassId(user.classroomId);
-    }
-  }, [user, selectedClassId]);
-
-
-
+  // useEffect(() => {
+  //   if (user?.classroomId && selectedClassId !== undefined) {
+  //     setSelectedClassId(user.classroomId);
+  //   }
+  // }, [user?.classroomId, selectedClassId]);
 
   return (
     <Container>
@@ -150,7 +138,8 @@ const Grades = (props: Props) => {
               {gradeType && gradeType.map((type, typeIndex) => (
                 type.gradeCount > 0 ?
                   Array.from({ length: type.gradeCount }).map((_, countIndex) => (
-                    <th key={`${typeIndex}-${countIndex}`}>
+                    <th key={`${typeIndex}-${countIndex}`}
+                      className="gradeType-colspan">
                       {countIndex + 1}
                     </th>
                   ))

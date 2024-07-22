@@ -13,10 +13,23 @@ import {
 } from "../../utilities/Constants/iconsList";
 import { Container } from "react-bootstrap";
 import IconTemp from "../../utilities/Helpers/iconTemp";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserId } from "../../services/identityService";
+import { AppDispatch, RootState } from "../../store/configureStore";
+import { useEffect } from "react";
+import { getUserDetailById } from "../../store/user/userSlice";
 
 const Sidebar = () => {
-  const user = useSelector((state: any) => state.user.user);
+  const userId = getUserId();
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.items);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserDetailById(userId));
+    }
+  }, [dispatch, userId, user]);
+
   return (
     <SidebarMenu>
       <SidebarMenuHeader>
@@ -25,7 +38,7 @@ const Sidebar = () => {
       <SidebarMenuBody>
         <div className="sidebar-menu-body-items">
           <img
-            src={user && user.imageUrl}
+            src={user?.imageUrl}
             className="img-fluid rounded-circle"
           />
           <SidebarMenu.Nav.Title>
@@ -33,7 +46,7 @@ const Sidebar = () => {
           </SidebarMenu.Nav.Title>
           <SidebarMenu.Nav.Item>{user && user.schoolName}</SidebarMenu.Nav.Item>
           <SidebarMenu.Nav.Item>
-            {user && user.classroomName}. Sınıf
+            {user?.classroomName}. Sınıf
           </SidebarMenu.Nav.Item>
         </div>
         <Container>

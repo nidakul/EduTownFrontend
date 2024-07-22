@@ -4,17 +4,24 @@ import Chart from "../../utilities/Helpers/chart";
 import userService from "../../services/userService";
 import { useEffect } from "react";
 import { getUserId } from "../../services/identityService";
-import { setUser } from "../../store/user/userSlice";
+import { getUserDetailById, setUser } from "../../store/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/configureStore";
 
 const Home = () => {
   const userId = getUserId();
-  const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user.user);
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.items);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserDetailById(userId));
+    }
+  }, [dispatch, userId]);
+
   const fetchUserInformation = async () => {
     try {
       if (userId) {
-        // const response = await userService.getUserDetailById(userId);
         const certificate = await userService.getStudentCertificate(userId);
         const userData = {
           // ...response.data,
@@ -43,8 +50,8 @@ const Home = () => {
               user.firstName &&
               user.firstName.toLocaleUpperCase("tr-TR")}
           </span>
-          <img src={user && user.imageUrl} className="img-fluid rounded" />
-          <span>sınıf adı / şube - {user && user.studentNo}</span>
+          <img src={user?.imageUrl} className="img-fluid rounded" />
+          <span>{user?.classroomName} / {user?.branchName} - {user?.studentNo}</span>
         </div>
         <Container className="user-information-container">
           <Row>
@@ -94,7 +101,7 @@ const Home = () => {
             </tr>
           </thead>
 
-          {user && user.certificate.certificates && user.certificate.certificates.length > 0 && (
+          {/* {user && user.certificate.certificates && user.certificate.certificates.length > 0 && (
             <tbody>
               {user.certificate.certificates.map((cert: any) => (
                 <tr key={cert.id}>
@@ -105,7 +112,7 @@ const Home = () => {
                 </tr>
               ))}
             </tbody>
-          )}
+          )} */}
 
           {/* <tr>
               <td>6. Sınıf</td>

@@ -32,8 +32,8 @@ const RouteDefinitions = () => {
               <Route path="/login" element={<Login />} />
             ) : (
               <>
-                <Route path="/" element={<Home />} />
-                <Route path="/grades" element={<Grades />} />
+                <Route path="/" element={<Grades />} />
+                <Route path="/grades" element={<AddGrades />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<Navigate to="/" />} />
                 <Route path="*" element={<NotFound />} />

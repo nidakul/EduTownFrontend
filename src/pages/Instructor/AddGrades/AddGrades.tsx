@@ -33,18 +33,15 @@ const AddGrades = (props: Props) => {
     const term = useSelector((state: RootState) => state.term.term?.items);
     const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
 
-    console.log("student", student);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
-    const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
-    const [selectedBranchId, setSelectedBranchId] = useState<number | undefined>(undefined);
+    const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>();
+    const [selectedBranchId, setSelectedBranchId] = useState<number | undefined>();
     const [selectedTermId, setSelectedTermId] = useState<number>();
     const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
     const [filteredStudents, setFilteredStudents] = useState<StudentInformationResponse[]>([]);
     const [showFilteredStudent, setShowFilteredStudent] = useState(false);
 
     const [studentGrades, setStudentGrades] = useState<{ [key: string]: any }>({});
-
-
 
     const handleListFilteredStudents = async () => {
         if (selectedClassId && selectedBranchId && student && selectedTermId && selectedLessonId) {
@@ -67,7 +64,6 @@ const AddGrades = (props: Props) => {
         };
     }
 
-
     useEffect(() => {
         if (userId) {
             dispatch(getUserDetailById(userId));
@@ -84,14 +80,14 @@ const AddGrades = (props: Props) => {
         if (school && school.schoolTypeId !== undefined) {
             dispatch(getClassesBySchoolTypeId(school.schoolTypeId));
         }
-    }, [dispatch, school]);
+    }, [dispatch]);
 
     useEffect(() => {
         if (user && classes && selectedClassId !== undefined) {
             dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
             dispatch(getBranchesBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
         }
-    }, [dispatch, user, selectedClassId]);
+    }, [dispatch, selectedClassId]);
 
     useEffect(() => {
         dispatch(getTerms());

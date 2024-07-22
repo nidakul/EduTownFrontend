@@ -96,7 +96,7 @@ const AddGrades = (props: Props) => {
     useEffect(() => {
         dispatch(getTerms());
         dispatch(getGradeTypes());
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         dispatch(getAllStudents());

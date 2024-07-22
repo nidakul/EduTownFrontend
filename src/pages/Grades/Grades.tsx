@@ -9,16 +9,15 @@ import "./grades.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserId } from "../../services/identityService";
 import { useEffect, useState } from "react";
-import termService from "../../services/termService";
-import { GetTermsResponse } from "../../models/responses/getTermsResponse";
-import { StudentGradesResponse } from "../../models/responses/studentGradesResponse";
 import { AppDispatch, RootState } from "../../store/configureStore";
 import { getLessonsBySchoolIdAndClassId } from "../../store/lesson/lessonSlice";
 import { getAllClasses } from "../../store/class/classSlice";
 import { ClassInformationResponse } from "../../models/responses/classInformationResponse";
-import { getAllStudents, getStudentGrades } from "../../store/student/studentSlice";
+import { getStudentGrades } from "../../store/student/studentSlice";
 import { getGradeTypes } from "../../store/gradeType/gradeTypeSlice";
 import { getUserDetailById } from "../../store/user/userSlice";
+import { getTerms } from "../../store/term/termSlice";
+import { StudentGradesResponse } from "../../models/responses/studentGradesResponse";
 
 
 type Props = {};
@@ -31,23 +30,26 @@ const Grades = (props: Props) => {
   const classes = useSelector((state: RootState) => state.classes.items);
   const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
   const studentGrade = useSelector((state: RootState) => state.student.studentGrades);
-
-  console.log("studentGrade", studentGrade);
+  const term = useSelector((state: RootState) => state.term.term?.items);
 
   const [studentClasses, setStudentClasses] = useState<ClassInformationResponse[]>([]);
-  const [selectedClassId, setSelectedClassId] = useState<number | undefined>(user?.classroomId);
-
-  const [terms, setTerms] = useState<GetTermsResponse[]>([]);
-  const [grades, setGrades] = useState<StudentGradesResponse[]>([]);
+  const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
   const [selectedTermId, setSelectedTermId] = useState<number>(1);
 
-  const fetchStudentClasses = async () => {
-    if (user?.classroomId) {
-      await dispatch(getAllClasses());
-      const filteredClasses = classes.filter((classItem: ClassInformationResponse) => classItem.id <= user.classroomId);
-      setStudentClasses(filteredClasses);
-    }
-  };
+  // Seçilen döneme göre filtreleme 
+  const filteredStudentGrades = studentGrade?.studentGrades
+    .filter((sg) => sg.classroomId === selectedClassId)
+    .flatMap((sg) =>
+      sg.termNames
+        .filter((tn) => tn.termId === selectedTermId)
+        .flatMap((tn) =>
+          tn.lessons.flatMap((l) => ({
+            lessonId: l.lessonId,
+            lessonName: l.lessonName,
+            grades: l.grades || [],
+          }))
+        )
+    ) || [];
 
   useEffect(() => {
     if (userId) {
@@ -55,39 +57,52 @@ const Grades = (props: Props) => {
     }
   }, [dispatch, userId]);
 
+
   useEffect(() => {
     if (user?.classroomId) {
-      setSelectedClassId(user.classroomId);
+      dispatch(getAllClasses());
     }
   }, [user]);
 
   useEffect(() => {
-    if (user && classes && selectedClassId !== undefined) {
-      dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+    if (classes.length > 0 && user?.classroomId) {
+      const filteredClasses = classes.filter(
+        (classItem: ClassInformationResponse) => classItem.id <= user.classroomId
+      );
+      setStudentClasses(filteredClasses);
     }
-  }, [dispatch, user, selectedClassId]);
-
-
-  useEffect(() => {
-    fetchStudentClasses();
-  }, [user]);
+  }, [classes, user]);
 
   useEffect(() => {
     dispatch(getGradeTypes());
+    dispatch(getTerms());
   }, [dispatch])
-
-
-  useEffect(() => {
-    if (user && classes && selectedClassId !== undefined) {
-      dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
-    }
-  }, [dispatch, user, selectedClassId]);
 
   useEffect(() => {
     if (user && user.studentId !== undefined) {
       dispatch(getStudentGrades(user.studentId));
     }
   }, [user, dispatch])
+
+  useEffect(() => {
+    if (user && selectedClassId !== undefined) {
+      dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+      console.log("lesson", lesson);
+    }
+  }, [dispatch, user, selectedClassId]);
+
+  useEffect(() => {
+    if (user && selectedClassId !== undefined) {
+      dispatch(getLessonsBySchoolIdAndClassId({ schoolId: user.schoolId, classId: selectedClassId }));
+    }
+  }, [dispatch, user, selectedClassId]);
+
+  useEffect(() => {
+    if (user?.classroomId && !selectedClassId) {
+      setSelectedClassId(user.classroomId);
+    }
+  }, [user, selectedClassId]);
+
 
 
 
@@ -108,11 +123,11 @@ const Grades = (props: Props) => {
         ))}
       </Form.Select>
 
-      {/* <div className="terms">
-        {terms.map((term) => (
-          <Button key={term.id} onClick={() => handleTermClick(term.id)}>{term.name}. Dönem</Button>
+      <div className="terms">
+        {term?.map((term) => (
+          <Button key={term.id} onClick={() => setSelectedTermId(term.id)}>{term.name}. Dönem</Button>
         ))}
-      </div> */}
+      </div>
 
       <Card className="grades-card">
         <Table striped bordered hover>
@@ -145,19 +160,14 @@ const Grades = (props: Props) => {
             </tr>
           </thead>
           <tbody>
-            {lesson && lesson.lessons.map((lessonItem) => {
-              const lessonGrades = studentGrade?.studentGrades.flatMap((sg) =>
-                sg.termNames.flatMap((tn) =>
-                  tn.lessons.find((l) => l.lessonId === lessonItem.lessonId)?.grades || []
-                )
-              ) || [];
+            {lesson?.lessons?.map((lessonItem: any) => {
+              const lessonGrades = filteredStudentGrades.find((lg) => lg.lessonId === lessonItem.lessonId)?.grades || [];
 
               return (
                 <tr key={lessonItem.lessonId}>
                   <td>{lessonItem.lessonName}</td>
                   {gradeType && gradeType.map((type) => {
                     const typeGrades = lessonGrades.find((lg) => lg.gradeTypeName === type.name)?.gradesDto || [];
-
 
                     const grades = Array.from({ length: type.gradeCount }).map((_, index) => {
                       const grade = typeGrades.find(g => g.examCount === index + 1)?.grade;

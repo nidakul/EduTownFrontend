@@ -32,7 +32,7 @@ const Grades = (props: Props) => {
   const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
   const studentGrade = useSelector((state: RootState) => state.student.studentGrades);
 
-  console.log("gradeType", gradeType);
+  console.log("studentGrade", studentGrade);
 
   const [studentClasses, setStudentClasses] = useState<ClassInformationResponse[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<number | undefined>(user?.classroomId);
@@ -84,7 +84,7 @@ const Grades = (props: Props) => {
   }, [dispatch, user, selectedClassId]);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.studentId !== undefined) {
       dispatch(getStudentGrades(user.studentId));
     }
   }, [user, dispatch])
@@ -145,16 +145,34 @@ const Grades = (props: Props) => {
             </tr>
           </thead>
           <tbody>
-            {lesson && lesson.lessons && lesson.lessons.map((lessonItem) => (
-              <tr key={lessonItem.lessonId}>
-                <td>{lessonItem.lessonName}</td>
-              </tr>
-            ))}
-            {/* {studentGrade?.studentGrades.map((grades) => {
-              grades.array.forEach(element => {
+            {lesson && lesson.lessons.map((lessonItem) => {
+              const lessonGrades = studentGrade?.studentGrades.flatMap((sg) =>
+                sg.termNames.flatMap((tn) =>
+                  tn.lessons.find((l) => l.lessonId === lessonItem.lessonId)?.grades || []
+                )
+              ) || [];
 
-              });
-            })} */}
+              return (
+                <tr key={lessonItem.lessonId}>
+                  <td>{lessonItem.lessonName}</td>
+                  {gradeType && gradeType.map((type) => {
+                    const typeGrades = lessonGrades.find((lg) => lg.gradeTypeName === type.name)?.gradesDto || [];
+
+
+                    const grades = Array.from({ length: type.gradeCount }).map((_, index) => {
+                      const grade = typeGrades.find(g => g.examCount === index + 1)?.grade;
+                      return (
+                        <td key={index}>
+                          {grade !== undefined ? grade : ''}
+                        </td>
+                      );
+                    });
+
+                    return grades;
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Card>

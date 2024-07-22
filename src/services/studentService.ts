@@ -2,8 +2,8 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "../core/interceptors/axiosInceptor";
 import { BASE_API_URL } from "../environment/environment";
 import { AddStudent } from "../models/requests/addStudent";
-import { UserInformationList } from "../models/responses/userInformationResponse";
 import { StudentGradesResponse } from "../models/responses/studentGradesResponse";
+import { StudentInformationList } from "../models/responses/studentInformationResponse";
 
 class StudentService{
 apiUrl = BASE_API_URL + "Students";
@@ -16,7 +16,7 @@ getListStudentDetail(
     pageIndex: number = 0,
     pageSize: number = 20 
 ){
-    return axiosInstance.get<UserInformationList>(
+    return axiosInstance.get<StudentInformationList>(
         (this.apiUrl + "/getListStudentDetail" + `?PageIndex=${pageIndex}&PageSize=${pageSize}`)
     )
 }

@@ -1,5 +1,6 @@
-export interface UserInformationResponse{
+export interface StudentInformationResponse{
   id:string;
+  studentId: string;
   schoolId: number;
   branchId: number;
   classroomId: number;
@@ -18,6 +19,6 @@ export interface UserInformationResponse{
   birthplace: string;
 }
 
-export interface UserInformationList{
-  items:UserInformationResponse[];
+export interface StudentInformationList{
+  items:StudentInformationResponse[];
 }

@@ -13,9 +13,9 @@ import { getTerms } from '../../../store/term/termSlice';
 import { getGradeTypes } from '../../../store/gradeType/gradeTypeSlice';
 import { GetListGradeTypeResponse } from '../../../models/responses/getListGradeTypeResponse';
 import { getAllStudents, getStudentGrades } from '../../../store/student/studentSlice';
-import { UserInformationResponse } from '../../../models/responses/userInformationResponse';
 import { getBranchesBySchoolIdAndClassId } from '../../../store/branch/branchSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { StudentInformationResponse } from '../../../models/responses/studentInformationResponse';
 
 type Props = {}
 
@@ -33,13 +33,13 @@ const AddGrades = (props: Props) => {
     const term = useSelector((state: RootState) => state.term.term?.items);
     const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);
 
-    console.log("student", studentGrade);
+    console.log("student", student);
     const [selectedClassId, setSelectedClassId] = useState<number | undefined>(undefined);
     const [selectedLessonId, setSelectedLessonId] = useState<number | undefined>(undefined);
     const [selectedBranchId, setSelectedBranchId] = useState<number | undefined>(undefined);
     const [selectedTermId, setSelectedTermId] = useState<number>();
     const [gradeTypes, setGradeTypes] = useState<GetListGradeTypeResponse[] | undefined>(undefined);
-    const [filteredStudents, setFilteredStudents] = useState<UserInformationResponse[]>([]);
+    const [filteredStudents, setFilteredStudents] = useState<StudentInformationResponse[]>([]);
     const [showFilteredStudent, setShowFilteredStudent] = useState(false);
 
     const [studentGrades, setStudentGrades] = useState<{ [key: string]: any }>({});

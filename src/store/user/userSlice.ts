@@ -1,8 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import userService from "../../services/userService";
-import { UserInformationResponse } from "../../models/responses/userInformationResponse";
+import { StudentInformationResponse } from "../../models/responses/studentInformationResponse";
 
-const initialState: {items: UserInformationResponse | null} = {
+interface UserDetailState {
+  items: StudentInformationResponse | null;
+}
+
+const initialState: UserDetailState  = {
   items: null,
 };
 

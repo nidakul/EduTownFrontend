@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import studentService from '../../services/studentService';
-import { UserInformationResponse } from '../../models/responses/userInformationResponse';
 import { StudentGradesResponse } from '../../models/responses/studentGradesResponse';
+import { StudentInformationResponse } from '../../models/responses/studentInformationResponse';
 
 interface StudentGradesState {
+    items: StudentInformationResponse[];
     studentGrades: StudentGradesResponse | null;
-    items: UserInformationResponse[];
 }
 
 const initialState: StudentGradesState = {
@@ -24,8 +24,6 @@ export const getStudentGrades = createAsyncThunk('students/getStudentGrades',
         return response.data;
     }
 )
-
-
 
 export const studentSlice = createSlice({
     name: "student",

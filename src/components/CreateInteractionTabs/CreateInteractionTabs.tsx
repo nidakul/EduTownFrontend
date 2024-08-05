@@ -4,6 +4,7 @@ import IconTemp from '../../utilities/Helpers/iconTemp'
 import { discussion, message, vote } from '../../utilities/Constants/iconsList'
 import CreateMessage from './CreateMessage/CreateMessage'
 import CreateDiscussion from './CreateDiscussion/CreateDiscussion'
+import CreateVote from './CreateVote/CreateVote'
 
 type Props = {}
 
@@ -17,7 +18,7 @@ const CreateInteractionTabs = (props: Props) => {
             >
                 <Tab eventKey="message" title={<IconTemp mainClassName='messageTab' {...message} />}><CreateMessage /></Tab>
                 <Tab eventKey="discussion" title={<IconTemp mainClassName='discussionTab' {...discussion} />}><CreateDiscussion /></Tab>
-                <Tab eventKey="vote" title={<IconTemp mainClassName='voteTab' {...vote} />}></Tab>
+                <Tab eventKey="vote" title={<IconTemp mainClassName='voteTab' {...vote} />}><CreateVote /></Tab>
 
             </Tabs>
         </Card>

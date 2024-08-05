@@ -35,19 +35,19 @@ export const calendar = {
   };
 
   export const discussion = {
-    className: "sg-icon discussion",
+    className: "sg-icon discussion interaction",
     image: "/images/discussion.svg",
     valueHeader: "Tartışma"
   };
 
   export const message = {
-    className: "sg-icon message",
+    className: "sg-icon message interaction",
     image: "/images/message.svg",
     valueHeader: "İleti"
   };
 
   export const vote = {
-    className: "sg-icon vote",
+    className: "sg-icon vote interaction",
     image: "/images/vote.svg",
     valueHeader: "Oylama"
   };

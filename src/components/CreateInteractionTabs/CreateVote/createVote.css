@@ -19,4 +19,9 @@
 .input-vote-date {
     width: 20%;
     margin-left: 15px;
+    border: 2px solid lightgray;
+    border-radius: 7px;
+    padding: 7px;
+    font-size: 15px;
+    color: rgb(94, 92, 92);
 }

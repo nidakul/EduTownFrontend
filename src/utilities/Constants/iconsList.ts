@@ -33,3 +33,21 @@ export const calendar = {
     image: "/images/calendar.svg",
     valueHeader: "Ders Programım"
   };
+
+  export const discussion = {
+    className: "sg-icon discussion",
+    image: "/images/discussion.svg",
+    valueHeader: "Tartışma"
+  };
+
+  export const message = {
+    className: "sg-icon message",
+    image: "/images/message.svg",
+    valueHeader: "İleti"
+  };
+
+  export const vote = {
+    className: "sg-icon vote",
+    image: "/images/vote.svg",
+    valueHeader: "Oylama"
+  };

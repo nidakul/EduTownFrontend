@@ -51,12 +51,12 @@ const Sidebar = () => {
         </div>
         <Container>
           <SidebarMenu.Nav>
-            <IconTemp {...userIcon} pathName="/" />
-            <IconTemp {...onlineLessonIcon} />
-            <IconTemp {...assignmentsIcon} />
-            <IconTemp {...examResultIcon} pathName="/grades" />
-            <IconTemp {...attendanceIcon} />
-            <IconTemp {...calendar} />
+            <IconTemp mainClassName="iconHeader" {...userIcon} pathName="/" />
+            <IconTemp mainClassName="iconHeader" {...onlineLessonIcon} />
+            <IconTemp mainClassName="iconHeader" {...assignmentsIcon} />
+            <IconTemp mainClassName="iconHeader"{...examResultIcon} pathName="/grades" />
+            <IconTemp mainClassName="iconHeader" {...attendanceIcon} />
+            <IconTemp mainClassName="iconHeader" {...calendar} />
             {/* Sınav Tarihleri ekle */}
           </SidebarMenu.Nav>
         </Container>

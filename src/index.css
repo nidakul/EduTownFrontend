@@ -9,11 +9,29 @@
   font-size: large;
 }
 
-/* iconTemp */
+/* iconTemp for sidebar */
 .iconHeader {
   color: rgb(13, 78, 135);
   padding-right: 1rem;
   margin-bottom: 0.65rem;
+  text-decoration: none;
+}
+
+/* iconTemp */
+
+/* iconTemp for message tabs in createMessage */
+.messageTab {
+  color: #6c45c3;
+  text-decoration: none;
+}
+
+.discussionTab {
+  color: #26542e;
+  text-decoration: none;
+}
+
+.voteTab {
+  color: #ab3f3f;
   text-decoration: none;
 }
 

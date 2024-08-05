@@ -227,8 +227,8 @@ const AddGrades = (props: Props) => {
                                             : (<th key={`${typeIndex}-empty`}></th>
                                             )
                                     ))}
+                                    <th></th>
                                 </tr>
-                                <th></th>
                             </thead>
                             <tbody>
                                 {filteredStudents.map((student) => {

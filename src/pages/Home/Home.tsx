@@ -7,6 +7,7 @@ import { getUserId } from "../../services/identityService";
 import { getUserDetailById, setUser } from "../../store/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/configureStore";
+import CreateMessage from "../../components/CreateMessage/CreateMessage";
 
 const Home = () => {
   const userId = getUserId();
@@ -88,6 +89,7 @@ const Home = () => {
           </Row>
         </Container>
       </Card>
+      <CreateMessage />
       <Card className="book-information">Okuduğu kitaplar</Card>
       <div className="certificate">
         <Table striped bordered hover>

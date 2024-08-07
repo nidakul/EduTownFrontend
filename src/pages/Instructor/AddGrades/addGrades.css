@@ -24,10 +24,6 @@
 }
 
 
-.form-check-input:checked {
-    background-color: #a0dbcc !important;
-    border-color: #a0dbcc !important;
-}
 
 .term-checkbox .form-check {
     margin: 0 90px;

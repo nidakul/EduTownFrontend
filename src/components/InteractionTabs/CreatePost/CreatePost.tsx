@@ -5,6 +5,9 @@ import { getUserId } from '../../../services/identityService';
 import { AppDispatch, RootState } from '../../../store/configureStore';
 import { getUserDetailById } from '../../../store/user/userSlice';
 import { addPost } from '../../../store/post/postSlice';
+import IconTemp from '../../../utilities/Helpers/iconTemp';
+import { upload } from '../../../utilities/Constants/iconsList';
+import './createPost.css'
 
 type Props = {}
 
@@ -24,14 +27,18 @@ const CreatePost = (props: Props) => {
         isCommentable: true
     })
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        //name: Form elemanının name özelliği. Bu, hangi form alanında değişiklik yapıldığını belirler.
-        // value: Form elemanındaki mevcut değeri temsil eder.
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value
+        }))
+    }
+
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            isCommentable: !e.target.checked
         }))
     }
 
@@ -51,6 +58,10 @@ const CreatePost = (props: Props) => {
         e.preventDefault(); // Formun varsayılan gönderimini engelleyin
         try {
             await dispatch(addPost(formData));
+            setFormData((prevData) => ({
+                ...prevData,
+                message: ""
+            }));
             console.log(formData);
         } catch (error) {
             console.log("Post eklenirken bir hata oluştu.", error);
@@ -66,11 +77,21 @@ const CreatePost = (props: Props) => {
 
     return (
         <Form onSubmit={createPost}>
-            <Form.Group className="interactionTextArea-form mb-3" controlId='interactionTextArea'>
+            <Form.Group className="interactionTextArea-form mb-2" controlId='interactionTextArea'>
                 <Form.Control className='interactionTextArea' as="textarea" placeholder='Ne paylaşmak istersin?' name='message'
                     value={formData.message}
                     onChange={handleChange}
                     rows={3}></Form.Control>
+                <div className='icon-checkbox-container'>
+                    <IconTemp mainClassName='file-upload' {...upload} />
+                    <Form.Check
+                        className='post-checkbox'
+                        type="checkbox"
+                        label="Yoruma kapalı"
+                        // id={`disabled-default-${type}`}
+                        onChange={handleCheckboxChange}
+                    />
+                </div>
                 <Button className='interaction-btn form-btn-color' type="submit">PAYLAŞ</Button>
             </Form.Group>
         </Form>
@@ -78,3 +99,4 @@ const CreatePost = (props: Props) => {
 }
 
 export default CreatePost
+

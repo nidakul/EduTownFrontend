@@ -51,3 +51,9 @@ export const calendar = {
     image: "/images/vote.svg",
     valueHeader: "Oylama"
   };
+
+  export const upload = {
+    className: "sg-icon upload interaction",
+    image: "/images/upload.svg",
+    valueHeader: "Dosya Yükle"
+  };

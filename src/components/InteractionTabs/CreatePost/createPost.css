@@ -1,0 +1,16 @@
+.upload {
+    width: 22px !important;
+    height: 22px !important;
+}
+
+.icon-checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 15px;
+    margin-left: 20px;
+}
+
+.post-checkbox label {
+    color: #5d9b8d;
+}

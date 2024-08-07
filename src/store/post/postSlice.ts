@@ -11,7 +11,7 @@ const initialState: PostState = {
 }
 
 export const addPost = createAsyncThunk('post/add', async(post: AddPost) => {
-    const response = await  postService.AddPost(post);
+    const response = await postService.addPost(post);
     return response.data;
 })
 
@@ -25,6 +25,10 @@ export const postSlice = createSlice({
         .addCase(addPost.fulfilled, (state,action) => {
             state.posts = action.payload;
         })
+        .addCase(addPost.rejected, (state, action) => {
+            console.error('An error occurred while adding the post:', action.error.message);
+
+        });
     }
 })
 

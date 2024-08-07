@@ -9,6 +9,7 @@ import lessonReducer from "./lesson/lessonSlice";
 import termReducer from "./term/termSlice";
 import gradeTypeReducer from "./gradeType/gradeTypeSlice";
 import branchReducer from "./branch/branchSlice";
+import postReducer from "./post/postSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   lesson: lessonReducer,
   term: termReducer,
   gradeType: gradeTypeReducer,
-  branch: branchReducer
+  branch: branchReducer,
+  post: postReducer
 });
 
 export type RootState = ReturnType<typeof store.getState>;

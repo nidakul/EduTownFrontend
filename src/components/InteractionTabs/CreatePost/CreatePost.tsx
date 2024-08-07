@@ -1,8 +1,9 @@
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
-import './createMessage.css'
 
-const CreateMessage = () => {
+type Props = {}
+
+const CreatePost = (props: Props) => {
     return (
         <Form>
             <Form.Group className="interactionTextArea-form mb-3" controlId='interactionTextArea'>
@@ -13,4 +14,4 @@ const CreateMessage = () => {
     )
 }
 
-export default CreateMessage
+export default CreatePost

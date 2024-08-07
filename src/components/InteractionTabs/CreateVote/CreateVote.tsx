@@ -9,7 +9,7 @@ const CreateVote = (props: Props) => {
         <div>
             <Form>
                 <Form.Group className="interactionTextArea-form mb-2" controlId='interactionTextArea'>
-                    <Form.Control className='interactionTextArea' as="textarea" placeholder='Bir soru sor...' rows={2}></Form.Control>
+                    <Form.Control className='interactionTextArea' as="textarea" placeholder='Soru sor...' rows={2}></Form.Control>
                     <input className='vote-input' type='text' placeholder='Seçenek 1' />
                     <input className='vote-input' type='text' placeholder='Seçenek 2' />
                     <div className='vote-date'>

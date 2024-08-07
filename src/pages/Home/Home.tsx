@@ -7,8 +7,8 @@ import { getUserId } from "../../services/identityService";
 import { getUserDetailById, setUser } from "../../store/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/configureStore";
-import CreateMessage from "../../components/CreateInteractionTabs/CreateInteractionTabs";
-import CreateInteractionTabs from "../../components/CreateInteractionTabs/CreateInteractionTabs";
+import CreateMessage from "../../components/InteractionTabs/CreateInteractionTabs";
+import CreateInteractionTabs from "../../components/InteractionTabs/CreateInteractionTabs";
 
 const Home = () => {
   const userId = getUserId();

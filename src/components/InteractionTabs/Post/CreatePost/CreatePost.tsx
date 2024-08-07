@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Container, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserId } from '../../../services/identityService';
-import { AppDispatch, RootState } from '../../../store/configureStore';
-import { getUserDetailById } from '../../../store/user/userSlice';
-import { addPost } from '../../../store/post/postSlice';
-import IconTemp from '../../../utilities/Helpers/iconTemp';
-import { upload } from '../../../utilities/Constants/iconsList';
 import './createPost.css'
+import { AppDispatch, RootState } from '../../../../store/configureStore';
+import { getUserId } from '../../../../services/identityService';
+import { addPost } from '../../../../store/post/postSlice';
+import { getUserDetailById } from '../../../../store/user/userSlice';
+import IconTemp from '../../../../utilities/Helpers/iconTemp';
+import { upload } from '../../../../utilities/Constants/iconsList';
+import ListPost from '../ListPost/ListPost';
 
 type Props = {}
 
@@ -77,7 +78,7 @@ const CreatePost = (props: Props) => {
 
     return (
         <Form onSubmit={createPost}>
-            <Form.Group className="interactionTextArea-form mb-2" controlId='interactionTextArea'>
+            <Form.Group className="interactionTextArea-form" controlId='interactionTextArea'>
                 <Form.Control className='interactionTextArea' as="textarea" placeholder='Ne paylaşmak istersin?' name='message'
                     value={formData.message}
                     onChange={handleChange}

@@ -82,7 +82,7 @@ const CreatePost = (props: Props) => {
                 <Form.Control className='interactionTextArea' as="textarea" placeholder='Ne paylaşmak istersin?' name='message'
                     value={formData.message}
                     onChange={handleChange}
-                    rows={3}></Form.Control>
+                    rows={3} />
                 <div className='icon-checkbox-container'>
                     <IconTemp mainClassName='file-upload' {...upload} />
                     <Form.Check

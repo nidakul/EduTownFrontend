@@ -57,3 +57,14 @@ export const calendar = {
     image: "/images/upload.svg",
     valueHeader: "Dosya Yükle"
   };
+
+  export const heartIcon = {
+    className: "sg-icon heart",
+    image: "/images/like.svg",
+    alt: "Beğen"
+  }; 
+
+  export const commentIcon = {
+    className: "sg-icon comment",
+    image: "/images/comment.svg",
+  };

@@ -68,3 +68,8 @@ export const calendar = {
     className: "sg-icon comment",
     image: "/images/comment.svg",
   };
+
+  export const sendIcon = {
+    className: "sg-icon send",
+    image: "/images/send.svg",
+  };

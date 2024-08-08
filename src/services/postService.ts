@@ -9,6 +9,8 @@ class PostService{
         return axiosInstance.post(this.apiUrl, postData);
     }
 
+    
+
     // async addPost(postData: AddPost) {
     //     try {
     //         console.log('Sending data:', postData); // Veriyi loglayın

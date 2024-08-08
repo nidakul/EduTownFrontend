@@ -1,12 +1,14 @@
 .home-card {
-  background: linear-gradient(
-    90deg,
-    rgba(221, 227, 228, 1) 0%,
-    rgba(0, 212, 255, 1) 37%,
-    rgba(2, 0, 36, 1) 79%
-  );
+  background: linear-gradient(90deg,
+      rgba(221, 227, 228, 1) 0%,
+      rgba(0, 212, 255, 1) 37%,
+      rgba(2, 0, 36, 1) 79%);
   border-color: white !important;
-  
+
+}
+
+.container>* {
+  margin-bottom: 15px;
 }
 
 .home-card-msg {
@@ -65,5 +67,5 @@
 }
 
 .table-striped>tbody>tr:nth-of-type(odd)>* {
-    --bs-table-bg-type: rgb(174 215 228) !important;
+  --bs-table-bg-type: rgb(174 215 228) !important;
 }

@@ -65,7 +65,7 @@ const CreatePost = (props: Props) => {
             }));
             console.log(formData);
         } catch (error) {
-            console.log("Post eklenirken bir hata oluştu.", error);
+            console.log("An error occurred while adding the post.", error);
 
         }
     }

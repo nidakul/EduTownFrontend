@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Container, Form } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import './createPost.css'
 import { AppDispatch, RootState } from '../../../../store/configureStore';
@@ -15,7 +15,6 @@ const CreatePost = (props: Props) => {
     const userId = getUserId();
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.items);
-    const student = useSelector((state: RootState) => state.student.items);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState({
@@ -25,7 +24,8 @@ const CreatePost = (props: Props) => {
         branchId: 0,
         likeCount: 0,
         message: "",
-        isCommentable: true
+        isCommentable: true,
+        filePath: [] as string[]
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -61,7 +61,8 @@ const CreatePost = (props: Props) => {
             await dispatch(addPost(formData));
             setFormData((prevData) => ({
                 ...prevData,
-                message: ""
+                message: "",
+                filePath: []
             }));
             console.log(formData);
         } catch (error) {
@@ -70,18 +71,16 @@ const CreatePost = (props: Props) => {
         }
     }
 
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const files = e.target.files;
-    //     if (files && files[0]) {
-    //         setFormData((prevData) => ({
-    //             ...prevData,
-    //             userForRegisterCommand: {
-    //                 ...prevData.userForRegisterCommand,
-    //                 imageUrl: URL.createObjectURL(files[0])
-    //             }
-    //         }))
-    //     }
-    // }
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            const newFileUrls = Array.from(files).map(file => URL.createObjectURL(file));
+            setFormData((prevData) => ({
+                ...prevData,
+                filePath: [...prevData.filePath, ...newFileUrls]
+            }))
+        }
+    }
 
     useEffect(() => {
         if (userId) {
@@ -96,6 +95,15 @@ const CreatePost = (props: Props) => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={3} />
+
+                {formData.filePath.length > 0 && (
+                    <div className='uploaded-image-container'>
+                        {formData.filePath.map((path, index) => (
+                            <img key={index} src={path} className="selected-image" />
+                        ))}
+                    </div>
+                )}
+
                 <div className='icon-checkbox-container'>
                     <button className='btn-with-icon' onClick={() => fileInputRef.current && fileInputRef.current.click()}>
                         <IconTemp mainClassName='file-upload' {...upload} />
@@ -103,7 +111,9 @@ const CreatePost = (props: Props) => {
                     <input type='file'
                         ref={fileInputRef}
                         style={{ display: "none" }}
-                    // onChange={handleFileChange}
+                        onChange={handleFileChange}
+                        accept="image/*" //only image
+                        multiple
                     />
                     <Form.Check
                         className='post-checkbox'

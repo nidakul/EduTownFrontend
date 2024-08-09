@@ -6,4 +6,5 @@ export interface AddPost {
     likeCount: number;
     message: string;
     isCommentable: boolean;
+    filePath: string[];
 }

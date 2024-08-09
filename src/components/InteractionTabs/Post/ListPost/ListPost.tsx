@@ -101,10 +101,18 @@ const ListPost = () => {
                 ))
             ) : (
                 <p>No posts available.</p>
+                // Ayarla gösterecek post yok resmi çıksın
             )}
 
         </>
     )
 }
 
-export default ListPost 
+export default ListPost
+
+
+// 10 tane post getiriyor onu ayarla 
+// poslar son eklenene göre gelsin
+// yorumlar kısmını almadan postu maple
+//sen btonu hoverı kapat
+//yorumu yapar yapmaz sayfada göstersin

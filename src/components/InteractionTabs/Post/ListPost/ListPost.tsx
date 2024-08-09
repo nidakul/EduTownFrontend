@@ -8,12 +8,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addPostComment, getPostsBySchoolIdClassIdBranchId } from '../../../../store/post/postSlice'
 import { AppDispatch, RootState } from '../../../../store/configureStore'
 import { getUserDetailById } from '../../../../store/user/userSlice'
+import FormattedDate from '../../../../utilities/Helpers/formattedDate'
 
 const ListPost = () => {
     const userId = getUserId();
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.items);
     const posts = useSelector((state: RootState) => state.post.posts);
+
+    const [comments, setComments] = useState<{ [key: number]: string }>({});
 
     useEffect(() => {
         if (userId) {
@@ -25,29 +28,31 @@ const ListPost = () => {
         if (user && user.schoolId && user.classroomId && user.branchId) {
             dispatch(getPostsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
         }
-    }, [dispatch, user]);
+    }, [dispatch, user, posts]);
 
-    const [formData, setFormData] = useState({
-        userId: userId || "",
-        taggedUserId: [],
-        postId: 0,
-        comment: ''
-    });
-
-    const createPostComment = async (e: any) => {
-        e.preventDefault();
+    const createPostComment = async (postId: number) => {
+        const formData = {
+            userId: userId || "",
+            taggedUserId: [],
+            postId: postId,
+            comment: comments[postId] || ''
+        }
         try {
             await dispatch(addPostComment(formData));
             console.log(formData);
+            setComments((prevComments) => ({
+                ...prevComments,
+                [postId]: '',
+            }));
         } catch (error) {
             console.log("An error occurred while adding the post comment.", error);
         }
     }
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, postId: number) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value
+        setComments((prevComments) => ({
+            ...prevComments,
+            [postId]: value
         }))
     }
     return (
@@ -65,8 +70,9 @@ const ListPost = () => {
                                     <div className='post-label-container'>
                                         <span className="mb-0">{post.firstName} {post.lastName}</span>
                                         <div className='post-label'>
-                                            <span className="text-muted">23 Temmuz 2024</span>
-                                            {/* <Form.Label > -  3.Sınıf / B Şubesi</Form.Label> */}
+                                            <span className="text-muted">
+                                                <FormattedDate date={post.createdDate} /> </span>
+                                            <span className="text-muted"> -  {user?.classroomName}.Sınıf / {user?.branchName} Şubesi</span>
                                         </div>
                                     </div>
                                 </Col>
@@ -85,10 +91,14 @@ const ListPost = () => {
                                 </Col>
                                 <Col>
                                     <div className="comment-input-container">
-                                        <Form onSubmit={createPostComment}>
+                                        <Form onSubmit={(e) => {
+                                            e.preventDefault();
+                                            createPostComment(post.postId);
+                                        }}>
                                             <Form.Control className='commentTextArea' type="text" placeholder='Yorumunuzu yazabilirsiniz..' name='comment'
-                                                value={formData.comment}
-                                                onChange={handleChange} />
+                                                value={comments[post.postId] || ''}
+                                                onChange={(e: any) => handleChange(e, post.postId)}
+                                            />
                                             <Button type="submit" className='icon-button'>
                                                 <IconTemp mainClassName='btn' {...sendIcon} />
                                             </Button>
@@ -116,3 +126,4 @@ export default ListPost
 // yorumlar kısmını almadan postu maple
 //sen btonu hoverı kapat
 //yorumu yapar yapmaz sayfada göstersin
+//created Date 2 saat geri onu ayarla

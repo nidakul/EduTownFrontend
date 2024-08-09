@@ -78,9 +78,12 @@ const ListPost = () => {
                                 </Col>
                             </Row>
                             <Card.Text className='post-text'>{post.message}</Card.Text>
-                            {post.filePaths.map((filePath, index) => (
-                                <img key={index} src={filePath} className="card-img-bottom" />
-                            ))}
+                            <div className='post-files'>
+                                {post.filePaths.map((filePath, index) => (
+                                    <img key={index} src={filePath} className="card-img-bottom" />
+                                ))}
+                            </div>
+
                         </Card.Body >
                         <Card.Footer>
                             <div className='post-footer-container'>

@@ -1,6 +1,8 @@
+import { AxiosResponse } from "axios";
 import axiosInstance from "../core/interceptors/axiosInceptor"
 import { BASE_API_URL } from "../environment/environment"
 import { AddPost } from "../models/requests/addPost";
+import { GetPostsBySchoolIdClassIdBranchIdResponse } from "../models/responses/getPostsBySchoolIdClassIdBranchIdResponse";
 
 class PostService{
     apiUrl = BASE_API_URL + "Posts";
@@ -9,7 +11,9 @@ class PostService{
         return axiosInstance.post(this.apiUrl, postData);
     }
 
-    
+    getPostsBySchoolIdClassIdBranchId(schoolId: number, classId: number, branchId: number): Promise<AxiosResponse<GetPostsBySchoolIdClassIdBranchIdResponse, any>>{
+        return  axiosInstance.get<GetPostsBySchoolIdClassIdBranchIdResponse>(this.apiUrl  + "/getPostsBySchoolIdClassIdBranchId" + schoolId + classId + branchId)
+    }
 
     // async addPost(postData: AddPost) {
     //     try {

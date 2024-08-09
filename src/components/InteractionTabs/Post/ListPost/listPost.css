@@ -89,11 +89,20 @@
 
 .icon-button {
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
     background: none !important;
     border: none !important;
     padding: 0;
+    outline: none !important;
+
+}
+
+.icon-button :hover,
+.icon-button :focus {
+    background: none !important;
+    border: none !important;
+    outline: none !important;
 }

@@ -17,4 +17,5 @@ export interface Posts{
     message: string;
     isCommentable: boolean;
     createdDate: Date;
+    filePaths: string[];
 }

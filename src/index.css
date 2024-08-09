@@ -140,3 +140,15 @@
   background-color: #a0dbcc !important;
   border-color: #a0dbcc !important;
 }
+
+.btn-with-icon {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+}

@@ -78,39 +78,43 @@ const ListPost = () => {
                                 </Col>
                             </Row>
                             <Card.Text className='post-text'>{post.message}</Card.Text>
-                            <img src='https://media.istockphoto.com/id/1318858332/tr/foto%C4%9Fraf/ofiste-poz-veren-g%C3%BCl%C3%BCmseyen-kad%C4%B1n-%C3%A7al%C4%B1%C5%9Fan%C4%B1n-vesikal%C4%B1k-portresi.jpg?s=1024x1024&w=is&k=20&c=9fZmmIVi9BzG2-Bk3VEoyPqqYp0G-bZP9W7qtAY7V_w=' className="card-img-bottom" />
+                            {post.filePaths.map((filePath, index) => (
+                                <img key={index} src={filePath} className="card-img-bottom" />
+                            ))}
                         </Card.Body >
                         <Card.Footer>
                             <div className='post-footer-container'>
                                 <IconTemp {...heartIcon} />
-                                <IconTemp {...commentIcon} />
+                                {post.isCommentable && <IconTemp {...commentIcon} />}
                             </div>
-                            <Row className='comment-row mb-3'>
-                                <Col xs={1}>
-                                    <img src='https://media.istockphoto.com/id/1318858332/tr/foto%C4%9Fraf/ofiste-poz-veren-g%C3%BCl%C3%BCmseyen-kad%C4%B1n-%C3%A7al%C4%B1%C5%9Fan%C4%B1n-vesikal%C4%B1k-portresi.jpg?s=1024x1024&w=is&k=20&c=9fZmmIVi9BzG2-Bk3VEoyPqqYp0G-bZP9W7qtAY7V_w=' className="rounded-circle comment-img me-2" />
-                                </Col>
-                                <Col>
-                                    <div className="comment-input-container">
-                                        <Form onSubmit={(e) => {
-                                            e.preventDefault();
-                                            createPostComment(post.postId);
-                                        }}>
-                                            <Form.Control className='commentTextArea' type="text" placeholder='Yorumunuzu yazabilirsiniz..' name='comment'
-                                                value={comments[post.postId] || ''}
-                                                onChange={(e: any) => handleChange(e, post.postId)}
-                                            />
-                                            <Button type="submit" className='icon-button'>
-                                                <IconTemp mainClassName='btn' {...sendIcon} />
-                                            </Button>
-                                        </Form>
-                                    </div>
-                                </Col>
-                            </Row>
+                            {post.isCommentable &&
+                                <Row className='comment-row mb-3'>
+                                    <Col xs={1}>
+                                        <img src='https://media.istockphoto.com/id/1318858332/tr/foto%C4%9Fraf/ofiste-poz-veren-g%C3%BCl%C3%BCmseyen-kad%C4%B1n-%C3%A7al%C4%B1%C5%9Fan%C4%B1n-vesikal%C4%B1k-portresi.jpg?s=1024x1024&w=is&k=20&c=9fZmmIVi9BzG2-Bk3VEoyPqqYp0G-bZP9W7qtAY7V_w=' className="rounded-circle comment-img me-2" />
+                                    </Col>
+                                    <Col>
+                                        <div className="comment-input-container">
+                                            <Form onSubmit={(e) => {
+                                                e.preventDefault();
+                                                createPostComment(post.postId);
+                                            }}>
+                                                <Form.Control className='commentTextArea' type="text" placeholder='Yorumunuzu yazabilirsiniz..' name='comment'
+                                                    value={comments[post.postId] || ''}
+                                                    onChange={(e: any) => handleChange(e, post.postId)}
+                                                />
+                                                <Button type="submit" className='icon-button'>
+                                                    <IconTemp mainClassName='btn' {...sendIcon} />
+                                                </Button>
+                                            </Form>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            }
                         </Card.Footer>
                     </ Card>
                 ))
             ) : (
-                <p>No posts available.</p>
+                <p>Gösterecek post yok.</p>
                 // Ayarla gösterecek post yok resmi çıksın
             )}
 
@@ -124,6 +128,8 @@ export default ListPost
 // 10 tane post getiriyor onu ayarla 
 // poslar son eklenene göre gelsin
 // yorumlar kısmını almadan postu maple
-//sen btonu hoverı kapat
+//sen btonu hoverı kapat. css ayarlmasını yap güzelce
 //yorumu yapar yapmaz sayfada göstersin
 //created Date 2 saat geri onu ayarla
+//iconların byutlarını azalt
+//postu düzenle sil alanı oluştur

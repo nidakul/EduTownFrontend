@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import './createPost.css'
@@ -8,7 +8,6 @@ import { addPost } from '../../../../store/post/postSlice';
 import { getUserDetailById } from '../../../../store/user/userSlice';
 import IconTemp from '../../../../utilities/Helpers/iconTemp';
 import { upload } from '../../../../utilities/Constants/iconsList';
-import ListPost from '../ListPost/ListPost';
 
 type Props = {}
 
@@ -17,6 +16,7 @@ const CreatePost = (props: Props) => {
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.items);
     const student = useSelector((state: RootState) => state.student.items);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState({
         userId: userId || "",
@@ -70,6 +70,19 @@ const CreatePost = (props: Props) => {
         }
     }
 
+    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const files = e.target.files;
+    //     if (files && files[0]) {
+    //         setFormData((prevData) => ({
+    //             ...prevData,
+    //             userForRegisterCommand: {
+    //                 ...prevData.userForRegisterCommand,
+    //                 imageUrl: URL.createObjectURL(files[0])
+    //             }
+    //         }))
+    //     }
+    // }
+
     useEffect(() => {
         if (userId) {
             dispatch(getUserDetailById(userId));
@@ -84,7 +97,14 @@ const CreatePost = (props: Props) => {
                     onChange={handleChange}
                     rows={3} />
                 <div className='icon-checkbox-container'>
-                    <IconTemp mainClassName='file-upload' {...upload} />
+                    <button className='btn-with-icon' onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+                        <IconTemp mainClassName='file-upload' {...upload} />
+                    </button>
+                    <input type='file'
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                    // onChange={handleFileChange}
+                    />
                     <Form.Check
                         className='post-checkbox'
                         type="checkbox"
@@ -95,7 +115,7 @@ const CreatePost = (props: Props) => {
                 </div>
                 <Button className='interaction-btn form-btn-color' type="submit">PAYLAŞ</Button>
             </Form.Group>
-        </Form>
+        </Form >
     )
 }
 

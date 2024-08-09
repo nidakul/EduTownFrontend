@@ -12,7 +12,7 @@ class PostService{
     }
 
     getPostsBySchoolIdClassIdBranchId(schoolId: number, classId: number, branchId: number): Promise<AxiosResponse<GetPostsBySchoolIdClassIdBranchIdResponse, any>>{
-        return  axiosInstance.get<GetPostsBySchoolIdClassIdBranchIdResponse>(this.apiUrl  + "/getPostsBySchoolIdClassIdBranchId" + schoolId + classId + branchId)
+        return  axiosInstance.get<GetPostsBySchoolIdClassIdBranchIdResponse>(this.apiUrl  + "/getPostsBySchoolIdClassIdBranchId/" + schoolId +'/'+ classId +'/'+ branchId)
     }
 
     // async addPost(postData: AddPost) {

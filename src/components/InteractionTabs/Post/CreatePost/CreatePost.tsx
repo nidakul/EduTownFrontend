@@ -56,7 +56,7 @@ const CreatePost = (props: Props) => {
 
 
     const createPost = async (e: any) => {
-        e.preventDefault(); // Formun varsayılan gönderimini engelleyin
+        e.preventDefault(); // Formun varsayılan gönderimini engeller
         try {
             await dispatch(addPost(formData));
             setFormData((prevData) => ({

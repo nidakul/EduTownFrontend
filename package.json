@@ -12,6 +12,8 @@
   "dependencies": {
     "@canvasjs/charts": "^3.8.0",
     "@canvasjs/react-charts": "^1.0.2",
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.20.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@types/canvasjs": "^1.9.11",
     "axios": "^1.6.8",

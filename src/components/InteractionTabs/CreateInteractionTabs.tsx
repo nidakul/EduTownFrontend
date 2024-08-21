@@ -5,6 +5,7 @@ import { discussion, message, vote } from '../../utilities/Constants/iconsList'
 import CreateDiscussion from './CreateDiscussion/CreateDiscussion'
 import CreateVote from './CreateVote/CreateVote'
 import CreatePost from './Post/CreatePost/CreatePost'
+import ListPost from './Post/ListPost/ListPost'
 
 type Props = {}
 
@@ -17,7 +18,9 @@ const CreateInteractionTabs = (props: Props) => {
                     id="controlled-tab"
                     className="mb-3"
                 >
-                    <Tab eventKey="message" title={<IconTemp mainClassName='messageTab' {...message} />}><CreatePost /></Tab>
+                    <Tab eventKey="message" title={<IconTemp mainClassName='messageTab' {...message} />}>
+                        <CreatePost />
+                    </Tab>
                     <Tab eventKey="discussion" title={<IconTemp mainClassName='discussionTab' {...discussion} />}><CreateDiscussion /></Tab>
                     <Tab eventKey="vote" title={<IconTemp mainClassName='voteTab' {...vote} />}><CreateVote /></Tab>
                 </Tabs>

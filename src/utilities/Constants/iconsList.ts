@@ -73,3 +73,8 @@ export const calendar = {
     className: "sg-icon send",
     image: "/images/send.svg",
   };
+
+  export const cancelIcon = {
+    className: "sg-icon cancel",
+    image: "/images/cancel.svg",
+  };

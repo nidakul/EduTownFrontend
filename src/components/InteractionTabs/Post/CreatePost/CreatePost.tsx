@@ -7,7 +7,7 @@ import { getUserId } from '../../../../services/identityService';
 import { addPost } from '../../../../store/post/postSlice';
 import { getUserDetailById } from '../../../../store/user/userSlice';
 import IconTemp from '../../../../utilities/Helpers/iconTemp';
-import { upload } from '../../../../utilities/Constants/iconsList';
+import { cancelIcon, upload } from '../../../../utilities/Constants/iconsList';
 import { uploadToCloudinary } from '../../../../utilities/Helpers/cloudinary';
 
 type Props = {}
@@ -114,6 +114,14 @@ const CreatePost = (props: Props) => {
         }
     };
 
+    const handleRemoveImage = (index: number) => {
+        setFormData((prevData) => {
+            const newFilePath = [...prevData.filePath];
+            newFilePath.splice(index, 1);
+            return { ...prevData, filePath: newFilePath };
+        });
+    }
+
     useEffect(() => {
         if (userId) {
             dispatch(getUserDetailById(userId));
@@ -131,7 +139,13 @@ const CreatePost = (props: Props) => {
                 {formData.filePath.length > 0 && (
                     <div className='uploaded-image-container'>
                         {formData.filePath.map((path, index) => (
-                            <img key={index} src={path} className="selected-image" />
+                            <div key={index} className='selected-image-container'>
+                                <img src={path} className="selected-image" />
+                                <button className='close-button btn-with-icon' onClick={() => handleRemoveImage(index)}>
+                                    <IconTemp {...cancelIcon} />
+                                </button>
+                            </div>
+
                         ))}
                     </div>
                 )}

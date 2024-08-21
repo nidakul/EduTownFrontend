@@ -131,7 +131,7 @@ export default ListPost
 // 10 tane post getiriyor onu ayarla 
 // poslar son eklenene göre gelsin
 // yorumlar kısmını almadan postu maple
-//sen btonu hoverı kapat. css ayarlmasını yap güzelce
+//sent btonu hoverı kapat. css ayarlmasını yap güzelce
 //yorumu yapar yapmaz sayfada göstersin
 //created Date 2 saat geri onu ayarla
 //iconların byutlarını azalt

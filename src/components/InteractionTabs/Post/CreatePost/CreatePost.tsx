@@ -8,6 +8,7 @@ import { addPost } from '../../../../store/post/postSlice';
 import { getUserDetailById } from '../../../../store/user/userSlice';
 import IconTemp from '../../../../utilities/Helpers/iconTemp';
 import { upload } from '../../../../utilities/Constants/iconsList';
+import { uploadToCloudinary } from '../../../../utilities/Helpers/cloudinary';
 
 type Props = {}
 
@@ -55,32 +56,63 @@ const CreatePost = (props: Props) => {
     }, [user]);
 
 
-    const createPost = async (e: any) => {
-        e.preventDefault(); // Formun varsayılan gönderimini engeller
-        try {
-            await dispatch(addPost(formData));
-            setFormData((prevData) => ({
-                ...prevData,
-                message: "",
-                filePath: []
-            }));
-            console.log(formData);
-        } catch (error) {
-            console.log("An error occurred while adding the post.", error);
+    // const createPost = async (e: React.FormEvent) => {
+    //     e.preventDefault(); // Formun varsayılan gönderimini engelleyin
+    //     try {
+    //         await dispatch(addPost(formData));
+    //         setFormData((prevData) => ({
+    //             ...prevData,
+    //             message: "",
+    //             filePath: []
+    //         }));
+    //         console.log(formData);
+    //     } catch (error) {
+    //         console.log("An error occurred while adding the post.", error);
 
-        }
-    }
+    //     }
+    // }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files) {
             const newFileUrls = Array.from(files).map(file => URL.createObjectURL(file));
+            // const newFileUrls = await Promise.all(
+            //     Array.from(files).map(file => uploadToCloudinary(file)));
             setFormData((prevData) => ({
                 ...prevData,
                 filePath: [...prevData.filePath, ...newFileUrls]
             }))
         }
     }
+
+    //fix
+    //yorum olmadan paylaşa basınca resmi Cloudinary'ye gönderemesin
+    const createPost = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            // Yüklenen dosyaları Cloudinary'ye gönder ve URL'leri al
+            const blobs = formData.filePath.map(path => fetch(path).then(res => res.blob()));
+            const blobsArray = await Promise.all(blobs);
+            const uploadedFileUrls = await Promise.all(
+                blobsArray.map(blob => uploadToCloudinary(blob))
+            );
+
+            // Form verilerini güncelle
+            const postData = {
+                ...formData,
+                filePath: uploadedFileUrls
+            };
+
+            await dispatch(addPost(postData));
+            setFormData((prevData) => ({
+                ...prevData,
+                message: "",
+                filePath: []
+            }));
+        } catch (error) {
+            console.error("An error occurred while adding the post:", error);
+        }
+    };
 
     useEffect(() => {
         if (userId) {

@@ -30,6 +30,7 @@ const Grades = (props: Props) => {
   const studentGrade = useSelector((state: RootState) => state.student.studentGrades);
   const term = useSelector((state: RootState) => state.term.term?.items);
 
+
   const [studentClasses, setStudentClasses] = useState<ClassInformationResponse[]>([]);
   const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
   const [selectedTermId, setSelectedTermId] = useState<number>(1);

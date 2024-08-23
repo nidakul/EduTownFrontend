@@ -93,7 +93,7 @@ const ListPost = () => {
                             {post.isCommentable &&
                                 <Row className='comment-row mb-3'>
                                     <Col xs={1}>
-                                        <img src='https://media.istockphoto.com/id/1318858332/tr/foto%C4%9Fraf/ofiste-poz-veren-g%C3%BCl%C3%BCmseyen-kad%C4%B1n-%C3%A7al%C4%B1%C5%9Fan%C4%B1n-vesikal%C4%B1k-portresi.jpg?s=1024x1024&w=is&k=20&c=9fZmmIVi9BzG2-Bk3VEoyPqqYp0G-bZP9W7qtAY7V_w=' className="rounded-circle comment-img me-2" />
+                                        <img src={user?.imageUrl} className="rounded-circle comment-img me-2" />
                                     </Col>
                                     <Col>
                                         <div className="comment-input-container">
@@ -118,7 +118,6 @@ const ListPost = () => {
                 ))
             ) : (
                 <p>Gösterecek post yok.</p>
-                // Ayarla gösterecek post yok resmi çıksın
             )}
 
         </>

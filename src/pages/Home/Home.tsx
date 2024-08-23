@@ -92,20 +92,20 @@ const Home = () => {
       </Card>
       <CreateInteractionTabs />
       <ListPost />
-      <Card className="book-information">Okuduğu kitaplar</Card>
-      <div className="certificate">
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              {/* kaç sınıf varsa ona göre döndür ilerde verileri / sıralamayı da yeniden eskiye göre yap 8. sınıf en yukarda olsun */}
-              <th>Sınıf</th>
+      {/* <Card className="book-information">Okuduğu kitaplar</Card> */}
+      {/* <div className="certificate"> */}
+      {/* <Table striped bordered hover> */}
+      {/* <thead>
+            <tr> */}
+      {/* kaç sınıf varsa ona göre döndür ilerde verileri / sıralamayı da yeniden eskiye göre yap 8. sınıf en yukarda olsun */}
+      {/* <th>Sınıf</th>
               <th>Öğrenim Yılı</th>
               <th>1. Dönem</th>
               <th>2. Dönem</th>
             </tr>
-          </thead>
+          </thead> */}
 
-          {/* {user && user.certificate.certificates && user.certificate.certificates.length > 0 && (
+      {/* {user && user.certificate.certificates && user.certificate.certificates.length > 0 && (
             <tbody>
               {user.certificate.certificates.map((cert: any) => (
                 <tr key={cert.id}>
@@ -118,7 +118,7 @@ const Home = () => {
             </tbody>
           )} */}
 
-          {/* <tr>
+      {/* <tr>
               <td>6. Sınıf</td>
               <td>2023-2024</td>
               <td>Teşekkür Belgesi</td>
@@ -136,9 +136,9 @@ const Home = () => {
               <td>Teşekkür Belgesi</td>
               <td>Teşekkür Belgesi</td>
             </tr> */}
-        </Table>
-      </div>
-      <Chart></Chart>
+      {/* </Table> */}
+      {/* </div> */}
+      {/* <Chart></Chart> */}
     </Container>
   );
 };

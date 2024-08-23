@@ -1,11 +1,23 @@
-.grades-select {
-    width: 50%;
-    margin-top: 20px;
-    margin-left: 20px;
+.grades-container {
+    padding: 40px;
+    margin-left: 30px !important;
 }
+
+.grades-select {
+    width: 50% !important;
+}
+
+.grades-select:focus {
+    transition: none !important;
+    transform: none !important;
+    outline: none !important;
+}
+
 
 .grades-card {
     margin-top: 20px;
+    width: 90%;
+
 }
 
 .lesson-name {
@@ -24,8 +36,28 @@
     border-color: white;
     font-size: 17px;
     font-weight: bold;
+    transition: none;
+}
+
+.terms button:hover {
+    background-color: #a0dbcc !important;
+    border: none;
+    transform: none;
 }
 
 .gradeType-colspan {
     text-align: center;
+}
+
+th,
+td {
+    text-align: center !important;
+}
+
+.lesson-name {
+    text-align: start !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    --bs-table-bg-type: #a0dbcc !important;
 }

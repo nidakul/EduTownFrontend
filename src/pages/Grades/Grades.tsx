@@ -3,6 +3,7 @@ import {
   Card,
   Container,
   Form,
+  Row,
   Table,
 } from "react-bootstrap";
 import "./grades.css";
@@ -30,9 +31,8 @@ const Grades = (props: Props) => {
   const studentGrade = useSelector((state: RootState) => state.student.studentGrades);
   const term = useSelector((state: RootState) => state.term.term?.items);
 
-
   const [studentClasses, setStudentClasses] = useState<ClassInformationResponse[]>([]);
-  const [selectedClassId, setSelectedClassId] = useState<number | undefined>();
+  const [selectedClassId, setSelectedClassId] = useState<number | undefined>(user?.classroomId);
   const [selectedTermId, setSelectedTermId] = useState<number>(1);
 
   // Seçilen döneme göre filtreleme 
@@ -92,12 +92,12 @@ const Grades = (props: Props) => {
   // useEffect(() => {
   //   if (user?.classroomId && selectedClassId !== undefined) {
   //     setSelectedClassId(user.classroomId);
-  //   }
-  // }, [user?.classroomId, selectedClassId]);
+  //   } 
+  // }, [user?.classroomId, selectedClassId]); 
 
   return (
-    <Container>
-      <label htmlFor="grades-select">Öğrencinin Sınıfları:</label>
+    <Container className="grades-container">
+      <Form.Label htmlFor="grades-select">Öğrencinin Sınıfları:</Form.Label>
       <Form.Select
         id="grades-select"
         className="grades-select"
@@ -111,6 +111,7 @@ const Grades = (props: Props) => {
           </option>
         ))}
       </Form.Select>
+
 
       <div className="terms">
         {term?.map((term) => (
@@ -155,11 +156,11 @@ const Grades = (props: Props) => {
 
               return (
                 <tr key={lessonItem.lessonId}>
-                  <td>{lessonItem.lessonName}</td>
+                  <td className="lesson-name">{lessonItem.lessonName}</td>
                   {gradeType && gradeType.map((type) => {
                     const typeGrades = lessonGrades.find((lg) => lg.gradeTypeName === type.name)?.gradesDto || [];
 
-                    const grades = Array.from({ length: type.gradeCount }).map((_, index) => {
+                    return Array.from({ length: type.gradeCount }).map((_, index) => {
                       const grade = typeGrades.find(g => g.examCount === index + 1)?.grade;
                       return (
                         <td key={index}>
@@ -167,16 +168,17 @@ const Grades = (props: Props) => {
                         </td>
                       );
                     });
-
-                    return grades;
                   })}
                 </tr>
               );
             })}
           </tbody>
+
         </Table>
       </Card>
     </Container >
   );
 };
 export default Grades;
+
+

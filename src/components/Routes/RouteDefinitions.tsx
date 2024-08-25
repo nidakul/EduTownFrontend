@@ -26,21 +26,23 @@ const RouteDefinitions = () => {
       {isAuthenticated && <Navigation />}
       <div className="main-content">
         {isAuthenticated && <Sidebar />}
-        <div className="home-container">
+        {isAuthenticated ? (
+
+          <div className="home-container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/grades" element={<Grades />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/login" element={<Navigate to="/" />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        ) : (
           <Routes>
-            {!isAuthenticated ? (
-              <Route path="/login" element={<Login />} />
-            ) : (
-              <>
-                <Route path="/" element={<Home />} />
-                <Route path="/grades" element={<Grades />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/login" element={<Navigate to="/" />} />
-                <Route path="*" element={<NotFound />} />
-              </>
-            )}
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
-        </div>
+        )}
       </div>
     </div>
   );

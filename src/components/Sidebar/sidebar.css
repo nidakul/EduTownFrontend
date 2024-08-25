@@ -1,7 +1,12 @@
-
-.sidebar-menu { 
+.sidebar-menu {
   padding-top: 0;
-  flex-direction: column;
+  position: fixed;
+  width: 300px;
+  background-color: #71bfd8;
+  height: 100%;
+  z-index: 1;
+  margin-top: 60px;
+  overflow-x: hidden;
 }
 
 .sidebar-menu-body {
@@ -12,14 +17,6 @@
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-}
-
-.sidebar-menu-expand {
-  width: 300px;
-  height: max-content;
-  background-color: #71bfd8;
-  height: 100vh;
-  z-index: 1;
 }
 
 .sidebar-menu-body-items {

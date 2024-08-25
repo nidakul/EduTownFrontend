@@ -1,6 +1,7 @@
 .container {
   width: 16%;
 }
+
 .big {
   position: fixed;
   background-color: #277cd1;
@@ -40,7 +41,7 @@
 .login-image {
   position: absolute;
   right: 100%;
-  top: 20%;
+  top: 22%;
   height: 60vh;
 }
 
@@ -56,20 +57,21 @@
 
 
 
-.form-label{
-    color: #424548;
+.form-label {
+  color: #424548;
 }
 
-.password-reset-button{
-text-align: center;
+.password-reset-button {
+  text-align: center;
 }
 
-.login-logo{
-    width: 42% ;
-    height: auto;
-    position: absolute;
-    margin: -390px -15px;
-    overflow: hidden;
-    z-index: -1;
-    transform: rotate(-5deg);
+.login-logo {
+  width: 42%;
+  height: auto;
+  position: absolute;
+  /* margin: -390px -15px; */
+  margin-top: -30px;
+  overflow: hidden;
+  z-index: -1;
+  transform: rotate(-5deg);
 }

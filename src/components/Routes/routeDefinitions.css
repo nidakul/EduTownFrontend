@@ -9,4 +9,8 @@
 
 .home-container {
   flex-grow: 1;
+  margin-left: 300px;
+  margin-top: 60px;
+  overflow-x: hidden;
+
 }

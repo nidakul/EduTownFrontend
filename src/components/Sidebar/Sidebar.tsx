@@ -51,7 +51,7 @@ const Sidebar = () => {
         </div>
         <Container>
           <SidebarMenu.Nav>
-            <IconTemp mainClassName="iconHeader" {...userIcon} pathName="/" />
+            <IconTemp mainClassName="iconHeader" {...userIcon} pathName="/information" />
             <IconTemp mainClassName="iconHeader" {...onlineLessonIcon} />
             <IconTemp mainClassName="iconHeader" {...assignmentsIcon} />
             <IconTemp mainClassName="iconHeader"{...examResultIcon} pathName="/grades" />

@@ -13,6 +13,7 @@ import AddGrades from "../../pages/Instructor/AddGrades/AddGrades";
 import ListStudent from "../Student/ListStudent/ListStudent";
 import NotFound from "../../pages/NotFound/NotFound";
 import AddStudentGrade from "../AddStudentGrade/AddStudentGrade";
+import Information from "../../pages/Information/Information";
 
 const RouteDefinitions = () => {
   const isAuthenticated = useSelector(
@@ -32,6 +33,7 @@ const RouteDefinitions = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/grades" element={<Grades />} />
+              <Route path="/information" element={<Information />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Navigate to="/" />} />
               <Route path="*" element={<NotFound />} />

@@ -1,0 +1,22 @@
+.information-card .col {
+    margin-bottom: 24px;
+}
+
+.information {
+    width: 90%;
+    margin-top: 40px;
+}
+
+
+.edit {
+    width: 30px !important;
+    height: 30px !important;
+    position: absolute;
+    right: 20px;
+}
+
+
+.information-img {
+    margin-top: -25px;
+    margin-bottom: 24px;
+}

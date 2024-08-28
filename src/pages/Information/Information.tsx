@@ -8,6 +8,8 @@ import { getUserDetailById } from '../../store/user/userSlice';
 import FormattedDate from '../../utilities/Helpers/formattedDate';
 import IconTemp from '../../utilities/Helpers/iconTemp';
 import { editIcon, editImgIcon } from '../../utilities/Constants/iconsList';
+import { updateStudent } from '../../store/student/studentSlice';
+import { StudentRequest } from '../../models/requests/studentRequest';
 
 type Props = {};
 
@@ -17,11 +19,73 @@ const Information: React.FC<Props> = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [editable, setEditable] = useState(false);
 
+    const [updateForm, setUpdateForm] = useState({
+        userId: userId || "",
+        userForRegisterCommand: {
+            imageUrl: user?.imageUrl || "",
+            email: user?.email || "",
+            password: ""
+        },
+        birthdate: user?.birthdate ? new Date(user.birthdate) : new Date(),
+        birthplace: user?.birthplace || ""
+    });
+
     useEffect(() => {
         if (userId) {
             dispatch(getUserDetailById(userId));
         }
-    }, [userId])
+    }, [userId, dispatch])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUpdateForm(prevForm => ({
+            ...prevForm,
+            userForRegisterCommand: {
+                ...prevForm.userForRegisterCommand,
+                [name]: value
+            },
+            [name]: value
+        }));
+    };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUpdateForm(prevForm => ({
+            ...prevForm,
+            birthdate: new Date(e.target.value)
+        }));
+    };
+
+    const handleUpdateStudent = async () => {
+        try {
+            const studentData: StudentRequest = {
+                id: user?.studentId,
+                userId: userId || "",
+                studentNo: user?.studentNo || "",
+                birthdate: updateForm.birthdate,
+                birthplace: updateForm.birthplace,
+                branchId: user?.branchId || 0,
+                classroomId: user?.classroomId || 0,
+                userForRegisterCommand: {
+                    schoolId: user?.schoolId || 0,
+                    password: updateForm.userForRegisterCommand.password,
+                    nationalIdentity: user?.nationalIdentity || "",
+                    firstName: user?.firstName || "",
+                    lastName: user?.lastName || "",
+                    email: updateForm.userForRegisterCommand.email,
+                    gender: user?.gender || "",
+                    imageUrl: updateForm.userForRegisterCommand.imageUrl
+                }
+            };
+            dispatch(updateStudent(studentData));
+            setEditable(false);
+            alert('Bilgiler güncellendi!');
+        } catch (error) {
+            console.error("Güncelleme hatası:", error);
+            alert('Güncellenirken bir hata oluştu.');
+        }
+    };
+
+
 
     return (
         <Container className='information'>
@@ -74,7 +138,15 @@ const Information: React.FC<Props> = () => {
                         <Row>
                             <Col>
                                 <Card.Title>Email</Card.Title>
-                                <Card.Text>{user?.email}</Card.Text>
+                                {editable ?
+                                    <Form.Control
+                                        type='email'
+                                        name="email"
+                                        value={updateForm.userForRegisterCommand.email}
+                                        onChange={handleChange}
+                                    />
+                                    : <Card.Text>{user?.email}</Card.Text>
+                                }
                             </Col>
                             <Col>
                                 <Card.Title>Cinsiyet</Card.Title>
@@ -88,9 +160,9 @@ const Information: React.FC<Props> = () => {
                                     ? <Form.Control
                                         type='text'
                                         placeholder='Doğum Yerinizi Giriniz'
-                                        name="birthPlace"
-                                    // value={formData.studentNo}
-                                    // onChange={handleChange}
+                                        name="birthplace"
+                                        value={updateForm.birthplace}
+                                        onChange={handleChange}
                                     ></Form.Control>
                                     : <Card.Text>{user?.birthplace}</Card.Text>
                                 }
@@ -101,8 +173,8 @@ const Information: React.FC<Props> = () => {
                                     <Form.Control
                                         type="date"
                                         name="birthdate"
-                                    // value={formData.birthdate.toISOString().split('T')[0]}
-                                    // onChange={handleChange}
+                                        value={updateForm.birthdate.toISOString().split('T')[0]}
+                                        onChange={handleDateChange}
                                     ></Form.Control> :
                                     <Card.Text><FormattedDate date={user?.birthdate} ></FormattedDate></Card.Text>
                                 }
@@ -114,7 +186,7 @@ const Information: React.FC<Props> = () => {
                     {editable ?
                         <div className='information-btn'>
                             <Button className='form-btn' onClick={() => setEditable(false)}>İptal</Button>
-                            <Button className='form-btn'>Güncelle</Button>
+                            <Button className='form-btn' onClick={handleUpdateStudent}>Güncelle</Button>
                         </div>
                         : ""
                     }

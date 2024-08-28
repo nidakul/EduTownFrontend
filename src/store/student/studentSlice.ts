@@ -2,15 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import studentService from '../../services/studentService';
 import { StudentGradesResponse } from '../../models/responses/studentGradesResponse';
 import { StudentInformationResponse } from '../../models/responses/studentInformationResponse';
+import { StudentRequest } from '../../models/requests/studentRequest';
 
 interface StudentGradesState {
     items: StudentInformationResponse[];
     studentGrades: StudentGradesResponse | null;
+    updateStudent: StudentRequest[];
 }
 
 const initialState: StudentGradesState = {
     items: [],
     studentGrades: null,
+    updateStudent: []
 };
 
 export const getAllStudents = createAsyncThunk('students/getAll', async() => {
@@ -25,6 +28,14 @@ export const getStudentGrades = createAsyncThunk('students/getStudentGrades',
     }
 )
 
+export const updateStudent = createAsyncThunk(
+    'students/updateStudent',
+    async(studentData: StudentRequest) => {
+        const response = await studentService.updateStudent(studentData);
+        return response.data;
+    }
+);
+
 export const studentSlice = createSlice({
     name: "student",
     initialState,
@@ -38,6 +49,12 @@ export const studentSlice = createSlice({
         })
         .addCase(getStudentGrades.fulfilled, (state, action) => {
             state.studentGrades = action.payload;
+        })
+        .addCase(updateStudent.fulfilled, (state, action) => {
+            const index = state.updateStudent.findIndex(student => student.userId === action.payload.studentData.studentId); 
+            if (index !== -1) {
+                state.items[index] = action.payload;
+            }
         })
     }
 })

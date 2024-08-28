@@ -4,7 +4,7 @@
 
 .information {
     width: 90%;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 
@@ -15,8 +15,48 @@
     right: 20px;
 }
 
+.card {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 18px !important;
+}
+
+.information-text {
+    color: rgb(176, 13, 13);
+    font-size: 14px;
+}
+
+.information-card .form-control {
+    width: 70%;
+}
+
+.information-btn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.information-btn .btn {
+    height: 40px;
+    margin: 0 10px 0 0;
+    padding: 0;
+}
 
 .information-img {
-    margin-top: -25px;
-    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+    margin: -15px 0 24px 0;
+}
+
+.information-img .btn-with-icon {
+    position: absolute;
+    top: 110px;
+    left: 110px;
+    z-index: 1;
+}
+
+.editImg {
+    width: 30px !important;
+    height: 30px !important;
 }

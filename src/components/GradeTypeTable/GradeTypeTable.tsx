@@ -26,7 +26,7 @@
 //                                 Array.from({ length: type.gradeCount }).map((_, countIndex) => (
 //                                     <th key={`${typeIndex}-${countIndex}`}>
 //                                         {countIndex + 1}
-//                                     </th>
+//                                     </th> 
 //                                 ))
 //                                 : (<th key={`${typeIndex}-empty`}></th>
 //                                 )

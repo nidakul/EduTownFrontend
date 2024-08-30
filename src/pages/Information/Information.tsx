@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Card, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './information.css'
 import { getUserId } from '../../services/identityService';
@@ -18,6 +18,8 @@ const Information: React.FC<Props> = () => {
     const user = useSelector((state: RootState) => state.user.items);
     const dispatch = useDispatch<AppDispatch>();
     const [editable, setEditable] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
 
     const [updateForm, setUpdateForm] = useState({
         userId: userId || "",
@@ -29,6 +31,19 @@ const Information: React.FC<Props> = () => {
         birthdate: user?.birthdate ? new Date(user.birthdate) : new Date(),
         birthplace: user?.birthplace || ""
     });
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files[0]) {
+            setUpdateForm((prevData) => ({
+                ...prevData,
+                userForRegisterCommand: {
+                    ...prevData.userForRegisterCommand,
+                    imageUrl: URL.createObjectURL(files[0])
+                }
+            }))
+        }
+    }
 
     useEffect(() => {
         if (userId) {
@@ -98,9 +113,22 @@ const Information: React.FC<Props> = () => {
                         </button>
                         <div className='information-img'>
                             {editable && (
-                                <button className='btn-with-icon'>
-                                    <IconTemp {...editImgIcon} />
-                                </button>
+                                <>
+                                    <button className='btn-with-icon'
+                                        onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+                                        <img
+                                            src={updateForm.userForRegisterCommand.imageUrl}
+                                            className="img-fluid rounded"
+                                        />
+                                        <IconTemp {...editImgIcon} />
+                                    </button>
+                                    <input type='file'
+                                        ref={fileInputRef}
+                                        style={{ display: "none" }}
+                                        onChange={handleFileChange}
+                                        accept="image/*" //only image
+                                    />
+                                </>
                             )}
                             <img src={user?.imageUrl} className="img-fluid rounded" />
                         </div>
@@ -140,6 +168,7 @@ const Information: React.FC<Props> = () => {
                                 <Card.Title>Email</Card.Title>
                                 {editable ?
                                     <Form.Control
+                                        className='form-input'
                                         type='email'
                                         name="email"
                                         value={updateForm.userForRegisterCommand.email}
@@ -158,6 +187,7 @@ const Information: React.FC<Props> = () => {
                                 <Card.Title>Doğum Yeri</Card.Title>
                                 {editable
                                     ? <Form.Control
+                                        className='form-input'
                                         type='text'
                                         placeholder='Doğum Yerinizi Giriniz'
                                         name="birthplace"
@@ -171,6 +201,7 @@ const Information: React.FC<Props> = () => {
                                 <Card.Title>Doğum Tarihi</Card.Title>
                                 {editable ?
                                     <Form.Control
+                                        className='form-input'
                                         type="date"
                                         name="birthdate"
                                         value={updateForm.birthdate.toISOString().split('T')[0]}

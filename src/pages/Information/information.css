@@ -60,3 +60,11 @@
     width: 30px !important;
     height: 30px !important;
 }
+
+.form-input {
+    padding: 3px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid #83c9b7 !important;
+    outline: none !important;
+}

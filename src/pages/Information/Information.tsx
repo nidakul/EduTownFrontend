@@ -10,6 +10,7 @@ import IconTemp from '../../utilities/Helpers/iconTemp';
 import { editIcon, editImgIcon } from '../../utilities/Constants/iconsList';
 import { updateStudent } from '../../store/student/studentSlice';
 import { StudentRequest } from '../../models/requests/studentRequest';
+import { uploadToCloudinary } from '../../utilities/Helpers/cloudinary';
 
 type Props = {};
 
@@ -20,6 +21,7 @@ const Information: React.FC<Props> = () => {
     const [editable, setEditable] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
     const [updateForm, setUpdateForm] = useState({
         userId: userId || "",
@@ -35,6 +37,7 @@ const Information: React.FC<Props> = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files[0]) {
+            setSelectedImage(files[0]); // Seçilen dosyayı sakla
             const imageUrl = URL.createObjectURL(files[0]);
             setUpdateForm((prevData) => ({
                 ...prevData,
@@ -74,6 +77,7 @@ const Information: React.FC<Props> = () => {
 
     const handleCancel = () => {
         setEditable(false);
+        setSelectedImage(null);
         setUpdateForm({
             userId: userId || "",
             userForRegisterCommand: {
@@ -87,8 +91,13 @@ const Information: React.FC<Props> = () => {
     }
 
 
-    const handleUpdateStudent = async () => {
+    const handleUpdateStudent = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
+            let imageUrl = updateForm.userForRegisterCommand.imageUrl;
+            if (selectedImage) {
+                imageUrl = await uploadToCloudinary(selectedImage);
+            }
             const studentData: StudentRequest = {
                 id: user?.studentId,
                 userId: userId || "",
@@ -105,7 +114,7 @@ const Information: React.FC<Props> = () => {
                     lastName: user?.lastName || "",
                     email: updateForm.userForRegisterCommand.email,
                     gender: user?.gender || "",
-                    imageUrl: updateForm.userForRegisterCommand.imageUrl
+                    imageUrl: imageUrl // Güncellenmiş veya mevcut imageUrl
                 }
             };
             dispatch(updateStudent(studentData));

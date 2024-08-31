@@ -35,15 +35,17 @@ const Information: React.FC<Props> = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files[0]) {
+            const imageUrl = URL.createObjectURL(files[0]);
             setUpdateForm((prevData) => ({
                 ...prevData,
                 userForRegisterCommand: {
                     ...prevData.userForRegisterCommand,
-                    imageUrl: URL.createObjectURL(files[0])
+                    imageUrl: imageUrl
                 }
             }))
         }
     }
+
 
     useEffect(() => {
         if (userId) {
@@ -69,6 +71,21 @@ const Information: React.FC<Props> = () => {
             birthdate: new Date(e.target.value)
         }));
     };
+
+    const handleCancel = () => {
+        setEditable(false);
+        setUpdateForm({
+            userId: userId || "",
+            userForRegisterCommand: {
+                imageUrl: user?.imageUrl || "",
+                email: user?.email || "",
+                password: ""
+            },
+            birthdate: user?.birthdate ? new Date(user.birthdate) : new Date(),
+            birthplace: user?.birthplace || ""
+        });
+    }
+
 
     const handleUpdateStudent = async () => {
         try {
@@ -112,14 +129,11 @@ const Information: React.FC<Props> = () => {
                             <IconTemp {...editIcon} />
                         </button>
                         <div className='information-img'>
+                            <img src={updateForm.userForRegisterCommand.imageUrl || user?.imageUrl} className="img-fluid rounded" alt="Profile" />
                             {editable && (
                                 <>
                                     <button className='btn-with-icon'
                                         onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-                                        <img
-                                            src={updateForm.userForRegisterCommand.imageUrl}
-                                            className="img-fluid rounded"
-                                        />
                                         <IconTemp {...editImgIcon} />
                                     </button>
                                     <input type='file'
@@ -130,7 +144,6 @@ const Information: React.FC<Props> = () => {
                                     />
                                 </>
                             )}
-                            <img src={user?.imageUrl} className="img-fluid rounded" />
                         </div>
 
                         <Row >
@@ -184,6 +197,7 @@ const Information: React.FC<Props> = () => {
                         </Row>
                         <Row>
                             <Col>
+                                {/* Select olarak gelsin şehirler */}
                                 <Card.Title>Doğum Yeri</Card.Title>
                                 {editable
                                     ? <Form.Control
@@ -216,7 +230,7 @@ const Information: React.FC<Props> = () => {
                     </Card.Body>
                     {editable ?
                         <div className='information-btn'>
-                            <Button className='form-btn' onClick={() => setEditable(false)}>İptal</Button>
+                            <Button className='form-btn' onClick={handleCancel}>İptal</Button>
                             <Button className='form-btn' onClick={handleUpdateStudent}>Güncelle</Button>
                         </div>
                         : ""
@@ -228,3 +242,5 @@ const Information: React.FC<Props> = () => {
 };
 
 export default Information;
+
+

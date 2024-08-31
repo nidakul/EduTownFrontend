@@ -117,7 +117,7 @@ const ListPost = () => {
                     </ Card>
                 ))
             ) : (
-                <p>Gösterecek post yok.</p>
+                <p>Henüz paylaşılan bir gönderi yok</p>
             )}
 
         </>

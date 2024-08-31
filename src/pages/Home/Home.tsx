@@ -52,7 +52,7 @@ const Home = () => {
               user.firstName &&
               user.firstName.toLocaleUpperCase("tr-TR")}
           </span>
-          <img src={user?.imageUrl} className="img-fluid rounded" />
+          <img src={user?.imageUrl || "/images/profile-image.png"} className="img-fluid rounded" />
           <span>{user?.classroomName} / {user?.branchName} - {user?.studentNo}</span>
         </div>
         <Container className="user-information-container">

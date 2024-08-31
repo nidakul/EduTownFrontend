@@ -38,7 +38,7 @@ const Sidebar = () => {
       <SidebarMenuBody>
         <div className="sidebar-menu-body-items">
           <img
-            src={user?.imageUrl}
+            src={user?.imageUrl || "/images/profile-image.png"}
             className="img-fluid rounded-circle"
           />
           <SidebarMenu.Nav.Title>

@@ -129,12 +129,12 @@ const Information: React.FC<Props> = () => {
                             <IconTemp {...editIcon} />
                         </button>
                         <div className='information-img'>
-                            <img src={updateForm.userForRegisterCommand.imageUrl || user?.imageUrl} className="img-fluid rounded" alt="Profile" />
+                            <img src={updateForm.userForRegisterCommand.imageUrl || user?.imageUrl || "/images/profile-image.png"} className="img-fluid rounded-circle" alt="profile-image" />
                             {editable && (
                                 <>
                                     <button className='btn-with-icon'
                                         onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-                                        <IconTemp {...editImgIcon} />
+                                        < IconTemp {...editImgIcon} />
                                     </button>
                                     <input type='file'
                                         ref={fileInputRef}

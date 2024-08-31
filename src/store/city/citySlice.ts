@@ -16,7 +16,7 @@ export const getAllCities = createAsyncThunk("city/getAll", async() => {
 })
 
 export const citySlice = createSlice({
-    name: 'city',
+    name: 'city', 
     initialState, 
     reducers:{},
     extraReducers:(builder)=> 

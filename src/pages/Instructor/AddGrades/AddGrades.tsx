@@ -27,7 +27,7 @@ const AddGrades = (props: Props) => {
     const school = useSelector((state: RootState) => state.school.school);
     const lesson = useSelector((state: RootState) => state.lesson.lesson);
     const branch = useSelector((state: RootState) => state.branch.branch);
-    const user = useSelector((state: RootState) => state.user.items);
+    const user = useSelector((state: RootState) => state.user.user);
     const student = useSelector((state: RootState) => state.student.items);
     const studentGrade = useSelector((state: RootState) => state.student.studentGrades);
     const term = useSelector((state: RootState) => state.term.term?.items);

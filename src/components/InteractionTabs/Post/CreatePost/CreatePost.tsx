@@ -15,7 +15,7 @@ type Props = {}
 const CreatePost = (props: Props) => {
     const userId = getUserId();
     const dispatch = useDispatch<AppDispatch>();
-    const user = useSelector((state: RootState) => state.user.items);
+    const user = useSelector((state: RootState) => state.user.user);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState({

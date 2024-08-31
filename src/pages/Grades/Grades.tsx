@@ -24,7 +24,7 @@ type Props = {};
 const Grades = (props: Props) => {
   const userId = getUserId();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.user.items);
+  const user = useSelector((state: RootState) => state.user.user);
   const lesson = useSelector((state: RootState) => state.lesson.lesson);
   const classes = useSelector((state: RootState) => state.classes.items);
   const gradeType = useSelector((state: RootState) => state.gradeType.gradeType?.items);

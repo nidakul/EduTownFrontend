@@ -11,12 +11,14 @@ import { editIcon, editImgIcon } from '../../utilities/Constants/iconsList';
 import { updateStudent } from '../../store/student/studentSlice';
 import { StudentRequest } from '../../models/requests/studentRequest';
 import { uploadToCloudinary } from '../../utilities/Helpers/cloudinary';
+import { getAllCities } from '../../store/city/citySlice';
 
 type Props = {};
 
 const Information: React.FC<Props> = () => {
     const userId = getUserId();
-    const user = useSelector((state: RootState) => state.user.items);
+    const user = useSelector((state: RootState) => state.user.user);
+    const city = useSelector((state: RootState) => state.city.items);
     const dispatch = useDispatch<AppDispatch>();
     const [editable, setEditable] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -49,13 +51,6 @@ const Information: React.FC<Props> = () => {
         }
     }
 
-
-    useEffect(() => {
-        if (userId) {
-            dispatch(getUserDetailById(userId));
-        }
-    }, [userId, dispatch])
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUpdateForm(prevForm => ({
@@ -64,6 +59,14 @@ const Information: React.FC<Props> = () => {
                 ...prevForm.userForRegisterCommand,
                 [name]: value
             },
+            [name]: value
+        }));
+    };
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setUpdateForm(prevForm => ({
+            ...prevForm,
             [name]: value
         }));
     };
@@ -126,7 +129,15 @@ const Information: React.FC<Props> = () => {
         }
     };
 
+    useEffect(() => {
+        if (userId) {
+            dispatch(getUserDetailById(userId));
+        }
+    }, [userId, dispatch])
 
+    useEffect(() => {
+        dispatch(getAllCities());
+    }, [])
 
     return (
         <Container className='information'>
@@ -206,17 +217,22 @@ const Information: React.FC<Props> = () => {
                         </Row>
                         <Row>
                             <Col>
-                                {/* Select olarak gelsin şehirler */}
                                 <Card.Title>Doğum Yeri</Card.Title>
                                 {editable
-                                    ? <Form.Control
+                                    ? <Form.Select
+                                        id='birtplace'
                                         className='form-input'
-                                        type='text'
-                                        placeholder='Doğum Yerinizi Giriniz'
+                                        aria-label="Select birtplace"
                                         name="birthplace"
                                         value={updateForm.birthplace}
-                                        onChange={handleChange}
-                                    ></Form.Control>
+                                        onChange={handleSelectChange}
+                                    >
+                                        {city && city.map((cityItem: any) => (
+                                            <option key={cityItem.id} value={cityItem.name}>
+                                                {cityItem.name}
+                                            </option>
+                                        ))}
+                                    </Form.Select>
                                     : <Card.Text>{user?.birthplace}</Card.Text>
                                 }
                             </Col>

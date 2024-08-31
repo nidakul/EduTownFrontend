@@ -13,7 +13,7 @@ import ListPost from "../../components/InteractionTabs/Post/ListPost/ListPost";
 const Home = () => {
   const userId = getUserId();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.user.items);
+  const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
     if (userId) {

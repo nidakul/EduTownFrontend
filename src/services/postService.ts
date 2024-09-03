@@ -11,6 +11,10 @@ class PostService{
         return axiosInstance.post(this.apiUrl, postData);
     }
 
+    deletePost(id: number) {
+        return axiosInstance.delete(this.apiUrl + "/" +id);
+    }
+
     getPostsBySchoolIdClassIdBranchId(schoolId: number, classId: number, branchId: number): Promise<AxiosResponse<GetPostsBySchoolIdClassIdBranchIdResponse, any>>{
         return  axiosInstance.get<GetPostsBySchoolIdClassIdBranchIdResponse>(this.apiUrl  + "/getPostsBySchoolIdClassIdBranchId/" + schoolId +'/'+ classId +'/'+ branchId)
     }

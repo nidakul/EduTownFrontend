@@ -114,5 +114,15 @@
     height: 20px !important;
     position: absolute;
     right: 20px;
-    top: 75px;
+    top: 45px;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown-menu {
+    right: 40px !important;
+    left: auto !important;
+    top: 67px !important;
 }

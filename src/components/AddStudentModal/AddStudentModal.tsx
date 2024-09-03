@@ -22,7 +22,7 @@ const AddStudentModal = (props: Props) => {
         } catch (error) {
             console.log("Öğrenci eklenirken bir hata oluştu.", error);
         }
-    }; 
+    };
 
     return (
         <>
@@ -44,16 +44,16 @@ const AddStudentModal = (props: Props) => {
                     <div className="add-student-modal">
                         <p className="student-name">{userForRegisterCommand.firstName} {userForRegisterCommand.lastName}</p>
                         <p>okul ismini gir</p>
-                        <p>Sınıf/{branch}</p> 
+                        <p>Sınıf/{branch}</p>
                     </div>
                     <Container>
-                        <Row> 
+                        <Row>
                             <Col>
                                 <p>Tc Kimlik No: {userForRegisterCommand.nationalIdentity}</p>
                             </Col>
                             <Col>
                                 <p>Okul Numarası: {studentNo}</p>
-                            </Col> 
+                            </Col>
                         </Row>
                         <Row>
                             <Col>

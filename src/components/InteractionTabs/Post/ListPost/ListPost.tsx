@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Dropdown, DropdownButton, Form, Row } from 'react-bootstrap'
 import "./listPost.css"
 import IconTemp from '../../../../utilities/Helpers/iconTemp'
 import { commentIcon, heartIcon, pointsIcon, sendIcon } from '../../../../utilities/Constants/iconsList'
@@ -9,6 +9,9 @@ import { addPostComment, getPostsBySchoolIdClassIdBranchId } from '../../../../s
 import { AppDispatch, RootState } from '../../../../store/configureStore'
 import { getUserDetailById } from '../../../../store/user/userSlice'
 import FormattedDate from '../../../../utilities/Helpers/formattedDate'
+import postService from '../../../../services/postService'
+import { useFormik } from "formik";
+
 
 const ListPost = () => {
     const userId = getUserId();
@@ -17,12 +20,24 @@ const ListPost = () => {
     const posts = useSelector((state: RootState) => state.post.posts);
 
     const [comments, setComments] = useState<{ [key: number]: string }>({});
+    const [editablePost, setEditablePost] = useState<boolean>(false);
 
     useEffect(() => {
         if (userId) {
             dispatch(getUserDetailById(userId));
         }
     }, [dispatch, userId]);
+
+    // const fetchPosts = async () => {
+    //     try {
+    //         if (user && user.schoolId && user.classroomId && user.branchId) {
+    //             dispatch(getPostsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
+    //         }
+    //     } catch (error) {
+    //         console.error("API isteği sırasında bir hata oluştu:", error);
+    //     }
+    // }
+
 
     useEffect(() => {
         if (user && user.schoolId && user.classroomId && user.branchId) {
@@ -55,6 +70,19 @@ const ListPost = () => {
             [postId]: value
         }))
     }
+
+
+    const handleDelete = async (postId: number) => {
+        try {
+            const response = await postService.deletePost(postId);
+            console.log("Post delete operation successful", postId);
+            // fetchPosts();
+            return response;
+        } catch (error) {
+            console.error("Error deleting post:", error);
+        }
+    }
+
     return (
         <>
             {posts && posts.posts.length > 0 ? (
@@ -62,15 +90,17 @@ const ListPost = () => {
                     <Card key={post.postId}>
                         <Card.Body>
                             <Dropdown>
-                                <Dropdown.Toggle as="button" className="btn-with-icon">
+                                <Dropdown.Toggle as="div" id="dropdown-custom-components">
                                     <IconTemp {...pointsIcon} />
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item>Düzenle</Dropdown.Item>
-                                    <Dropdown.Item>Sil</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => setEditablePost(true)}>Düzenle</Dropdown.Item>
+                                    <Dropdown.Item as="button" onClick={() => handleDelete(post.postId)}>Sil
+                                    </Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
+
                             <Row className="align-items-center">
                                 <Col xs="auto">
                                     <img src={post.imageUrl} className="rounded-circle post-img me-2"
@@ -87,7 +117,19 @@ const ListPost = () => {
                                     </div>
                                 </Col>
                             </Row>
-                            <Card.Text className='post-text'>{post.message}</Card.Text>
+
+                            <Card.Text className='post-text'>
+                                {editablePost ? (
+                                    <form>
+                                        <input type='text' id='post-message'
+                                            value={post.message}>
+                                        </input>
+                                    </form>
+                                ) : (
+                                    post.message
+                                )
+                                }
+                            </Card.Text>
                             <div className='post-files'>
                                 {post.filePaths.map((filePath, index) => (
                                     <img key={index} src={filePath} className="card-img-bottom" />

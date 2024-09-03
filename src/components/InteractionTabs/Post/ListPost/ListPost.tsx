@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Dropdown, Form, Row } from 'react-bootstrap'
 import "./listPost.css"
 import IconTemp from '../../../../utilities/Helpers/iconTemp'
-import { commentIcon, heartIcon, sendIcon } from '../../../../utilities/Constants/iconsList'
+import { commentIcon, heartIcon, pointsIcon, sendIcon } from '../../../../utilities/Constants/iconsList'
 import { getUserId } from '../../../../services/identityService'
 import { useDispatch, useSelector } from 'react-redux'
 import { addPostComment, getPostsBySchoolIdClassIdBranchId } from '../../../../store/post/postSlice'
@@ -13,7 +13,7 @@ import FormattedDate from '../../../../utilities/Helpers/formattedDate'
 const ListPost = () => {
     const userId = getUserId();
     const dispatch = useDispatch<AppDispatch>();
-    const user = useSelector((state: RootState) => state.user.items);
+    const user = useSelector((state: RootState) => state.user.user);
     const posts = useSelector((state: RootState) => state.post.posts);
 
     const [comments, setComments] = useState<{ [key: number]: string }>({});
@@ -49,7 +49,7 @@ const ListPost = () => {
         }
     }
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, postId: number) => {
-        const { name, value } = e.target;
+        const { value } = e.target;
         setComments((prevComments) => ({
             ...prevComments,
             [postId]: value
@@ -60,7 +60,17 @@ const ListPost = () => {
             {posts && posts.posts.length > 0 ? (
                 posts.posts.map(post => (
                     <Card key={post.postId}>
-                        <Card.Body >
+                        <Card.Body>
+                            <Dropdown>
+                                <Dropdown.Toggle as="button" className="btn-with-icon">
+                                    <IconTemp {...pointsIcon} />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item>Düzenle</Dropdown.Item>
+                                    <Dropdown.Item>Sil</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <Row className="align-items-center">
                                 <Col xs="auto">
                                     <img src={post.imageUrl} className="rounded-circle post-img me-2"
@@ -114,7 +124,7 @@ const ListPost = () => {
                                 </Row>
                             }
                         </Card.Footer>
-                    </ Card>
+                    </ Card >
                 ))
             ) : (
                 <p>Henüz paylaşılan bir gönderi yok</p>

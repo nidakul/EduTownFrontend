@@ -15,7 +15,7 @@ export interface StudentRequest {
     classroomId: number;
     branchId: number;
     studentNo: string;
-    birthdate: Date;
+    birthdate: string;
     birthplace: string;
     userForRegisterCommand: UserForRegisterCommand;
 }

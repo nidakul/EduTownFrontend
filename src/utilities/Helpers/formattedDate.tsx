@@ -1,8 +1,8 @@
 import React from "react";
 
 type Props = {
-  date: Date | undefined; 
-  format?: "full" | "year" | "month" | "day" | "time" | "minute";
+  date: Date | undefined;
+  format?: "full" | "year" | "month" | "day" | "time" | "minute" | "dateOnly";
 };
 
 const FormattedDate: React.FC<Props> = ({ date, format = "full" }) => {
@@ -16,6 +16,12 @@ const FormattedDate: React.FC<Props> = ({ date, format = "full" }) => {
         return formattedDate.toLocaleString("default", { month: "long" });
       case "day":
         return formattedDate.getDate().toString();
+      case "dateOnly":
+        return formattedDate.toLocaleDateString("tr-TR", {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+        });
       case "time":
         return formattedDate.toLocaleTimeString("tr-TR", {
           timeZone: "Europe/Istanbul",
@@ -36,7 +42,7 @@ const FormattedDate: React.FC<Props> = ({ date, format = "full" }) => {
     }
   };
 
-  const formattedDate = formatDate(date); 
+  const formattedDate = formatDate(date);
 
   return <span>{formattedDate}</span>;
 };

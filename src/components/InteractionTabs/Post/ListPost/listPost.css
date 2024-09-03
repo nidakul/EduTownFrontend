@@ -10,10 +10,6 @@
     object-fit: cover;
 }
 
-.post-card {
-    padding: 2px;
-}
-
 .post-label-container {
     display: flex;
     flex-direction: column;
@@ -28,7 +24,6 @@
     font-size: 9px;
     font-family: Arial, Helvetica, sans-serif;
     margin-top: -3px;
-
 }
 
 .post-text {
@@ -112,4 +107,12 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+.points {
+    width: 20px !important;
+    height: 20px !important;
+    position: absolute;
+    right: 20px;
+    top: 75px;
 }

@@ -105,7 +105,7 @@ const Information: React.FC<Props> = () => {
                 id: user?.studentId,
                 userId: userId || "",
                 studentNo: user?.studentNo || "",
-                birthdate: updateForm.birthdate,
+                birthdate: updateForm.birthdate.toISOString().split('T')[0],
                 birthplace: updateForm.birthplace,
                 branchId: user?.branchId || 0,
                 classroomId: user?.classroomId || 0,
@@ -246,12 +246,12 @@ const Information: React.FC<Props> = () => {
                                         value={updateForm.birthdate.toISOString().split('T')[0]}
                                         onChange={handleDateChange}
                                     ></Form.Control> :
-                                    <Card.Text><FormattedDate date={user?.birthdate} ></FormattedDate></Card.Text>
+                                    <Card.Text><FormattedDate format='dateOnly' date={user?.birthdate} /></Card.Text>
                                 }
                             </Col>
                         </Row>
                         {editable ?
-                            <Card.Text className='information-text'>*Düzenleyemediğiniz hatalı kısımları lütfen okul idaresine bildiriniz.</Card.Text> : ""}
+                            <Card.Text className='information-text'>*Düzenleyemediğiniz hatalı kısımları okul idaresine bildiriniz.</Card.Text> : ""}
                     </Card.Body>
                     {editable ?
                         <div className='information-btn'>

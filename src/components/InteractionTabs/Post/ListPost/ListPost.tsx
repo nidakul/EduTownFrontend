@@ -102,8 +102,7 @@ const ListPost = () => {
                                     <Dropdown.Item as="button" onClick={handleShow}>
                                         Düzenle
                                     </Dropdown.Item>
-                                    <EditPostModal show={show} handleClose={handleClose} postMessage={post.message}
-                                        imgUrl={post.filePaths} />
+                                    <EditPostModal show={show} handleClose={handleClose} post={post} />
                                     <Dropdown.Item as="button" onClick={() => handleDelete(post.postId)}>
                                         Sil
                                     </Dropdown.Item>

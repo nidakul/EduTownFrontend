@@ -3,6 +3,7 @@ import axiosInstance from "../core/interceptors/axiosInceptor"
 import { BASE_API_URL } from "../environment/environment"
 import { AddPost } from "../models/requests/addPost";
 import { GetPostsBySchoolIdClassIdBranchIdResponse } from "../models/responses/getPostsBySchoolIdClassIdBranchIdResponse";
+import { UpdatePostRequest } from "../models/requests/updatePostRequest";
 
 class PostService{
     apiUrl = BASE_API_URL + "Posts";
@@ -13,6 +14,10 @@ class PostService{
 
     deletePost(id: number) {
         return axiosInstance.delete(this.apiUrl + "/" +id);
+    }
+
+    updatePost(updatePost: UpdatePostRequest){
+        return axiosInstance.put(this.apiUrl, updatePost);
     }
 
     getPostsBySchoolIdClassIdBranchId(schoolId: number, classId: number, branchId: number): Promise<AxiosResponse<GetPostsBySchoolIdClassIdBranchIdResponse, any>>{

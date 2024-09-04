@@ -4,17 +4,20 @@ import { AddPost } from "../../models/requests/addPost";
 import { AddPostComment } from "../../models/requests/addPostComment";
 import postComentService from "../../services/postComentService";
 import { GetPostsBySchoolIdClassIdBranchIdResponse } from "../../models/responses/getPostsBySchoolIdClassIdBranchIdResponse";
+import { UpdatePostRequest } from "../../models/requests/updatePostRequest";
 
 interface PostState {
     post: AddPost | null;
     comments: AddPostComment | null;
     posts: GetPostsBySchoolIdClassIdBranchIdResponse | null;
+    updatePost: UpdatePostRequest | null;
 }
 
 const initialState: PostState = {
     post: null,
     comments: null,
-    posts: null
+    posts: null,
+    updatePost: null
 }
 
 export const addPost = createAsyncThunk('post/add', async(post: AddPost) => {
@@ -24,6 +27,11 @@ export const addPost = createAsyncThunk('post/add', async(post: AddPost) => {
 
 export const addPostComment= createAsyncThunk("post/addComment", async(comment: AddPostComment) => {
     const response = await postComentService.addPostComment(comment);
+    return response.data;
+})
+
+export const updatePost = createAsyncThunk('post/update', async(updatePost: UpdatePostRequest) => {
+    const response = await postService.updatePost(updatePost);
     return response.data;
 })
 
@@ -51,6 +59,14 @@ export const postSlice = createSlice({
         })
         .addCase(getPostsBySchoolIdClassIdBranchId.fulfilled,(state,action) => {
             state.posts = action.payload;
+        })
+        .addCase(updatePost.fulfilled, (state,action) => {
+            const updatedPost = action.payload;
+            if (state.posts && state.posts.posts) {
+                state.posts.posts = state.posts.posts.map(post =>
+                    post.postId === updatedPost.id ? updatedPost : post
+                );
+            }
         })
     }
 })

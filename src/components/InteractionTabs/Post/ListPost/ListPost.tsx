@@ -11,6 +11,7 @@ import { getUserDetailById } from '../../../../store/user/userSlice'
 import FormattedDate from '../../../../utilities/Helpers/formattedDate'
 import postService from '../../../../services/postService'
 import { useFormik } from "formik";
+import EditPostModal from '../../../EditPostModal/EditPostModal'
 
 
 const ListPost = () => {
@@ -20,7 +21,10 @@ const ListPost = () => {
     const posts = useSelector((state: RootState) => state.post.posts);
 
     const [comments, setComments] = useState<{ [key: number]: string }>({});
-    const [editablePost, setEditablePost] = useState<boolean>(false);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
 
     useEffect(() => {
         if (userId) {
@@ -95,8 +99,13 @@ const ListPost = () => {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item as="button" onClick={() => setEditablePost(true)}>Düzenle</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => handleDelete(post.postId)}>Sil
+                                    <Dropdown.Item as="button" onClick={handleShow}>
+                                        Düzenle
+                                    </Dropdown.Item>
+                                    <EditPostModal show={show} handleClose={handleClose} postMessage={post.message}
+                                        imgUrl={post.filePaths} />
+                                    <Dropdown.Item as="button" onClick={() => handleDelete(post.postId)}>
+                                        Sil
                                     </Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -119,16 +128,7 @@ const ListPost = () => {
                             </Row>
 
                             <Card.Text className='post-text'>
-                                {editablePost ? (
-                                    <form>
-                                        <input type='text' id='post-message'
-                                            value={post.message}>
-                                        </input>
-                                    </form>
-                                ) : (
-                                    post.message
-                                )
-                                }
+                                {post.message}
                             </Card.Text>
                             <div className='post-files'>
                                 {post.filePaths.map((filePath, index) => (

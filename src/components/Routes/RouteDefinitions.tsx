@@ -32,7 +32,7 @@ const RouteDefinitions = () => {
           <div className="home-container">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/grades" element={<Grades />} />
+              <Route path="/grades" element={<AddStudent />} />
               <Route path="/information" element={<Information />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Navigate to="/" />} />

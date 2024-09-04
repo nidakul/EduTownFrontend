@@ -93,3 +93,8 @@ export const calendar = {
     className: "sg-icon points",
     image: "/images/three-point.svg",
   };
+
+  export const addIcon = {
+    className: "sg-icon add",
+    image: "/images/add-circle.svg",
+  };

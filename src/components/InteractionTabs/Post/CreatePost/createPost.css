@@ -28,16 +28,16 @@
     display: block;
     margin-left: 10px;
     margin-top: 15px;
-    /* display: block; */
 
 }
 
 .selected-image-container {
     position: relative;
     display: inline-block;
+
 }
 
-.close-button {
+.selected-image-container .close-button {
     position: absolute;
     top: 15px;
     left: 165px;

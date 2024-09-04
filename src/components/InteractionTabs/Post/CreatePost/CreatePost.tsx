@@ -9,6 +9,7 @@ import { getUserDetailById } from '../../../../store/user/userSlice';
 import IconTemp from '../../../../utilities/Helpers/iconTemp';
 import { cancelIcon, upload } from '../../../../utilities/Constants/iconsList';
 import { uploadToCloudinary } from '../../../../utilities/Helpers/cloudinary';
+import CustomFileInput from '../../../../utilities/Helpers/CustomFileInput';
 
 type Props = {}
 
@@ -16,6 +17,7 @@ const CreatePost = (props: Props) => {
     const userId = getUserId();
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.user);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState({
@@ -55,35 +57,13 @@ const CreatePost = (props: Props) => {
         }
     }, [user]);
 
+    const handleFileSelect = (newFileUrls: string[]) => {
+        setFormData(prevData => ({
+            ...prevData,
+            filePath: [...prevData.filePath, ...newFileUrls]
+        }));
+    };
 
-    // const createPost = async (e: React.FormEvent) => {
-    //     e.preventDefault(); // Formun varsayılan gönderimini engelleyin
-    //     try {
-    //         await dispatch(addPost(formData));
-    //         setFormData((prevData) => ({
-    //             ...prevData,
-    //             message: "",
-    //             filePath: []
-    //         }));
-    //         console.log(formData);
-    //     } catch (error) {
-    //         console.log("An error occurred while adding the post.", error);
-
-    //     }
-    // }
-
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            const newFileUrls = Array.from(files).map(file => URL.createObjectURL(file));
-            // const newFileUrls = await Promise.all(
-            //     Array.from(files).map(file => uploadToCloudinary(file)));
-            setFormData((prevData) => ({
-                ...prevData,
-                filePath: [...prevData.filePath, ...newFileUrls]
-            }))
-        }
-    }
 
     //fix
     //yorum olmadan paylaşa basınca resmi Cloudinary'ye gönderemesin
@@ -151,15 +131,15 @@ const CreatePost = (props: Props) => {
                 )}
 
                 <div className='icon-checkbox-container'>
-                    <button className='btn-with-icon' onClick={() => fileInputRef.current && fileInputRef.current.click()}>
+                    <button
+                        type="button"
+                        className='btn-with-icon'
+                        onClick={() => fileInputRef.current && fileInputRef.current.click()}>
                         <IconTemp mainClassName='file-upload' {...upload} />
                     </button>
-                    <input type='file'
+                    <CustomFileInput
+                        onFileSelect={handleFileSelect}
                         ref={fileInputRef}
-                        style={{ display: "none" }}
-                        onChange={handleFileChange}
-                        accept="image/*" //only image
-                        multiple
                     />
                     <Form.Check
                         className='post-checkbox'

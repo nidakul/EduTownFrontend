@@ -30,7 +30,7 @@ const AddStudentModal = (props: Props) => {
                 Kaydet
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Öğrenci Bilgileri</Modal.Title>
                 </Modal.Header>
@@ -79,7 +79,7 @@ const AddStudentModal = (props: Props) => {
                         Onayla
                     </Button>
                     <Button className="form-close-btn" onClick={handleClose}>
-                        Close
+                        İptal
                     </Button>
                 </Modal.Footer>
             </Modal>

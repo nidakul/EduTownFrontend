@@ -16,8 +16,19 @@ class PostService{
         return axiosInstance.delete(this.apiUrl + "/" +id);
     }
 
-    updatePost(updatePost: UpdatePostRequest){
-        return axiosInstance.put(this.apiUrl, updatePost);
+    // updatePost(updatePost: UpdatePostRequest){
+    //     return axiosInstance.put(this.apiUrl, updatePost);
+    // }
+
+    async updatePost(updatePost: UpdatePostRequest) {
+        try {
+            console.log('Sending data:', updatePost); // Veriyi loglayın
+            const response = await axiosInstance.put(this.apiUrl, updatePost);
+            return response;
+        } catch (error:any) {
+            console.error('Error details:', error.response?.data || error.message || error);
+            throw error;
+        }
     }
 
     getPostsBySchoolIdClassIdBranchId(schoolId: number, classId: number, branchId: number): Promise<AxiosResponse<GetPostsBySchoolIdClassIdBranchIdResponse, any>>{

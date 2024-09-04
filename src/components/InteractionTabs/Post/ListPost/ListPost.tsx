@@ -10,7 +10,6 @@ import { AppDispatch, RootState } from '../../../../store/configureStore'
 import { getUserDetailById } from '../../../../store/user/userSlice'
 import FormattedDate from '../../../../utilities/Helpers/formattedDate'
 import postService from '../../../../services/postService'
-import { useFormik } from "formik";
 import EditPostModal from '../../../EditPostModal/EditPostModal'
 
 
@@ -102,7 +101,7 @@ const ListPost = () => {
                                     <Dropdown.Item as="button" onClick={handleShow}>
                                         Düzenle
                                     </Dropdown.Item>
-                                    <EditPostModal show={show} handleClose={handleClose} post={post} />
+                                    <EditPostModal show={show} handleClose={handleClose} post={post} user={user} />
                                     <Dropdown.Item as="button" onClick={() => handleDelete(post.postId)}>
                                         Sil
                                     </Dropdown.Item>

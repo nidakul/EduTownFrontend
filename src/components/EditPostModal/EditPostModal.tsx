@@ -1,25 +1,32 @@
 import React, { useRef, useState } from 'react'
 import { useFormik } from "formik";
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import "./editPostModal.css";
 import IconTemp from '../../utilities/Helpers/iconTemp';
 import { addIcon, cancelIcon } from '../../utilities/Constants/iconsList';
 import CustomFileInput from '../../utilities/Helpers/CustomFileInput';
 import { UpdatePostRequest } from '../../models/requests/updatePostRequest';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/configureStore';
+import { updatePost } from '../../store/post/postSlice';
 
 type Props = {
     show: boolean;
     handleClose: () => void;
     post: any;
+    user: any;
 }
 
 const EditPostModal = (props: Props) => {
-    const { id, userId, schoolId, classroomId, branchId, likeCount, message, isCommentable, filePaths } = props.post;
+    const { postId, userId, likeCount, message, isCommentable, filePaths } = props.post;
+    const { schoolId, classroomId, branchId } = props.user;
+
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const dispatch = useDispatch<AppDispatch>();
 
     const formik = useFormik<UpdatePostRequest>({
         initialValues: {
-            id: id,
+            id: postId,
             userId: userId,
             schoolId: schoolId,
             classroomId: classroomId,
@@ -29,16 +36,19 @@ const EditPostModal = (props: Props) => {
             isCommentable: isCommentable,
             filePath: filePaths
         },
-        onSubmit: values => {
-            console.log(values);
+        onSubmit: async (values) => {
+            console.log("Formik onSubmit triggered with values:", values);
+            try {
+                await dispatch(updatePost(values));
+                props.handleClose();
+            } catch (error) {
+                console.error("Post güncellenirken bir hata oluştu:", error);
+            }
         },
     });
 
     const handleFileSelect = (newFileUrls: string[]) => {
-        // setFormData(prevData => ({
-        //     ...prevData,
-        //     filePath: [...prevData.filePath, ...newFileUrls] 
-        // }));
+        formik.setFieldValue('filePath', [...formik.values.filePath, ...newFileUrls]);
     };
 
     const handleRemoveImage = (index: number) => {
@@ -52,10 +62,14 @@ const EditPostModal = (props: Props) => {
         props.handleClose();
     };
 
+    const handleSubmit = () => {
+        formik.handleSubmit();
+    };
+
 
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <Modal show={props.show} onHide={props.handleClose} className='edit-post-modal' centered
+        <form>
+            <Modal show={props.show} onHide={handleCancel} className='edit-post-modal' centered
             >
                 <Modal.Header closeButton>Gönderiyi Düzenle</Modal.Header>
                 <Modal.Body className='edit-body-container'>
@@ -88,12 +102,12 @@ const EditPostModal = (props: Props) => {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button type='submit'>Güncelle</button>
-                    <button type='button' onClick={handleCancel}>İptal</button>
+                    <Button type='button' onClick={handleSubmit}>Güncelle</Button>
+                    <Button type='button' onClick={handleCancel}>İptal</Button>
                 </Modal.Footer>
             </Modal>
         </form>
     )
 }
 
-export default EditPostModal
+export default EditPostModal 

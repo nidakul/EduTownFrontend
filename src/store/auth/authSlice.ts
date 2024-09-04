@@ -1,8 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import tokenService from "../../core/services/tokenService";
 
+// const getInitialState = () => {
+//   if (tokenService.hasToken()) return { isAuthenticated: true };
+//   return { isAuthenticated: false };
+// };
+
+// Token kontrolü yaparak başlangıç durumunu ayarla
 const getInitialState = () => {
-  if (tokenService.hasToken()) return { isAuthenticated: true };
+  const token = tokenService.getToken();
+  if (token) return { isAuthenticated: true };
   return { isAuthenticated: false };
 };
 

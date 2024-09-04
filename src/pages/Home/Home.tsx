@@ -30,9 +30,6 @@ const Home = () => {
           certificate: certificate.data,
         };
         dispatch(setUser(userData));
-
-        console.log("userData", userData);
-
       }
     } catch (error) {
       console.error("Veri alınamadı:", error);

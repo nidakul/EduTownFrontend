@@ -6,12 +6,15 @@ import tokenService from "../../core/services/tokenService";
 //   return { isAuthenticated: false };
 // };
 
-// Token kontrolü yaparak başlangıç durumunu ayarla
+
 const getInitialState = () => {
   const token = tokenService.getToken();
-  if (token) return { isAuthenticated: true };
+  if (token) {
+    return { isAuthenticated: true };
+  }
   return { isAuthenticated: false };
 };
+
 
 const authSlice = createSlice({
   name: "auth",

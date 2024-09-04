@@ -9,6 +9,7 @@ import { UpdatePostRequest } from '../../models/requests/updatePostRequest';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/configureStore';
 import { updatePost } from '../../store/post/postSlice';
+import { uploadToCloudinary } from '../../utilities/Helpers/cloudinary';
 
 type Props = {
     show: boolean;
@@ -23,6 +24,8 @@ const EditPostModal = (props: Props) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch<AppDispatch>();
+
+    const [newFileUrls, setNewFileUrls] = useState<string[]>([]);
 
     const formik = useFormik<UpdatePostRequest>({
         initialValues: {
@@ -47,8 +50,8 @@ const EditPostModal = (props: Props) => {
         },
     });
 
-    const handleFileSelect = (newFileUrls: string[]) => {
-        formik.setFieldValue('filePath', [...formik.values.filePath, ...newFileUrls]);
+    const handleFileSelect = (fileUrls: string[]) => {
+        formik.setFieldValue('filePath', [...formik.values.filePath, ...fileUrls]);
     };
 
     const handleRemoveImage = (index: number) => {
@@ -65,8 +68,6 @@ const EditPostModal = (props: Props) => {
     const handleSubmit = () => {
         formik.handleSubmit();
     };
-
-
     return (
         <form>
             <Modal show={props.show} onHide={handleCancel} className='edit-post-modal' centered

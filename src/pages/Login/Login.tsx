@@ -8,6 +8,7 @@ import { LoginRequest } from "../../models/requests/loginRequest";
 import { useNavigate } from "react-router-dom";
 import { parseJwt } from "../../utilities/Constants/parseJwt";
 import { setUserId } from "../../services/identityService";
+import tokenService from "../../core/services/tokenService";
 
 const Login = () => {
   const [nationalIdentity, setNationalIdentity] = useState("");
@@ -15,19 +16,42 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // const handleLogin = async (e: any) => {
+  //   e.preventDefault();
+  //   try {
+  //     const userData: LoginRequest = { nationalIdentity, password };
+  //     const response = await authService.login(userData);
+  //     dispatch(authActions.isAuthenticated(true));
+  //     const decodedToken = parseJwt(response.accessToken.token);
+  //     const userId =
+  //       decodedToken[
+  //       "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+  //       ];
+  //     setUserId(userId);
+  //     // navigate("/");
+  //   } catch (error: any) {
+  //     if (error.isAxiosError) {
+  //       console.error("Ağ hatası:", error.message);
+  //       console.error("Axios detayları:", error.response);
+  //     } else {
+  //       console.error("Diğer hata:", error);
+  //     }
+  //   }
+  // };
+
   const handleLogin = async (e: any) => {
     e.preventDefault();
     try {
       const userData: LoginRequest = { nationalIdentity, password };
       const response = await authService.login(userData);
+      tokenService.saveToken(response.accessToken.token); // Token'ı kaydet
       dispatch(authActions.isAuthenticated(true));
       const decodedToken = parseJwt(response.accessToken.token);
-      const userId =
-        decodedToken[
+      const userId = decodedToken[
         "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-        ];
+      ];
       setUserId(userId);
-      // navigate("/");
+      // navigate("/"); 
     } catch (error: any) {
       if (error.isAxiosError) {
         console.error("Ağ hatası:", error.message);
@@ -37,6 +61,8 @@ const Login = () => {
       }
     }
   };
+
+
 
   return (
     <Container>

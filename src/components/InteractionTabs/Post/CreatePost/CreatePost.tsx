@@ -19,6 +19,7 @@ const CreatePost = (props: Props) => {
     const user = useSelector((state: RootState) => state.user.user);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [filePreviews, setFilePreviews] = useState<string[]>([]);
 
     const [formData, setFormData] = useState({
         userId: userId || "",
@@ -28,7 +29,7 @@ const CreatePost = (props: Props) => {
         likeCount: 0,
         message: "",
         isCommentable: true,
-        filePath: [] as string[]
+        filePath: [] as File[]
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -57,50 +58,103 @@ const CreatePost = (props: Props) => {
         }
     }, [user]);
 
-    const handleFileSelect = (newFileUrls: string[]) => {
+    // const handleFileSelect = (newFileUrls: string[]) => {
+    //     setFormData(prevData => ({
+    //         ...prevData,
+    //         filePath: [...prevData.filePath, ...newFileUrls]
+    //     }));
+    // };
+
+    const handleFileSelect = (files: File[]) => {
+        const newFilePreviews = files.map(file => URL.createObjectURL(file));
+        setFilePreviews(prevFiles => [...prevFiles, ...newFilePreviews]);
         setFormData(prevData => ({
             ...prevData,
-            filePath: [...prevData.filePath, ...newFileUrls]
+            filePath: [...prevData.filePath, ...files]
         }));
     };
 
-
     //fix
     //yorum olmadan paylaşa basınca resmi Cloudinary'ye gönderemesin
+    // const createPost = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     try {
+    //         // Yüklenen dosyaları Cloudinary'ye gönder ve URL'leri al
+    //         const blobs = formData.filePath.map(path => fetch(path).then(res => res.blob()));
+    //         const blobsArray = await Promise.all(blobs);
+    //         const uploadedFileUrls = await Promise.all(
+    //             blobsArray.map(blob => uploadToCloudinary(blob))
+    //         );
+
+    //         // Form verilerini güncelle
+    //         const postData = {
+    //             ...formData,
+    //             filePath: uploadedFileUrls
+    //         };
+
+    //         await dispatch(addPost(postData));
+    //         setFormData((prevData) => ({
+    //             ...prevData,
+    //             message: "",
+    //             filePath: []
+    //         }));
+    //     } catch (error) {
+    //         console.error("An error occurred while adding the post:", error);
+    //     }
+    // };
+
     const createPost = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Yüklenen dosyaları Cloudinary'ye gönder ve URL'leri al
-            const blobs = formData.filePath.map(path => fetch(path).then(res => res.blob()));
-            const blobsArray = await Promise.all(blobs);
+            // Dosyaları Cloudinary'ye gönder
             const uploadedFileUrls = await Promise.all(
-                blobsArray.map(blob => uploadToCloudinary(blob))
+                Array.from(formData.filePath).map(file => uploadToCloudinary(file)) // `File` nesnelerini Cloudinary'ye yükleyin
             );
 
             // Form verilerini güncelle
             const postData = {
                 ...formData,
-                filePath: uploadedFileUrls
+                filePath: uploadedFileUrls // Cloudinary'den dönen URL'ler `string[]` olarak
             };
 
             await dispatch(addPost(postData));
-            setFormData((prevData) => ({
+            setFormData(prevData => ({
                 ...prevData,
                 message: "",
-                filePath: []
+                filePath: [] // Dosyaları temizleyin
             }));
+            setFilePreviews([]); // Önizleme URL'lerini temizleyin
         } catch (error) {
-            console.error("An error occurred while adding the post:", error);
+            console.error("Gönderi oluşturulurken bir hata oluştu:", error);
         }
     };
 
+
+    // const handleRemoveImage = (index: number) => {
+    //     setFormData((prevData) => {
+    //         const newFilePath = [...prevData.filePath];
+    //         newFilePath.splice(index, 1);
+    //         return { ...prevData, filePath: newFilePath };
+    //     });
+    // }
     const handleRemoveImage = (index: number) => {
-        setFormData((prevData) => {
-            const newFilePath = [...prevData.filePath];
-            newFilePath.splice(index, 1);
-            return { ...prevData, filePath: newFilePath };
+        setFilePreviews(prevPreviews => {
+            // Önce, önizleme dizisini güncelle
+            const newPreviews = [...prevPreviews];
+            newPreviews.splice(index, 1);
+            return newPreviews;
         });
-    }
+
+        setFormData(prevData => {
+            // Dosya dizisini güncelle
+            const newFiles = [...prevData.filePath];
+            newFiles.splice(index, 1);
+            return {
+                ...prevData,
+                filePath: newFiles // Burada dosyaların güncellenmiş listesini döndürüyoruz
+            };
+        });
+    };
 
     useEffect(() => {
         if (userId) {
@@ -116,11 +170,11 @@ const CreatePost = (props: Props) => {
                     onChange={handleChange}
                     rows={3} />
 
-                {formData.filePath.length > 0 && (
+                {filePreviews.length > 0 && (
                     <div className='uploaded-image-container'>
-                        {formData.filePath.map((path, index) => (
+                        {filePreviews.map((preview, index) => (
                             <div key={index} className='selected-image-container'>
-                                <img src={path} className="selected-image" />
+                                <img src={preview} className="selected-image" />
                                 <button className='close-button btn-with-icon' onClick={() => handleRemoveImage(index)}>
                                     <IconTemp {...cancelIcon} />
                                 </button>

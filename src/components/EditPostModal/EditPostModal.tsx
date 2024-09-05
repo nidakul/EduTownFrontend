@@ -25,7 +25,7 @@ const EditPostModal = (props: Props) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const dispatch = useDispatch<AppDispatch>();
 
-    const [newFileUrls, setNewFileUrls] = useState<string[]>([]);
+    const [newFiles, setNewFiles] = useState<File[]>([]);
 
     const formik = useFormik<UpdatePostRequest>({
         initialValues: {
@@ -39,19 +39,48 @@ const EditPostModal = (props: Props) => {
             isCommentable: isCommentable,
             filePath: filePaths
         },
+        // onSubmit: async (values) => {
+        //     console.log("Formik onSubmit triggered with values:", values);
+        //     try {
+        //         await dispatch(updatePost(values));
+        //         props.handleClose();
+        //     } catch (error) {
+        //         console.error("Post güncellenirken bir hata oluştu:", error);
+        //     }
+        // },
         onSubmit: async (values) => {
-            console.log("Formik onSubmit triggered with values:", values);
             try {
-                await dispatch(updatePost(values));
+
+                // Yüklenen dosyaları Cloudinary'ye gönder ve URL'leri al
+                // const blobs = filePaths.map((path: any) => fetch(path).then(res => res.blob()));
+                // const blobsArray = await Promise.all(blobs);
+                // const uploadedFileUrls = await Promise.all(
+                //     blobsArray.map(blob => uploadToCloudinary(blob))
+                // );
+
+                const uploadedFileUrls = await Promise.all(
+                    newFiles.map(async (file) => {
+                        return uploadToCloudinary(file);
+                    })
+                );
+
+                const updatedValues = {
+                    ...values,
+                    filePath: [...values.filePath, ...uploadedFileUrls]
+                };
+
+                await dispatch(updatePost(updatedValues));
+                console.log(updatedValues);
                 props.handleClose();
             } catch (error) {
                 console.error("Post güncellenirken bir hata oluştu:", error);
             }
         },
+
     });
 
-    const handleFileSelect = (fileUrls: string[]) => {
-        formik.setFieldValue('filePath', [...formik.values.filePath, ...fileUrls]);
+    const handleFileSelect = (files: File[]) => {
+        setNewFiles(prevFiles => [...prevFiles, ...files]);
     };
 
     const handleRemoveImage = (index: number) => {
@@ -62,6 +91,7 @@ const EditPostModal = (props: Props) => {
 
     const handleCancel = () => {
         formik.resetForm();
+        setNewFiles([]);
         props.handleClose();
     };
 
@@ -76,19 +106,31 @@ const EditPostModal = (props: Props) => {
                 <Modal.Body className='edit-body-container'>
                     <div>
                         <>
-                            <input type='text' id='post-message'
+                            {/* <input type='text' id='post-message'
                                 name='message'
                                 value={formik.values.message}
                                 onChange={formik.handleChange}
+                            /> */}
+
+                            <textarea id='post-message'
+                                name='message'
+                                value={formik.values.message}
+                                onChange={formik.handleChange}
+                                rows={2}
                             />
                             <div className='edit-files-container'>
-                                {formik.values.filePath?.map((filePathItem: any, index: number) => (
+                                {formik.values.filePath?.map((filePathItem: string, index: number) => (
                                     <div key={index} className='edit-image-container'>
                                         <img src={filePathItem}
                                             className='edit-files' />
                                         <button className='btn-with-icon close-button' onClick={() => handleRemoveImage(index)}>
                                             <IconTemp {...cancelIcon} />
                                         </button>
+                                    </div>
+                                ))}
+                                {newFiles.map((file, index) => (
+                                    <div key={index} className='edit-image-container'>
+                                        <img src={URL.createObjectURL(file)} className='edit-files' />
                                     </div>
                                 ))}
                                 {/* fileInputRef.current.click() => open file selector */}

@@ -40,12 +40,17 @@
     display: inline-block;
 }
 
-#post-message {
+textarea#post-message {
     display: flex;
     justify-content: flex-start;
     border: none;
     border-radius: 0;
     outline: none;
+    width: 100%;
+    min-width: 100px;
+    max-width: 400%;
+    overflow: hidden;
+    font-size: 14px;
 }
 
 .add {

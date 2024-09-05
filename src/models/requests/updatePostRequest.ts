@@ -9,4 +9,4 @@ export interface UpdatePostRequest {
     isCommentable: boolean;
     filePath: string[];
   }
-   
+    

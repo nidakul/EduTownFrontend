@@ -20,6 +20,7 @@ const CreatePost = (props: Props) => {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [filePreviews, setFilePreviews] = useState<string[]>([]);
+    const [isCommentable, setIsCommentable] = useState(true);
 
     const [formData, setFormData] = useState({
         userId: userId || "",
@@ -41,10 +42,7 @@ const CreatePost = (props: Props) => {
     }
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            isCommentable: !e.target.checked
-        }))
+        setIsCommentable(!e.target.checked);
     }
 
     useEffect(() => {
@@ -57,13 +55,6 @@ const CreatePost = (props: Props) => {
             }));
         }
     }, [user]);
-
-    // const handleFileSelect = (newFileUrls: string[]) => {
-    //     setFormData(prevData => ({
-    //         ...prevData,
-    //         filePath: [...prevData.filePath, ...newFileUrls]
-    //     }));
-    // };
 
     const handleFileSelect = (files: File[]) => {
         const newFilePreviews = files.map(file => URL.createObjectURL(file));
@@ -106,24 +97,24 @@ const CreatePost = (props: Props) => {
     const createPost = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Dosyaları Cloudinary'ye gönder
             const uploadedFileUrls = await Promise.all(
-                Array.from(formData.filePath).map(file => uploadToCloudinary(file)) // `File` nesnelerini Cloudinary'ye yükleyin
+                Array.from(formData.filePath).map(file => uploadToCloudinary(file))
             );
-
-            // Form verilerini güncelle
             const postData = {
                 ...formData,
-                filePath: uploadedFileUrls // Cloudinary'den dönen URL'ler `string[]` olarak
+                filePath: uploadedFileUrls, // Cloudinary'den dönen URL'ler `string[]` olarak
+                isCommentable: isCommentable
             };
 
             await dispatch(addPost(postData));
+
             setFormData(prevData => ({
                 ...prevData,
                 message: "",
-                filePath: [] // Dosyaları temizleyin
+                filePath: [],
             }));
-            setFilePreviews([]); // Önizleme URL'lerini temizleyin
+            setIsCommentable(true);
+            setFilePreviews([]);
         } catch (error) {
             console.error("Gönderi oluşturulurken bir hata oluştu:", error);
         }
@@ -139,19 +130,17 @@ const CreatePost = (props: Props) => {
     // }
     const handleRemoveImage = (index: number) => {
         setFilePreviews(prevPreviews => {
-            // Önce, önizleme dizisini güncelle
             const newPreviews = [...prevPreviews];
             newPreviews.splice(index, 1);
             return newPreviews;
         });
 
         setFormData(prevData => {
-            // Dosya dizisini güncelle
             const newFiles = [...prevData.filePath];
             newFiles.splice(index, 1);
             return {
                 ...prevData,
-                filePath: newFiles // Burada dosyaların güncellenmiş listesini döndürüyoruz
+                filePath: newFiles
             };
         });
     };
@@ -199,7 +188,7 @@ const CreatePost = (props: Props) => {
                         className='post-checkbox'
                         type="checkbox"
                         label="Yoruma kapalı"
-                        // id={`disabled-default-${type}`}
+                        checked={!isCommentable}
                         onChange={handleCheckboxChange}
                     />
                 </div>

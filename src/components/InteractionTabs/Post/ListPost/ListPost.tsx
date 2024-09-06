@@ -31,17 +31,6 @@ const ListPost = () => {
         }
     }, [dispatch, userId]);
 
-    // const fetchPosts = async () => {
-    //     try {
-    //         if (user && user.schoolId && user.classroomId && user.branchId) {
-    //             dispatch(getPostsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
-    //         }
-    //     } catch (error) {
-    //         console.error("API isteği sırasında bir hata oluştu:", error);
-    //     }
-    // }
-
-
     useEffect(() => {
         if (user && user.schoolId && user.classroomId && user.branchId) {
             dispatch(getPostsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));

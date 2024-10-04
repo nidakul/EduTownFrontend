@@ -23,7 +23,6 @@ const Sidebar = () => {
   const userId = getUserId();
   const dispatch = useDispatch<AppDispatch>();
 
-  // user ve loading durumlarını redux state'inden alıyoruz
   const { user, loading } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { BASE_API_URL } from "../environment/environment";
 import { StudentGradesResponse } from "../models/responses/studentGradesResponse";
 import { StudentInformationList } from "../models/responses/studentInformationResponse";
 import { StudentRequest } from "../models/requests/studentRequest";
+import { GetStudentsBySchoolIdClassIdBranchIdResponse } from "../models/responses/getStudentsBySchoolIdClassIdBranchIdResponse";
 
 class StudentService{
 apiUrl = BASE_API_URL + "Students";
@@ -38,6 +39,10 @@ getListStudentDetail(
 
 getStudentGrades(studentId: string): Promise<AxiosResponse<StudentGradesResponse,any>>{
     return axiosInstance.get<StudentGradesResponse>(this.apiUrl + "/getStudentGrades/" + studentId)
+}
+
+getStudentsBySchoolIdClassIdBranchId(schoolId: number, classId: number, branchId: number): Promise<AxiosResponse<GetStudentsBySchoolIdClassIdBranchIdResponse, any>>{
+    return  axiosInstance.get<GetStudentsBySchoolIdClassIdBranchIdResponse>(this.apiUrl  + "/getListStudentsBySchoolIdClassIdBranchId/" + schoolId +'/'+ classId +'/'+ branchId)
 }
 
 }

@@ -11,6 +11,7 @@ import { getUserDetailById } from '../../../../store/user/userSlice'
 import FormattedDate from '../../../../utilities/Helpers/formattedDate'
 import postService from '../../../../services/postService'
 import EditPostModal from '../../../EditPostModal/EditPostModal'
+import { getStudentsBySchoolIdClassIdBranchId } from '../../../../store/student/studentSlice'
 
 
 const ListPost = () => {
@@ -18,9 +19,13 @@ const ListPost = () => {
     const dispatch = useDispatch<AppDispatch>();
     const user = useSelector((state: RootState) => state.user.user);
     const posts = useSelector((state: RootState) => state.post.posts);
+    const students = useSelector((state: RootState) => state.student.students);
 
     const [comments, setComments] = useState<{ [key: number]: string }>({});
     const [show, setShow] = useState(false);
+
+    const [mentionList, setMentionList] = useState<string[]>([]); // 1. Öğrenci isimlerini tutmak için durum
+    const [showMentionList, setShowMentionList] = useState<boolean>(false); // 2. Etiketleme listesini göstermek için durum
 
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -34,13 +39,17 @@ const ListPost = () => {
     useEffect(() => {
         if (user && user.schoolId && user.classroomId && user.branchId) {
             dispatch(getPostsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
+            dispatch(getStudentsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
         }
     }, [dispatch, user, posts]);
+
+
+
 
     const createPostComment = async (postId: number) => {
         const formData = {
             userId: userId || "",
-            taggedUserId: [],
+            taggedUserId: [], // 3. Seçilen öğrenci ID'lerini buraya ekleyebilirsiniz
             postId: postId,
             comment: comments[postId] || ''
         }
@@ -51,18 +60,60 @@ const ListPost = () => {
                 ...prevComments,
                 [postId]: '',
             }));
+            setMentionList([]); // Yorum gönderildiğinde etiketleme listesini temizle
+            setShowMentionList(false); // Yorum gönderildiğinde etiketleme listesini gizle
         } catch (error) {
             console.log("An error occurred while adding the post comment.", error);
         }
     }
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, postId: number) => {
-        const { value } = e.target;
+    const handleChange = (e: React.ChangeEvent<HTMLElement>, postId: number) => {
+        const { value } = e.target as HTMLInputElement; // HTMLInputElement olarak türünü zorla
         setComments((prevComments) => ({
             ...prevComments,
             [postId]: value
-        }))
-    }
+        }));
 
+        // '@' işareti yazıldığında öğrencileri hemen çağır
+        if (value.endsWith('@') && user) { // '@' işaretinin yazıldığı an
+            setShowMentionList(true);
+            dispatch(getStudentsBySchoolIdClassIdBranchId({
+                schoolId: user?.schoolId,
+                classId: user?.classroomId,
+                branchId: user?.branchId
+            }));
+
+            // Tüm öğrencileri listele
+            const filteredStudents = students?.students.map(student => `${student.firstName} ${student.lastName}`);
+            setMentionList(filteredStudents as string[]);
+        } else if (value.includes('@')) {
+            // '@' işaretinden sonra bir şeyler yazılıyorsa isimleri filtrele
+            const searchTerm = value.split('@').pop()?.trim(); // Kullanıcı tarafından yazılan metin
+            if (searchTerm) {
+                const filteredStudents = students?.students
+                    .filter(student =>
+                        `${student.firstName} ${student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                    .map(student => `${student.firstName} ${student.lastName}`);
+                setMentionList(filteredStudents as string[]);
+            } else {
+                setShowMentionList(false); // '@' var ama ardından hiçbir şey yoksa listeyi gizle
+            }
+        } else {
+            setShowMentionList(false); // '@' yoksa listeyi gizle
+        }
+    };
+
+
+    const handleMentionSelect = (mention: string, postId: number) => {
+        // 5. Seçilen öğrenci ismini yorum alanına ekle
+        const currentComment = comments[postId] || '';
+        const newComment = currentComment.replace(/@\w*$/, `@${mention} `); // @ ile başlayan kısmı değiştir
+        setComments((prevComments) => ({
+            ...prevComments,
+            [postId]: newComment
+        }));
+        setShowMentionList(false); // Seçim yapıldıktan sonra listeyi gizle
+    };
 
     const handleDelete = async (postId: number) => {
         try {
@@ -140,10 +191,34 @@ const ListPost = () => {
                                                 e.preventDefault();
                                                 createPostComment(post.postId);
                                             }}>
-                                                <Form.Control className='commentTextArea' type="text" placeholder='Yorumunuzu yazabilirsiniz..' name='comment'
+
+                                                {/* <Form.Control className='commentTextArea' type="text" placeholder='Yorumunuzu yazabilirsiniz..' name='comment'
                                                     value={comments[post.postId] || ''}
                                                     onChange={(e: any) => handleChange(e, post.postId)}
+                                                /> */}
+
+                                                <Form.Control
+                                                    className='commentTextArea'
+                                                    type="text"
+                                                    placeholder='Yorumunuzu yazabilirsiniz..'
+                                                    name='comment'
+                                                    value={comments[post.postId] || ''}
+                                                    onChange={(e) => handleChange(e, post.postId)}
                                                 />
+                                                {showMentionList && (
+                                                    <div className="mention-list">
+                                                        {mentionList.map((mention, index) => (
+                                                            <div
+                                                                key={index}
+                                                                className="mention-item"
+                                                                onClick={() => handleMentionSelect(mention, post.postId)}
+                                                            >
+                                                                {mention}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
                                                 <Button type="submit" className='icon-button'>
                                                     <IconTemp mainClassName='btn' {...sendIcon} />
                                                 </Button>

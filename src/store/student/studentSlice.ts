@@ -3,17 +3,20 @@ import studentService from '../../services/studentService';
 import { StudentGradesResponse } from '../../models/responses/studentGradesResponse';
 import { StudentInformationResponse } from '../../models/responses/studentInformationResponse';
 import { StudentRequest } from '../../models/requests/studentRequest';
+import { GetStudentsBySchoolIdClassIdBranchIdResponse } from '../../models/responses/getStudentsBySchoolIdClassIdBranchIdResponse';
 
 interface StudentGradesState {
     items: StudentInformationResponse[];
     studentGrades: StudentGradesResponse | null;
     updateStudent: StudentRequest[];
+    students: GetStudentsBySchoolIdClassIdBranchIdResponse | null;
 }
 
 const initialState: StudentGradesState = {
     items: [],
     studentGrades: null,
-    updateStudent: []
+    updateStudent: [],
+    students: null
 };
 
 export const getAllStudents = createAsyncThunk('students/getAll', async() => {
@@ -36,6 +39,12 @@ export const updateStudent = createAsyncThunk(
     }
 );
 
+export const getStudentsBySchoolIdClassIdBranchId = createAsyncThunk<GetStudentsBySchoolIdClassIdBranchIdResponse, {schoolId: number, classId: number, branchId: number}>("getListStudentsBySchoolIdClassIdBranchId", async(params) => {
+    const { schoolId, classId , branchId} = params;
+    const response = await studentService.getStudentsBySchoolIdClassIdBranchId(schoolId, classId, branchId);
+    return response.data;
+})
+
 export const studentSlice = createSlice({
     name: "student",
     initialState,
@@ -55,6 +64,9 @@ export const studentSlice = createSlice({
             if (index !== -1) {
                 state.items[index] = action.payload;
             }
+        })
+        .addCase(getStudentsBySchoolIdClassIdBranchId.fulfilled,(state,action) => {
+            state.students = action.payload;
         })
     }
 })

@@ -6,7 +6,7 @@ type Props = {};
 
 const Navigation = (props: Props) => {
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar>
       <Container>
         <Navbar.Brand href="/home" className="brand-name"><img src="/images/edu.svg" /></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

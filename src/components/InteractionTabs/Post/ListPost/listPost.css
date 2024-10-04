@@ -127,3 +127,23 @@
     left: auto !important;
     top: 67px !important;
 }
+
+.mention-list {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 50%;
+}
+
+.mention-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.mention-item:hover {
+    background-color: #b6ddd3;
+}

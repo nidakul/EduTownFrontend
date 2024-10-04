@@ -4,12 +4,12 @@ import { StudentInformationResponse } from "../../models/responses/studentInform
 
 interface UserDetailState {
   user: StudentInformationResponse | null;
-  loading: boolean; // Yüklenme durumunu belirten boolean değer
+  loading: boolean;
 }
 
 const initialState: UserDetailState = {
   user: null,
-  loading: false, // Başlangıçta yüklenme durumu false olarak ayarlanır
+  loading: false, 
 };
 
 export const getUserDetailById = createAsyncThunk('users/getDetailById',
@@ -34,7 +34,7 @@ const userSlice = createSlice({
       })
       .addCase(getUserDetailById.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.loading = false; // İşlem başarıyla tamamlandığında loading false olur
+        state.loading = false; // İşlem başarıyla tamamlandığında loading false olur 
       })
       .addCase(getUserDetailById.rejected, (state) => {
         state.loading = false; // İşlem başarısız olduğunda loading false olur

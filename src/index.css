@@ -2,6 +2,18 @@
 /* dark color => #83c9b7 */
 /* #73baa8 */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f5f5 !important;
+  min-height: 100vh;
+  /* Sayfanın tamamını kaplaması için minimum yükseklik ayarla */
+}
+
 /* icons */
 .sg-icon {
   display: inline-block;
@@ -107,11 +119,6 @@
 }
 
 /* /profile image */
-
-.body {
-  margin: 0;
-  padding: 0;
-}
 
 /* interaction */
 .interactionTextArea-form {

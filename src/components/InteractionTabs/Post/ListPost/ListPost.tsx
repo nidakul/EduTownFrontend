@@ -242,7 +242,6 @@ export default ListPost
 
 
 // 10 tane post getiriyor onu ayarla 
-// poslar son eklenene göre gelsin
 // yorumlar kısmını almadan postu maple
 //sent btonu hoverı kapat. css ayarlmasını yap güzelce
 //yorumu yapar yapmaz sayfada göstersin

@@ -53,6 +53,9 @@
 .form-control {
   border: 3px solid #a0dbcc !important;
   border-radius: 20px !important;
+  resize: none;
+  /* Kullanıcının boyutlandırmasını engelle */
+
 }
 
 mfeklmkl .form-label {

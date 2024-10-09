@@ -1,15 +1,16 @@
-/* .home-card {
-  background: linear-gradient(90deg,
+.home-card {
+  /* background: linear-gradient(90deg,
       rgba(221, 227, 228, 1) 0%,
       rgb(8, 121, 74) 37%,
-      rgba(2, 0, 36, 1) 110%);
+      rgba(2, 0, 36, 1) 110%); */
+  border-color: white !important;
+  background: linear-gradient(#96e0cd, #58907b);
+}
+
+/* .home-card {
+  background-color: #9ac6b6 !important;
   border-color: white !important;
 } */
-.home-card {
-  /* background-color: #00A86B !important; */
-  background-color: #dcdcdc !important;
-  border-color: white !important;
-}
 
 .container>* {
   margin-bottom: 15px;
@@ -18,7 +19,9 @@
 .home-card-msg {
   font-size: 36px;
   padding: 12px;
-  color: #dde3e4;
+  color: #4a4b4b;
+  font-weight: 500;
+  font-family: 'Suse', Arial, Helvetica, sans-serif;
   align-self: center;
 }
 

@@ -7,7 +7,8 @@ import { StudentInformationResponse } from '../../../../models/responses/student
 import { getStudentsBySchoolIdClassIdBranchId } from '../../../../store/student/studentSlice';
 import IconTemp from '../../../../utilities/Helpers/iconTemp';
 import { sendIcon } from '../../../../utilities/Constants/iconsList';
-
+import "./commentPost.css"
+import ListCommentPost from '../ListCommentPost/ListCommentPost';
 type Props = {
     userId: string | null,
     user: StudentInformationResponse | null,
@@ -128,6 +129,7 @@ const CommentPost = (props: Props) => {
                         </Button>
                     </Form>
                 </div>
+                <ListCommentPost />
             </Col>
         </Row>
     )

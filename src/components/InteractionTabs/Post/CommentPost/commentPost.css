@@ -1,0 +1,65 @@
+.comment-img {
+    width: 40px;
+    height: 40px !important;
+    object-fit: cover;
+}
+
+.commentTextArea::placeholder {
+    font-size: 14px;
+    color: #928d8d !important;
+}
+
+.commentTextArea {
+    margin-left: -40px;
+    margin-top: 5px;
+    font-size: 14px !important;
+}
+
+.comment-row {
+    margin-top: 10px !important;
+}
+
+.comment-input-container {
+    position: relative;
+}
+
+.mention-list {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #b6ddd3;
+    border-radius: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 50%;
+    font-size: 16px;
+}
+
+.mention-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.mention-item:hover {
+    background-color: #b6ddd3;
+}
+
+.icon-button {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: none !important;
+    border: none !important;
+    padding: 0;
+    outline: none !important;
+
+}
+
+.icon-button :hover,
+.icon-button :focus {
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+}

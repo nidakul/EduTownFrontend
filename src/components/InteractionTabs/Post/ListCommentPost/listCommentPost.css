@@ -1,0 +1,5 @@
+.list-comment-img {
+    width: 20%;
+    height: auto !important;
+    object-fit: cover;
+}

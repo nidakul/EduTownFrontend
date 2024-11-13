@@ -12,7 +12,7 @@ import FormattedDate from '../../../../utilities/Helpers/formattedDate'
 import postService from '../../../../services/postService'
 import EditPostModal from '../../../EditPostModal/EditPostModal'
 import { getStudentsBySchoolIdClassIdBranchId } from '../../../../store/student/studentSlice'
-import CommentPost from '../CommentPost/CommentPost'
+import CommentField from '../Comment/CommentField/CommentField'
 
 
 const ListPost = () => {
@@ -105,7 +105,7 @@ const ListPost = () => {
                                 {post.isCommentable && <IconTemp {...commentIcon} />}
                             </div>
                             {post.isCommentable &&
-                                <CommentPost userId={userId} user={user} postId={post.postId} />
+                                <CommentField userId={userId} user={user} postId={post.postId} />
                             }
                         </Card.Footer>
                     </ Card >

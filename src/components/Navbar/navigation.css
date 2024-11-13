@@ -23,6 +23,7 @@
     align-items: center;
     justify-content: flex-start !important;
     cursor: pointer;
+    margin: auto;
 }
 
 .brand-name img {

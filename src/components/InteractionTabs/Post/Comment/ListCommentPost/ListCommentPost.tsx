@@ -1,8 +1,14 @@
 import React from 'react'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import "./listCommentPost.css"
+import CommentPost from '../CommentPost/CommentPost';
+import { StudentInformationResponse } from '../../../../../models/responses/studentInformationResponse';
 
-type Props = {}
+type Props = {
+    userId: string | null,
+    user: StudentInformationResponse | null,
+    postId: number
+}
 
 const ListCommentPost = (props: Props) => {
     return (
@@ -27,17 +33,7 @@ const ListCommentPost = (props: Props) => {
                     {/* Cevap eklemek için form */}
                     <Form className="mt-2">
                         <Row>
-                            <Col xs={11}>
-                                <Form.Control
-                                    type="text"
-                                    name="comment"
-                                    placeholder="Cevabınızı yazın..."
-                                    required
-                                />
-                            </Col>
-                            <Col xs={1}>
-                                <Button variant="primary" type="submit">Gönder</Button>
-                            </Col>
+                            <CommentPost userId={props.userId} user={props.user} postId={props.postId} />
                         </Row>
                     </Form>
 
@@ -62,4 +58,4 @@ const ListCommentPost = (props: Props) => {
     );
 };
 
-export default ListCommentPost
+export default ListCommentPost 

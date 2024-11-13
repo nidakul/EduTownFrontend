@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../store/configureStore';
-import { addPostComment } from '../../../../store/post/postSlice';
-import { StudentInformationResponse } from '../../../../models/responses/studentInformationResponse';
-import { getStudentsBySchoolIdClassIdBranchId } from '../../../../store/student/studentSlice';
-import IconTemp from '../../../../utilities/Helpers/iconTemp';
-import { sendIcon } from '../../../../utilities/Constants/iconsList';
+import { AppDispatch, RootState } from '../../../../../store/configureStore';
+import { addPostComment } from '../../../../../store/post/postSlice';
+import { StudentInformationResponse } from '../../../../../models/responses/studentInformationResponse';
+import { getStudentsBySchoolIdClassIdBranchId } from '../../../../../store/student/studentSlice';
+import IconTemp from '../../../../../utilities/Helpers/iconTemp';
+import { sendIcon } from '../../../../../utilities/Constants/iconsList';
 import "./commentPost.css"
-import ListCommentPost from '../ListCommentPost/ListCommentPost';
 type Props = {
     userId: string | null,
     user: StudentInformationResponse | null,
@@ -129,7 +128,6 @@ const CommentPost = (props: Props) => {
                         </Button>
                     </Form>
                 </div>
-                <ListCommentPost />
             </Col>
         </Row>
     )

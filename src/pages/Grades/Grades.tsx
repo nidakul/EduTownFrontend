@@ -89,11 +89,14 @@ const Grades = (props: Props) => {
     }
   }, [dispatch, selectedClassId]);
 
-  // useEffect(() => {
-  //   if (user?.classroomId && selectedClassId !== undefined) {
-  //     setSelectedClassId(user.classroomId);
-  //   } 
-  // }, [user?.classroomId, selectedClassId]); 
+  useEffect(() => {
+    if (studentClasses.length > 0 && user?.classroomId) {
+      const defaultClass = studentClasses.find(c => c.id === user.classroomId);
+      if (defaultClass) {
+        setSelectedClassId(defaultClass.id);
+      }
+    }
+  }, [studentClasses, user?.classroomId]);
 
   return (
     <Container className="grades-container">

@@ -31,16 +31,17 @@
 }
 
 .terms button {
-    background-color: white;
+    background-color: #a0dbcc;
     color: black;
-    border-color: white;
+    border-color: #a0dbcc;
     font-size: 17px;
     font-weight: bold;
     transition: none;
 }
 
 .terms button:hover {
-    background-color: #a0dbcc !important;
+    background-color: #e0e2e1 !important;
+    color: black;
     border: none;
     transform: none;
 }

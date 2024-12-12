@@ -35,6 +35,10 @@ class PostService{
         return  axiosInstance.get<GetPostsBySchoolIdClassIdBranchIdResponse>(this.apiUrl  + "/getPostsBySchoolIdClassIdBranchId/" + schoolId +'/'+ classId +'/'+ branchId)
     }
 
+    getCommentByPostId(postId: number){
+        return axiosInstance.get(this.apiUrl + "/getPostComment/" + postId);
+    }
+ 
     // async addPost(postData: AddPost) {
     //     try {
     //         console.log('Sending data:', postData); // Veriyi loglayın

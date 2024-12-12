@@ -5,10 +5,13 @@ import { AddPostComment } from "../../models/requests/addPostComment";
 import postComentService from "../../services/postComentService";
 import { GetPostsBySchoolIdClassIdBranchIdResponse } from "../../models/responses/getPostsBySchoolIdClassIdBranchIdResponse";
 import { UpdatePostRequest } from "../../models/requests/updatePostRequest";
+import { GetPostCommentResponse } from "../../models/responses/getPostComment";
 
 interface PostState {
     post: AddPost | null;
     comments: AddPostComment | null;
+    // getComments: GetPostCommentResponse | null;
+    getComments: { [postId: number]: GetPostCommentResponse };
     posts: GetPostsBySchoolIdClassIdBranchIdResponse | null;
     updatePost: UpdatePostRequest | null;
 }
@@ -16,6 +19,8 @@ interface PostState {
 const initialState: PostState = {
     post: null,
     comments: null,
+    // getComments: null,
+    getComments: {},
     posts: null,
     updatePost: null
 }
@@ -38,8 +43,16 @@ export const updatePost = createAsyncThunk('post/update', async(updatePost: Upda
 export const getPostsBySchoolIdClassIdBranchId = createAsyncThunk<GetPostsBySchoolIdClassIdBranchIdResponse, {schoolId: number, classId: number, branchId: number}>("getPostsBySchoolIdClassIdBranchId", async(params) => {
     const { schoolId, classId , branchId} = params;
     const response = await postService.getPostsBySchoolIdClassIdBranchId(schoolId, classId, branchId);
-    return response.data;
-})
+    return response.data; 
+}) 
+export const getCommentByPostId = createAsyncThunk('posts/getPostComment',
+    async(postId : number) => {
+        const response = await postService.getCommentByPostId(postId);
+        // return response.data;
+        return { postId, data: response.data };
+
+    }
+)
 
 
 export const postSlice = createSlice({
@@ -67,6 +80,13 @@ export const postSlice = createSlice({
                     post.postId === updatedPost.id ? updatedPost : post
                 );
             }
+        })
+        // .addCase(getCommentByPostId.fulfilled, (state,action) => {
+        //     state.getComments = action.payload;
+        // })
+        .addCase(getCommentByPostId.fulfilled, (state,action) => {
+            const { postId, data } = action.payload;
+            state.getComments[postId] = data;
         })
     }
 })

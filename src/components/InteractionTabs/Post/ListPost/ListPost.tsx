@@ -37,7 +37,8 @@ const ListPost = () => {
             dispatch(getPostsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
             dispatch(getStudentsBySchoolIdClassIdBranchId({ schoolId: user?.schoolId, classId: user?.classroomId, branchId: user?.branchId }));
         }
-    }, [dispatch, user, posts]);
+        // }, [dispatch, user, posts]);
+    }, [dispatch, user]);
 
     const handleDelete = async (postId: number) => {
         try {
